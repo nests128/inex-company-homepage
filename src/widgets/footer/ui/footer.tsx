@@ -26,13 +26,12 @@ export function Footer() {
           <FooterLinkGroup title="CONTACT" links={footerContactLinks} />
         </div>
 
-        <div className="mt-10 flex flex-col gap-3 border-t border-border pt-[22px] text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:mt-12">
+        <div className="mt-10 border-t border-border pt-[22px] text-xs text-muted-foreground lg:mt-12">
           <span>
             © {footerLegal.companyName} · 사업자등록번호{" "}
             {footerLegal.businessRegistrationNumber} · VASP 등록번호{" "}
             {footerLegal.vaspRegistrationNumber}
           </span>
-          <span>KO / EN</span>
         </div>
       </div>
     </footer>
