@@ -40,6 +40,10 @@ yarn-error.log*
 # claude code runtime
 .claude/scheduled_tasks.lock
 
+# internal design/copy reference assets — never publish (may include
+# confidential guides/screenshots), not needed to build the app
+/ref/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
