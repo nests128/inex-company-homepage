@@ -1,10 +1,31 @@
+import { NavBar } from "@/widgets/nav-bar";
+import { Hero } from "@/widgets/hero";
+import { LogoMarquee } from "@/widgets/logo-marquee";
+import { FeatureShowcase } from "@/widgets/feature-showcase";
+import { OperationsSplit } from "@/widgets/operations-split";
+import { AccountHighlight } from "@/widgets/account-highlight";
+import { IntegrationsShowcase } from "@/widgets/integrations-showcase";
+import { NewsletterSignup } from "@/widgets/newsletter-signup";
+import { SuccessStories } from "@/widgets/success-stories";
+import { TrustGrid } from "@/widgets/trust-grid";
+import { Footer } from "@/widgets/footer";
+
 export function HomePage() {
   return (
-    <main className="flex min-h-svh flex-col items-center justify-center gap-4 p-8 text-center">
-      <h1 className="text-3xl font-bold tracking-tight">INEX</h1>
-      <p className="text-muted-foreground max-w-md text-sm">
-        거래 · 결제 · 송금을 하나의 라이선스 위에서.
-      </p>
-    </main>
+    <div className="flex min-h-svh flex-col">
+      <NavBar />
+      <main>
+        <Hero />
+        <LogoMarquee />
+        <FeatureShowcase />
+        <OperationsSplit />
+        <AccountHighlight />
+        <IntegrationsShowcase />
+        <SuccessStories />
+        <TrustGrid />
+        <NewsletterSignup />
+      </main>
+      <Footer />
+    </div>
   );
 }

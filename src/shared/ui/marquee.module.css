@@ -1,0 +1,39 @@
+@keyframes marquee-track {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.track {
+  animation: marquee-track var(--marquee-duration, 28s) linear infinite;
+}
+
+.half {
+  gap: var(--marquee-gap, 1.5rem);
+  padding-inline-end: var(--marquee-gap, 1.5rem);
+}
+
+/* Opt-in via `pauseOnHover` — pauses the CSS animation while any part of the
+   viewport (including the duplicated half) is hovered. */
+.viewport[data-pause-on-hover="true"]:hover .track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+
+  /* Second (duplicate) half exists only to fake seamless looping; with the
+     animation disabled it would otherwise sit off-screen and unreachable. */
+  .trackDuplicate {
+    display: none;
+  }
+
+  .viewport {
+    overflow-x: auto;
+  }
+}

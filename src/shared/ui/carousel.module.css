@@ -1,0 +1,11 @@
+/* Hides the native scrollbar while keeping the region keyboard/wheel
+   scrollable and reachable by screen readers (see `carousel.tsx`'s
+   `tabIndex={0}` + `aria-label` on the same element). */
+.scroller {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}

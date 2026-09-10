@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# INEX Homepage
 
-## Getting Started
+인피니티익스체인지코리아(INEX) 회사/서비스 홈페이지. Next.js App Router + Feature-Sliced Design(FSD) 기반.
 
-First, run the development server:
+## 실행
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[http://localhost:3000](http://localhost:3000)에서 확인합니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+프로덕션 빌드:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## 환경 변수
 
-To learn more about Next.js, take a look at the following resources:
+`.env.example`을 참고해 `.env.local`을 만듭니다. 로컬 개발에는 대부분 필수가 아니며(코드 기본값으로 폴백), 아래 값들이 실제로 필요한 기능에 한해 채웁니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `NEXT_PUBLIC_EX_IMG_CDN` — 이미지 CDN 베이스 URL. `next.config.ts`의 `/cdn/*` rewrite가 사용(허용 도메인: `cdn.inexcoin.com`, `www.inexcoin.com`).
+- `NEWSLETTER_API_URL`, `NEWSLETTER_CONFIG_ID` — 뉴스레터 구독 API 프록시(`app/api/newsletter/subscribe`)용.
+- `CONFLUENCE_BASE_URL`, `CONFLUENCE_EMAIL`, `CONFLUENCE_API_TOKEN`, `CONFLUENCE_SPACE_KEY` — Confluence 블로그 글 목록 연동(`src/shared/lib/confluence`)용.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 구조 (Feature-Sliced Design)
 
-## Deploy on Vercel
+```
+app/                 Next.js App Router 라우트 (얇은 재-export만, 실제 구현은 src/_pages)
+src/
+  _pages/             페이지 조립 (예: home, company)
+  widgets/            섹션 단위 컴포넌트 (hero, nav-bar, footer, footer, mission, team, history …)
+  entities/           도메인 모델 + 콘텐츠 데이터 (company, settlement …)
+  shared/
+    ui/               재사용 UI 프리미티브 (shadcn Base UI 기반)
+    lib/              공용 유틸리티
+docs/design-tokens.md 디자인 토큰 · 컴포넌트 인벤토리 (단일 소스)
+ref/                  레이아웃/카피 레퍼런스 자산 (스크린샷, 와이어프레임)
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 스택
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js (App Router, Turbopack) · React · TypeScript
+- Tailwind CSS v4
+- shadcn (Base UI 기반 컴포넌트)
+- Pretendard Variable + Inter Tight (자체 호스팅)
+
+## 참고 문서
+
+- `docs/design-tokens.md` — 색상/타이포/컨테이너/컴포넌트 인벤토리 등 디자인 토큰 단일 소스.
