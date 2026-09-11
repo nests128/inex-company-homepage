@@ -4,17 +4,17 @@
 // description paragraph directly beneath at a constrained width — not a
 // side-by-side 2-col grid, despite the wireframe's L148-151 markup, per
 // page-agent's own layout call. The left cell was originally a settlement
-// queue table; replaced with a text highlight grid per ref/temp2.png. Unlike
-// the settlement queue it replaced, this grid is real product info (not
-// placeholder), so it's shown at all breakpoints (1-col on mobile, 2-col from
-// `sm`) while the right visual next to it stays desktop-only per the mobile
-// artboard (~L360-368), which has no equivalent for it. That slot has held,
-// in order: a `VideoCard` (platform-intro.mp4), a ported `NetworkXVisual`
-// (dark rotating 3D "X" network canvas from the sibling `company-homepage`
-// project's main hero), then `AuroraBackground` (vendored from Aceternity
-// UI). It's now back to the `VideoCard`, swapped with `widgets/hero`'s visual
-// (which took over the `AuroraBackground` as a full-bleed section
-// background instead) per explicit request.
+// queue table; replaced with a text highlight grid per ref/temp2.png. The
+// right-side visual slot has held, in order: a `VideoCard`
+// (platform-intro.mp4), a ported `NetworkXVisual` (dark rotating 3D "X"
+// network canvas from the sibling `company-homepage` project's main hero),
+// then `AuroraBackground` (vendored from Aceternity UI). It's now back to the
+// `VideoCard`, swapped with `widgets/hero`'s visual (which took over the
+// `AuroraBackground` as a full-bleed section background instead) per
+// explicit request. Originally hidden below `lg` (the wireframe's mobile
+// artboard has no equivalent slot for it), now shown at every breakpoint per
+// explicit request — on mobile it renders above the highlight grid (source
+// order), stacked full-width.
 import { Reveal, VideoCard } from "@/shared/ui"
 import { cn } from "@/shared/lib/utils"
 import {
@@ -33,7 +33,7 @@ export function FeatureShowcase() {
          * paragraph directly beneath at a constrained width — not a
          * side-by-side 2-col grid. Mobile already stacks this way, so only
          * the `lg:` grid-cols-2 needs undoing. */}
-        <Reveal as="div" className="lg:mb-14">
+        <Reveal as="div" className="mb-8 lg:mb-14">
           <div className="mb-3 flex items-center gap-2 text-[13px] font-medium text-foreground/80 lg:mb-4">
             <span aria-hidden="true" className="size-2.5 rounded-[3px] bg-sky-500" />
             {featureShowcaseContent.eyebrow}
@@ -47,20 +47,30 @@ export function FeatureShowcase() {
         </Reveal>
 
         {/* Highlight grid — real product info, shown at every breakpoint
-         * (1-col stacked on mobile, 2x2 from `sm`). The right visual stays
-         * desktop-only (wireframe mobile artboard ~L360-368 has no
-         * equivalent for it); from `lg` the wrapper becomes a 2-col split.
-         * Equal `1fr/1fr` + `gap-20`, matching every other 2-column section
-         * on this page (account-highlight/integrations-showcase/mission) —
-         * this one was the only section still on the wireframe's original
-         * `1.1fr/.9fr` + `gap-7` ratio. No outer border, internal dividers
-         * only. */}
+         * (1-col stacked on mobile, 2x2 from `sm`). From `lg` the wrapper
+         * becomes a 2-col split with the video. Equal `1fr/1fr` + `gap-20`,
+         * matching every other 2-column section on this page
+         * (account-highlight/integrations-showcase/mission) — this one was
+         * the only section still on the wireframe's original `1.1fr/.9fr` +
+         * `gap-7` ratio. No outer border, internal dividers only.
+         *
+         * A single `VideoCard` (not one per breakpoint) is placed first in
+         * source order so it stacks above the cards on mobile, then
+         * `lg:col-start-2 lg:row-start-1` moves it into the right column
+         * without needing a second, duplicate `<video>` element — two
+         * copies would both autoplay simultaneously even though only one is
+         * ever visible. */}
         <Reveal
           as="div"
           delay={0.1}
-          className="lg:grid lg:grid-cols-2 lg:gap-20"
+          className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-20"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2">
+          <VideoCard
+            videoAlt={featureShowcaseVideo.videoAlt}
+            videoSrc={featureShowcaseVideo.videoSrc}
+            className="lg:col-start-2 lg:row-start-1"
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:col-start-1 lg:row-start-1">
             {featureShowcaseHighlights.map((item, index) => (
               <div
                 key={item.id}
@@ -82,11 +92,6 @@ export function FeatureShowcase() {
               </div>
             ))}
           </div>
-          <VideoCard
-            videoAlt={featureShowcaseVideo.videoAlt}
-            videoSrc={featureShowcaseVideo.videoSrc}
-            className="hidden lg:block"
-          />
         </Reveal>
       </div>
     </section>
