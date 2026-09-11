@@ -8,23 +8,19 @@
 // the settlement queue it replaced, this grid is real product info (not
 // placeholder), so it's shown at all breakpoints (1-col on mobile, 2-col from
 // `sm`) while the right visual next to it stays desktop-only per the mobile
-// artboard (~L360-368), which has no equivalent for it. That slot originally
-// held a `VideoCard` (platform-intro.mp4, since reused in `widgets/hero`
-// instead), then briefly a ported `NetworkXVisual` (dark rotating 3D "X"
-// network canvas from the sibling `company-homepage` project's main hero),
-// and now holds `AuroraBackground` (vendored from Aceternity UI,
-// https://ui.aceternity.com/components/aurora-background, per explicit
-// request to swap the X visual out, then set to its white-background variant
-// per a follow-up request) — an animated gradient-sweep panel, with an
-// `InexLogoMark` (dark via `text-foreground`, since the mark inherits text
-// color and the panel is now light) centered on top as its `children`,
-// mirroring how the `NetworkX`-based hero this was inspired by centers its
-// title text over its background visual.
-import { AuroraBackground, InexLogoMark, Reveal } from "@/shared/ui"
+// artboard (~L360-368), which has no equivalent for it. That slot has held,
+// in order: a `VideoCard` (platform-intro.mp4), a ported `NetworkXVisual`
+// (dark rotating 3D "X" network canvas from the sibling `company-homepage`
+// project's main hero), then `AuroraBackground` (vendored from Aceternity
+// UI). It's now back to the `VideoCard`, swapped with `widgets/hero`'s visual
+// (which took over the `AuroraBackground` as a full-bleed section
+// background instead) per explicit request.
+import { Reveal, VideoCard } from "@/shared/ui"
 import { cn } from "@/shared/lib/utils"
 import {
   featureShowcaseContent,
   featureShowcaseHighlights,
+  featureShowcaseVideo,
 } from "@/entities/company"
 
 export function FeatureShowcase() {
@@ -83,9 +79,11 @@ export function FeatureShowcase() {
               </div>
             ))}
           </div>
-          <AuroraBackground className="hidden min-h-[380px] items-center justify-center rounded-2xl border border-border lg:flex">
-            <InexLogoMark className="relative z-10 h-auto w-32 text-foreground" />
-          </AuroraBackground>
+          <VideoCard
+            videoAlt={featureShowcaseVideo.videoAlt}
+            videoSrc={featureShowcaseVideo.videoSrc}
+            className="hidden lg:block"
+          />
         </Reveal>
       </div>
     </section>
