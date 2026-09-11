@@ -33,6 +33,7 @@ export {
   footerMainLinks,
   footerContacts,
   footerLegal,
+  footerPartnershipCta,
   footerPrivacyPolicy,
   footerDisclaimer,
   footerSocialLinks,

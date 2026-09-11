@@ -5,6 +5,7 @@ import {
   footerDisclaimer,
   footerLegal,
   footerMainLinks,
+  footerPartnershipCta,
   footerPrivacyPolicy,
   footerSocialLinks,
 } from "@/entities/company"
@@ -66,8 +67,13 @@ export function Footer() {
                 {footerPrivacyPolicy.label}
               </a>
             </div>
-            <Button variant="pill-solid-inverse" size="pill" className="mt-6">
-              파트너십 문의
+            <Button
+              variant="pill-solid-inverse"
+              size="pill"
+              render={<a href={footerPartnershipCta.href} target="_blank" rel="noopener noreferrer" />}
+              className="mt-6"
+            >
+              {footerPartnershipCta.label}
             </Button>
           </div>
 

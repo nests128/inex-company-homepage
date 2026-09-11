@@ -6,6 +6,13 @@ export const footerBrand = {
   description: "원화와 디지털자산을 잇는 인프라.\n거래 · 결제 · 송금을 하나의 라이선스 위에서.",
 }
 
+// 히어로(`hero-content.ts`의 `primaryCta`)와 동일한 파트너십 문의 링크.
+// 하나의 값으로 관리해 두 곳이 어긋나지 않게 함.
+export const footerPartnershipCta = {
+  label: "파트너십 문의",
+  href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",
+}
+
 // 현재 nav-bar에 실제로 노출된 메뉴만 재구성 (`entities/company/model/nav-content.ts`
 // 참고 — 솔루션 메가메뉴는 hide 처리되어 제외). 실존하지 않는 라우트를 나열하던
 // 이전 "추가 페이지"/"안내" 컬럼은 제거.
@@ -13,10 +20,7 @@ export const footerMainLinks: FooterLinkItem[] = [
   { label: "회사소개", href: "/company" },
   { label: "API 문서", href: "https://docs.inex.im/docs/datacenter-overview" },
   { label: "채용", href: "https://inexcareer.ninehire.site" },
-  {
-    label: "파트너십 문의",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",
-  },
+  footerPartnershipCta,
 ]
 
 export interface FooterContactItem {
