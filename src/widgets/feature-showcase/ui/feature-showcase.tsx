@@ -49,13 +49,16 @@ export function FeatureShowcase() {
         {/* Highlight grid — real product info, shown at every breakpoint
          * (1-col stacked on mobile, 2x2 from `sm`). The right visual stays
          * desktop-only (wireframe mobile artboard ~L360-368 has no
-         * equivalent for it); from `lg` the wrapper becomes the 2-col
-         * `1.1fr/.9fr` split from wireframe L152-175. No outer border,
-         * internal dividers only. */}
+         * equivalent for it); from `lg` the wrapper becomes a 2-col split.
+         * Equal `1fr/1fr` + `gap-20`, matching every other 2-column section
+         * on this page (account-highlight/integrations-showcase/mission) —
+         * this one was the only section still on the wireframe's original
+         * `1.1fr/.9fr` + `gap-7` ratio. No outer border, internal dividers
+         * only. */}
         <Reveal
           as="div"
           delay={0.1}
-          className="lg:grid lg:grid-cols-[1.1fr_.9fr] lg:gap-7"
+          className="lg:grid lg:grid-cols-2 lg:gap-20"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2">
             {featureShowcaseHighlights.map((item, index) => (
