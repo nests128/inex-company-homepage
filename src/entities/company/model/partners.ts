@@ -10,6 +10,9 @@ export interface Partner {
 const CDN_BASE = "/cdn/image/partners"
 
 export const partners: Partner[] = [
+  // 로컬 자산 — ref/logo_RGB_danal.ai(원본 벡터)를 PNG로 변환해 등록
+  // (PartnerLogoCard가 brightness-0로 흑백 처리하므로 원본 컬러 그대로 사용 가능).
+  { name: "Danal", logoSrc: "/images/partners/danal.png" },
   {
     // CDN에 NFD 유니코드 형태로 저장되어 있어 percent-encoding 그대로 유지 필요
     name: "인터리젠",
@@ -17,7 +20,8 @@ export const partners: Partner[] = [
   },
   { name: "Able", logoSrc: `${CDN_BASE}/Able.svg` },
   { name: "chainalysis", logoSrc: `${CDN_BASE}/chainalysis.svg` },
-  { name: "Avalanche", logoSrc: `${CDN_BASE}/avalanche.svg` },
+  // 로컬 자산 — 검정 버전 공식 로고(아이콘 + AVALANCHE 워드마크)로 교체.
+  { name: "Avalanche", logoSrc: "/images/partners/avalanche.svg" },
   { name: "AWS", logoSrc: `${CDN_BASE}/aws.svg` },
   { name: "BKL", logoSrc: `${CDN_BASE}/bkl.svg` },
   { name: "Code", logoSrc: `${CDN_BASE}/code.svg` },
