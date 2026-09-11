@@ -191,7 +191,7 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
   // several independent per-step pulses.
   const desktopPath = desktopEdges.join(" ")
   const mobilePathJoined = mobileEdges.join(" ")
-  const dotDur = "1.8s"
+  const dotDur = "6s"
 
   return (
     <div className={className}>
