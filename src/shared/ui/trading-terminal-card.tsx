@@ -72,10 +72,10 @@ const DEFAULT_BIDS: TradingTerminalOrderRow[] = [
 const GRIDLINE_POSITIONS = [25, 50, 75]
 
 /** How often a random row's amount ticks (ms). */
-const TICK_INTERVAL_MS = 1800
+const TICK_INTERVAL_MS = 700
 
 /** How long a ticked row stays flashed before fading out (ms). Kept below `TICK_INTERVAL_MS` so flashes don't overlap/queue. */
-const FLASH_DURATION_MS = 600
+const FLASH_DURATION_MS = 400
 
 type Side = "ask" | "bid"
 
