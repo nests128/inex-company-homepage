@@ -37,9 +37,13 @@ type RawResult = {
 };
 
 // storage format의 <ac:image> 매크로에서 첫 이미지 URL을 뽑는다.
-// 외부 URL(ri:url)과 첨부파일(ri:attachment) 두 케이스를 처리한다 — 첨부파일은
-// 인증이 필요한 다운로드 경로이므로 프록시 없이는 <img>에 그대로 못 쓰지만,
-// 목록 카드에서는 최선의 노력(best-effort) 값으로 반환하고 실패 시 page-agent가 폴백한다.
+// 외부 URL(ri:url)과 첨부파일(ri:attachment) 두 케이스를 처리한다. storage
+// HTML에는 첨부파일명만 있고 실제 다운로드에 필요한 attachmentId가 없으며,
+// `/wiki/download/attachments/{pageId}/{filename}` 형태로 직접 조합한 경로는
+// Basic Auth(API 토큰)를 받아주지 않는다(브라우저 세션 쿠키 전용,
+// 401 + `WWW-Authenticate: OAuth`) — 그래서 여기서는 URL을 조합하지 않고
+// `app/api/confluence-image` 프록시로 pageId+filename만 넘긴다. 그 라우트가
+// REST API로 attachmentId를 찾아 진짜 인증 가능한 download 링크를 가져온다.
 function extractFirstImage(rawHtml: string, pageId: string): string | null {
   const externalMatch = rawHtml.match(
     /<ac:image[^>]*>[\s\S]*?<ri:url\s+ri:value="([^"]+)"/i,
@@ -49,9 +53,9 @@ function extractFirstImage(rawHtml: string, pageId: string): string | null {
   const attachmentMatch = rawHtml.match(
     /<ac:image[^>]*>[\s\S]*?<ri:attachment\s+ri:filename="([^"]+)"/i,
   );
-  if (attachmentMatch && CONFLUENCE_ORIGIN) {
+  if (attachmentMatch) {
     const filename = attachmentMatch[1];
-    return `${CONFLUENCE_ORIGIN}/wiki/download/attachments/${pageId}/${encodeURIComponent(filename)}`;
+    return `/api/confluence-image?pageId=${pageId}&filename=${encodeURIComponent(filename)}`;
   }
 
   return null;

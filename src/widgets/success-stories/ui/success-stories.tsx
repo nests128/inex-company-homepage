@@ -66,8 +66,11 @@ function NewsCard({ post }: { post: NewsPost }) {
         </p>
       </div>
 
+      {/* TODO: INEX 소식 전용 상세 목록 페이지가 생기면 그쪽으로 연결하며
+          다시 노출 — 그 전까지는 Confluence 원문 링크를 그대로 새 탭으로
+          띄우는 임시 동작이라 숨김 처리(hidden, 삭제 아님). */}
       {post.href ? (
-        <div className="flex items-center justify-end border-t border-white/10 p-4 sm:p-5">
+        <div className="hidden items-center justify-end border-t border-white/10 p-4 sm:p-5">
           <a
             href={post.href}
             target="_blank"
