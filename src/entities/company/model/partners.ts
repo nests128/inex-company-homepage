@@ -31,4 +31,6 @@ export const partners: Partner[] = [
   { name: "CLOVA eKYC", logoSrc: `${CDN_BASE}/naver_cloud.svg` },
   { name: "TokenPost", logoSrc: `${CDN_BASE}/Tokenpost.svg` },
   { name: "Xangle", logoSrc: `${CDN_BASE}/Xangle.svg` },
+  // 로컬 자산 — ref/circle.avif를 PNG로 변환 후 트림해 등록.
+  { name: "Circle", logoSrc: "/images/partners/circle.png" },
 ]

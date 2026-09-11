@@ -117,7 +117,9 @@ export function NavBar() {
               // 기본 pill 패딩(px-[22px])에 아이콘+gap이 더해지면
               // "파트너십 문의"보다 눈에 띄게 커 보여서, 아이콘이 있는 쪽만
               // 좌우 패딩을 살짝 좁힘(파트너십 문의와 비슷한 체감 크기로).
-              className="h-9 w-full justify-center px-4 lg:w-auto"
+              // 높이도 2px 더 줄여(h-9=36px -> 34px) 아웃라인 두께 때문에
+              // 실제보다 커 보이던 것을 보정.
+              className="h-[34px] w-full justify-center px-4 lg:w-auto"
               render={
                 <a
                   href={navExchangeLink.href}
