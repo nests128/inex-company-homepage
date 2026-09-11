@@ -15,9 +15,12 @@ export const footerPartnershipCta = {
 
 // 현재 nav-bar에 실제로 노출된 메뉴만 재구성 (`entities/company/model/nav-content.ts`
 // 참고 — 솔루션 메가메뉴는 hide 처리되어 제외). 실존하지 않는 라우트를 나열하던
-// 이전 "추가 페이지"/"안내" 컬럼은 제거.
+// 이전 "추가 페이지"/"안내" 컬럼은 제거. 헤더에 INEX 소식/INEX 거래소 메뉴가
+// 추가된 뒤 여기 동기화가 누락되어 있던 것을 재정렬(헤더와 동일한 순서).
 export const footerMainLinks: FooterLinkItem[] = [
   { label: "회사소개", href: "/company" },
+  { label: "INEX 소식", href: "/news" },
+  { label: "INEX 거래소", href: "https://www.inexcoin.com" },
   { label: "API 문서", href: "https://docs.inex.im/docs/datacenter-overview" },
   { label: "채용", href: "https://inexcareer.ninehire.site" },
   footerPartnershipCta,
