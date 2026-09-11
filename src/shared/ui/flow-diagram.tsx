@@ -101,7 +101,7 @@ function PulseDot({ path, color, begin, dur, edgeCount }: { path: string; color:
 
   return (
     <g className="motion-reduce:hidden">
-      <circle r="6" fill={color}>
+      <circle r="8" fill={color}>
         <animateMotion dur={dur} begin={begin} repeatCount="indefinite" path={path} />
         <animate
           attributeName="opacity"
@@ -112,7 +112,7 @@ function PulseDot({ path, color, begin, dur, edgeCount }: { path: string; color:
           values={outer.values}
         />
       </circle>
-      <circle r="2.6" fill={color}>
+      <circle r="3.6" fill={color}>
         <animateMotion dur={dur} begin={begin} repeatCount="indefinite" path={path} />
         <animate
           attributeName="opacity"
@@ -235,9 +235,22 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
           className="h-auto w-full"
         >
           <defs>
-            <linearGradient id="flowEdgeDesktop" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stopColor="#C4CEDC" />
-              <stop offset="1" stopColor="#0ea5e9" />
+            {/* `gradientUnits="userSpaceOnUse"` (not the SVG default
+                `objectBoundingBox`) — objectBoundingBox gradients silently
+                fail to paint on a path whose bounding box is degenerate in
+                one axis, which several of these edges are (near-flat
+                horizontal beziers with ~0 height). Explicit viewBox
+                coordinates sidestep that entirely. */}
+            <linearGradient
+              id="flowEdgeDesktop"
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              y1="0"
+              x2={DESKTOP_VIEW_W}
+              y2="0"
+            >
+              <stop offset="0" stopColor="#CBD5E1" />
+              <stop offset="1" stopColor="#7dd3fc" />
             </linearGradient>
           </defs>
           {desktopEdges.map((edge, i) => (
@@ -247,7 +260,7 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
               fill="none"
               stroke="url(#flowEdgeDesktop)"
               className="dashflow"
-              strokeWidth="1.5"
+              strokeWidth="2"
               strokeDasharray="5 6"
             />
           ))}
@@ -275,9 +288,16 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
           className="mx-auto h-auto w-full max-w-[280px]"
         >
           <defs>
-            <linearGradient id="flowEdgeMobile" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#C4CEDC" />
-              <stop offset="1" stopColor="#0ea5e9" />
+            <linearGradient
+              id="flowEdgeMobile"
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2={MOBILE_VIEW_H}
+            >
+              <stop offset="0" stopColor="#CBD5E1" />
+              <stop offset="1" stopColor="#7dd3fc" />
             </linearGradient>
           </defs>
           {mobileEdges.map((edge, i) => (
@@ -287,7 +307,7 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
               fill="none"
               stroke="url(#flowEdgeMobile)"
               className="dashflow"
-              strokeWidth="1.5"
+              strokeWidth="2"
               strokeDasharray="5 6"
             />
           ))}
