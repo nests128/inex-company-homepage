@@ -133,7 +133,7 @@ function NavBar({
     <header
       data-slot="nav-bar"
       className={cn(
-        "flex items-center justify-between border-b border-border px-[18px] py-3.5 lg:px-14 lg:py-2",
+        "flex items-center justify-between border-b border-border px-[18px] py-2 lg:px-14",
         className
       )}
       {...props}

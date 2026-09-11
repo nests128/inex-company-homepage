@@ -183,8 +183,15 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
     bezierV(mobileNodeCenterX, y + MOBILE_NODE_H, mobileNodeCenterX, mobileY[i + 1])
   )
 
-  const edgeDur = "3.2s"
-  const edgeStagger = 3.2 / desktopEdges.length
+  // Single dot traveling the whole path (not one dot per segment): joining
+  // each edge's own "M ..." into one path string (via a bare space, so the
+  // browser treats each as a new subpath command) makes `animateMotion`
+  // trace all segments back-to-back as one continuous loop, per explicit
+  // request that the flow read as one connection end-to-end rather than
+  // several independent per-step pulses.
+  const desktopPath = desktopEdges.join(" ")
+  const mobilePathJoined = mobileEdges.join(" ")
+  const dotDur = "1.8s"
 
   return (
     <div className={className}>
@@ -198,9 +205,7 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
           {desktopEdges.map((edge, i) => (
             <path key={i} d={edge} fill="none" stroke="currentColor" className="text-border" strokeWidth="1.5" />
           ))}
-          {desktopEdges.map((edge, i) => (
-            <PulseDot key={i} path={edge} color="#0ea5e9" begin={`${i * edgeStagger}s`} dur={edgeDur} />
-          ))}
+          <PulseDot path={desktopPath} color="#0ea5e9" begin="0s" dur={dotDur} />
           {nodes.map((node, i) => (
             <NodeBox
               key={node.step}
@@ -226,9 +231,7 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
           {mobileEdges.map((edge, i) => (
             <path key={i} d={edge} fill="none" stroke="currentColor" className="text-border" strokeWidth="1.5" />
           ))}
-          {mobileEdges.map((edge, i) => (
-            <PulseDot key={i} path={edge} color="#0ea5e9" begin={`${i * edgeStagger}s`} dur={edgeDur} />
-          ))}
+          <PulseDot path={mobilePathJoined} color="#0ea5e9" begin="0s" dur={dotDur} />
           {nodes.map((node, i) => (
             <NodeBox
               key={node.step}

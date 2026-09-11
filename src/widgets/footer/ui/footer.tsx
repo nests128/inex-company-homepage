@@ -15,7 +15,7 @@ export function Footer() {
     // Full-bleed section: dark background + section-edge border + vertical
     // padding only (design-tokens.md "풀블리드 배경 + 컨테이너 콘텐츠"). Horizontal
     // gutter lives on container-inex below.
-    <footer className="dark border-t border-border bg-neutral-950 lg:pt-[70px]">
+    <footer className="dark border-t border-border bg-neutral-950 pt-10 lg:pt-[70px]">
       <div className="container-inex">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_auto] lg:gap-12">
           <div>
