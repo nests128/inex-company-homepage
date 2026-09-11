@@ -41,10 +41,8 @@ export const footerLegal = {
   address: "서울특별시 강남구 테헤란로 116, 12층 (동경빌딩)",
   businessRegistrationNumber: "783-81-02738",
   vaspRegistrationNumber: "2024-3",
-  // 상위 `company-homepage` 프로젝트(`lib/i18n/locales/ko.ts`의
-  // `footer.cpoLabel`/`cpoName`)와 동일한 실제 개인정보보호책임자.
   cpoLabel: "개인정보보호책임자",
-  cpoName: "이재강",
+  cpoName: "이성호",
 }
 
 export const footerPrivacyPolicy = {
