@@ -1,5 +1,6 @@
 // Owner: page-agent. Ref: ref/INEX SaaS wireframe/INEX Home Wireframe.dc.html (~L60-145, nav + mega menu + mobile hamburger).
 import type { ReactNode } from "react"
+import { ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 
 import {
@@ -11,6 +12,7 @@ import {
 import {
   navCompanyLink,
   navCta,
+  navExchangeLink,
   navLogoLabel,
   navNewsLink,
   navSolutionFooter,
@@ -102,20 +104,43 @@ export function NavBar() {
         // i18n isn't built yet ("추후개발"). `NavBarPrimitive` already
         // renders nothing when `languageLabel` is omitted.
         cta={
-          <Button
-            variant="pill-solid"
-            size="pill"
-            className="h-9"
-            render={
-              <a
-                href={navCta.href}
-                target={navCta.external ? "_blank" : undefined}
-                rel={navCta.external ? "noopener noreferrer" : undefined}
-              />
-            }
-          >
-            {navCta.label}
-          </Button>
+          // 모바일 시트는 이 cta를 `flex flex-col gap-3` 컨테이너 안에서
+          // 렌더링하므로(shared/ui/nav-bar.tsx), 여기서 다시 `flex-row`를
+          // 강제하면 두 버튼이 좁은 시트 폭에 억지로 나란히 눌려 잘린다.
+          // 데스크톱 가로 배치는 lg 이상에서만 적용.
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+            {/* 실제 운영 중인 거래소(inexcoin.com) 바로가기 — "파트너십 문의"
+                솔리드 CTA와 구분되도록 아웃라인 버튼으로 그 왼쪽에 배치. */}
+            <Button
+              variant="pill-outline"
+              size="pill"
+              className="h-9 w-full justify-center lg:w-auto"
+              render={
+                <a
+                  href={navExchangeLink.href}
+                  target={navExchangeLink.external ? "_blank" : undefined}
+                  rel={navExchangeLink.external ? "noopener noreferrer" : undefined}
+                />
+              }
+            >
+              {navExchangeLink.label}
+              <ArrowUpRight className="size-3.5" aria-hidden="true" />
+            </Button>
+            <Button
+              variant="pill-solid"
+              size="pill"
+              className="h-9 w-full justify-center lg:w-auto"
+              render={
+                <a
+                  href={navCta.href}
+                  target={navCta.external ? "_blank" : undefined}
+                  rel={navCta.external ? "noopener noreferrer" : undefined}
+                />
+              }
+            >
+              {navCta.label}
+            </Button>
+          </div>
         }
         className="container-inex border-b-0 px-(--container-gutter) lg:px-(--container-gutter)"
       />

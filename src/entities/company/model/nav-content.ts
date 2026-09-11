@@ -65,6 +65,14 @@ export const navTrailingLinks = [
 
 export const navLanguageLabel = "KO"
 
+// 실제 운영 중인 거래소(inexcoin.com) 바로가기. "파트너십 문의" 솔리드
+// CTA와 구분되도록 아웃라인 버튼으로 그 왼쪽에 배치.
+export const navExchangeLink = {
+  label: "INEX 거래소",
+  href: "https://www.inexcoin.com",
+  external: true,
+}
+
 export const navCta = {
   label: "파트너십 문의",
   href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",

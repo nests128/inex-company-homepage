@@ -6,6 +6,7 @@ export {
   navSolutionFooter,
   navTrailingLinks,
   navLanguageLabel,
+  navExchangeLink,
   navCta,
   type SolutionIconKey,
 } from "./model/nav-content"
