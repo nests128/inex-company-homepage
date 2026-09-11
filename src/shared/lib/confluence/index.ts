@@ -17,11 +17,17 @@ function authHeader() {
 
 export type NewsPost = {
   id: string;
+  /** Same value as `id` — Confluence content ID doubles as the `/news/[slug]` route param (simplicity over a title-derived slug). */
+  slug: string;
   title: string;
   excerpt: string;
   thumbnailUrl: string | null;
   category: string | null;
   publishedAt: string;
+  /** Post author display name, from `history.createdBy`. `null` if Confluence didn't return it. */
+  authorName: string | null;
+  /** `body.storage.value` with `<ac:image>` macros converted to real `<img>` tags — see `convertStorageHtmlToDisplayHtml`. Safe to render as the detail page body (still raw Confluence storage HTML otherwise; not sanitized beyond the macro rewrite). */
+  htmlContent: string;
   href: string;
 };
 
@@ -29,7 +35,7 @@ type RawResult = {
   id: string;
   title: string;
   body: { storage: { value: string } };
-  history: { createdDate: string };
+  history: { createdDate: string; createdBy?: { displayName?: string } };
   metadata: {
     labels: { results: { name: string }[] };
   };
@@ -59,6 +65,39 @@ function extractFirstImage(rawHtml: string, pageId: string): string | null {
   }
 
   return null;
+}
+
+// storage format 본문 전체에서 <ac:image> 매크로를 실제 <img> 태그로 치환한다
+// (상세 페이지 본문 렌더링용). extractFirstImage와 같은 external(ri:url) /
+// attachment(ri:attachment) 두 케이스를 다루지만, 여기서는 문서 전체를 한 번에
+// 훑어야 하므로 매크로 블록 전체(<ac:image ...>...</ac:image>)를 통째로
+// 매치한 뒤 내부에서 개별 패턴을 찾는다 — extractFirstImage의 lazy
+// `[\s\S]*?` 프리픽스 매치를 그대로 global로 바꾸면 인접한 매크로들 사이를
+// 넘나들며 잘못 매치될 수 있어 피한다. 완전한 storage-format 파서는 아니며,
+// 이 프로젝트 실데이터에 나오는 <ac:image> 매크로만 처리하고 나머지 태그는
+// 그대로 통과시킨다. 매크로 안에 이미지 참조가 없으면(둘 다 매치 실패) 깨진
+// 마크업을 남기지 않도록 통째로 제거한다.
+function convertStorageHtmlToDisplayHtml(rawHtml: string, pageId: string): string {
+  return rawHtml.replace(
+    /<ac:image[^>]*>([\s\S]*?)<\/ac:image>/gi,
+    (_match, inner: string) => {
+      const externalMatch = inner.match(/<ri:url\s+ri:value="([^"]+)"/i);
+      if (externalMatch) {
+        return `<img src="${externalMatch[1]}" alt="" />`;
+      }
+
+      const attachmentMatch = inner.match(
+        /<ri:attachment\s+ri:filename="([^"]+)"/i,
+      );
+      if (attachmentMatch) {
+        const filename = attachmentMatch[1];
+        const src = `/api/confluence-image?pageId=${pageId}&filename=${encodeURIComponent(filename)}`;
+        return `<img src="${src}" alt="" />`;
+      }
+
+      return "";
+    },
+  );
 }
 
 function extractPlainText(rawHtml: string): string {
@@ -148,11 +187,14 @@ export async function fetchNewsPosts(): Promise<NewsPost[]> {
 
       return {
         id: post.id,
+        slug: post.id,
         title: post.title,
         excerpt: generateExcerpt(plain, 140),
         thumbnailUrl: extractFirstImage(rawHtml, post.id),
         category: labels[0] ?? null,
         publishedAt: post.history?.createdDate || "",
+        authorName: post.history?.createdBy?.displayName ?? null,
+        htmlContent: convertStorageHtmlToDisplayHtml(rawHtml, post.id),
         href: post._links?.webui ? `${CONFLUENCE_ORIGIN}${post._links.webui}` : CONFLUENCE_ORIGIN,
       };
     })
@@ -160,4 +202,17 @@ export async function fetchNewsPosts(): Promise<NewsPost[]> {
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
     );
+}
+
+/**
+ * Looks up a single post by slug (== Confluence content `id`). Reuses
+ * `fetchNewsPosts()` rather than the raw fetch so the blocked-label filter
+ * (`internal`/`private`/`draft`/`confidential`) still applies — a post
+ * hidden from the list should also 404 on its direct detail URL, not be
+ * reachable by guessing the id. Traffic is low (company news page), so the
+ * lack of a dedicated single-post API call is an acceptable trade-off.
+ */
+export async function fetchPostBySlug(slug: string): Promise<NewsPost | null> {
+  const posts = await fetchNewsPosts();
+  return posts.find((post) => post.slug === slug) ?? null;
 }

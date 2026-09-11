@@ -12,6 +12,7 @@ import {
   navCompanyLink,
   navCta,
   navLogoLabel,
+  navNewsLink,
   navSolutionFooter,
   navSolutionItems,
   navTrailingLinks,
@@ -52,6 +53,7 @@ function SolutionIcon({ iconKey }: { iconKey: SolutionIconKey }) {
 // re-adding is just restoring the commented-out item below.
 const navItems: NavItem[] = [
   { type: "link", label: navCompanyLink.label, href: navCompanyLink.href },
+  { type: "link", label: navNewsLink.label, href: navNewsLink.href },
   // {
   //   type: "mega",
   //   label: "솔루션",

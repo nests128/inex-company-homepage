@@ -177,3 +177,12 @@ export {
   type StablecoinOrderRow,
 } from "./stablecoin-order-card"
 export { AuroraBackground, type AuroraBackgroundProps } from "./aurora-background"
+export { NewsImage, type NewsImageProps } from "./news-image"
+export { NewsMeta, type NewsMetaProps } from "./news-meta"
+export { NewsCard, type NewsCardProps } from "./news-card"
+export { NewsFeaturedCard, type NewsFeaturedCardProps } from "./news-featured-card"
+export {
+  NewsCategoryFilter,
+  type NewsCategoryFilterProps,
+} from "./news-category-filter"
+export { NewsPagination, type NewsPaginationProps } from "./news-pagination"

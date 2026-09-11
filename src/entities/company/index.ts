@@ -1,6 +1,7 @@
 export {
   navLogoLabel,
   navCompanyLink,
+  navNewsLink,
   navSolutionItems,
   navSolutionFooter,
   navTrailingLinks,
@@ -80,3 +81,5 @@ export { missionContent } from "./model/mission-content"
 export { teamContent, teamMembers } from "./model/team-content"
 
 export { historyContent, historyYears } from "./model/history-content"
+
+export { newsListContent, newsDetailContent } from "./model/news-content"

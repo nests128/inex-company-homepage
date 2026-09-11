@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 import { Badge, Carousel, Reveal } from "@/shared/ui"
 import { successStoriesContent } from "@/entities/company"
 import { fetchNewsPosts, type NewsPost } from "@/shared/lib/confluence"
@@ -40,12 +42,17 @@ export async function SuccessStories() {
 
 function NewsCard({ post }: { post: NewsPost }) {
   return (
-    <div
+    <Link
+      href={`/news/${post.slug}`}
       data-slot="news-card"
-      className="flex h-full flex-col overflow-hidden rounded-2xl bg-white/[.04] text-white"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white/[.04] text-white outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
     >
-      <div className="relative aspect-[4/3] w-full shrink-0 sm:aspect-[3/4]">
-        <NewsThumbnail src={post.thumbnailUrl} alt={post.title} className="absolute inset-0" />
+      <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden sm:aspect-[3/4]">
+        <NewsThumbnail
+          src={post.thumbnailUrl}
+          alt={post.title}
+          className="absolute inset-0 scale-100 transition-transform duration-300 ease-out group-hover:scale-110"
+        />
         {post.category ? (
           <Badge
             variant="inverse"
@@ -65,22 +72,6 @@ function NewsCard({ post }: { post: NewsPost }) {
           {post.excerpt}
         </p>
       </div>
-
-      {/* TODO: INEX 소식 전용 상세 목록 페이지가 생기면 그쪽으로 연결하며
-          다시 노출 — 그 전까지는 Confluence 원문 링크를 그대로 새 탭으로
-          띄우는 임시 동작이라 숨김 처리(hidden, 삭제 아님). */}
-      {post.href ? (
-        <div className="hidden items-center justify-end border-t border-white/10 p-4 sm:p-5">
-          <a
-            href={post.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-bold tracking-[-.01em] text-white underline decoration-white underline-offset-4 visited:text-white hover:text-[#cccccc] hover:decoration-[#cccccc]"
-          >
-            더 보기
-          </a>
-        </div>
-      ) : null}
-    </div>
+    </Link>
   )
 }

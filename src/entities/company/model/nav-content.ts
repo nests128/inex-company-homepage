@@ -5,6 +5,11 @@ export const navCompanyLink = {
   href: "/company",
 }
 
+export const navNewsLink = {
+  label: "INEX 소식",
+  href: "/news",
+}
+
 /**
  * Icon slot keys for the 솔루션 mega-menu tiles (wireframe ~L57, L63, L69:
  * triangle / ring / rotated square). JSX can't live in this model file, so
