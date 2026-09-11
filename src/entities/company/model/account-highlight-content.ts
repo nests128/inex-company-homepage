@@ -9,7 +9,7 @@ export const accountHighlightFlow = {
   nodes: [
     { step: "STEP 01", title: "고객 · 가맹점" },
     { step: "STEP 02", title: "온램프" },
-    { step: "STEP 03", title: "결제 수납", accent: true },
+    { step: "STEP 03", title: "결제", accent: true },
     { step: "STEP 04", title: "온체인 전송", accent: true },
     { step: "STEP 05", title: "오프램프 · 지급" },
     { step: "STEP 06", title: "정산" },
