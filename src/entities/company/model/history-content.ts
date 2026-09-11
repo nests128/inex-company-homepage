@@ -1,5 +1,5 @@
 // History 섹션 실제 콘텐츠. 2022~2025는 상위 `company-homepage` 프로젝트
-// `aboutPage.history` 기준 실제 연혁. 2026은 이번 세션에서 직접 추가된 항목.
+// `aboutPage.history` 기준 실제 연혁, 2026은 사용자 제공 실데이터.
 // 연도는 최신순(내림차순)으로 배열, 연도 내 월도 내림차순으로 정리.
 // 각 연도 카드는 이미지 없이 텍스트만 사용 — 월별 항목을 구분선으로 나눠 표시한다.
 
@@ -22,7 +22,13 @@ export const historyContent = {
 export const historyYears: HistoryYearContent[] = [
   {
     year: "2026",
-    items: [{ month: "03월", label: "스테이블코인 결제 POC" }],
+    items: [
+      { month: "09월", label: "다날과 스테이블코인 결제·정산 인프라 구축 업무협약 체결" },
+      { month: "08월", label: "아마존웹서비스(AWS)의 생성형 AI 기술을 활용해 자금세탁방지(AML) 업무 PoC 착수" },
+      { month: "07월", label: "체이널리시스(Chainalysis) 도입 통한 KYC/AML 고도화" },
+      { month: "06월", label: "정보보안 관리체계 국제 표준 ISO 27001:2022 인증 획득" },
+      { month: "01월", label: "KPN(한국결제네트웍스)과 USDC 기반 스테이블코인 결제 PoC 완료" },
+    ],
   },
   {
     year: "2025",

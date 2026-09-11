@@ -144,3 +144,25 @@
     animation: none;
   }
 }
+
+/* Vendored from the sibling `company-homepage` project's `/platform`
+   section (`components/platform/platform-flow-diagram.tsx`) per explicit
+   request to reuse its "rail" line treatment: a dashed stroke whose
+   dashoffset animates by exactly one dash-cycle length (5+6=11px, doubled
+   to -22 for a full two-cycle loop) so it reads as continuously flowing
+   rather than a static dashed line. Used by `FlowDiagram`'s edge paths. */
+@keyframes dashflow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+
+.dashflow {
+  animation: dashflow 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashflow {
+    animation: none;
+  }
+}

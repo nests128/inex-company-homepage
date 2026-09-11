@@ -31,7 +31,7 @@ export const trustGridCards: TrustGridCard[] = [
     iconKey: "chart",
     title: "임베디드 차트",
     description:
-      "INEX 가상화폐거래소의 캔들·라인·지표 차트를 iframe 또는 SDK로 지원합니다.",
+      "INEX 가상자산거래소의 캔들·라인·지표 차트를 iframe 또는 SDK로 제공합니다.",
   },
   {
     iconKey: "orderbook",

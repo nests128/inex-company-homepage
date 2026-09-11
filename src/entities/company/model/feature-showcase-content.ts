@@ -1,8 +1,7 @@
 export const featureShowcaseContent = {
   eyebrow: "Infra",
   title: "제도권 안에서 움직이는\n디지털 자산 인프라",
-  description:
-    "디지털자산은 가치가 이동하는 방식을 바꾸고 있습니다.\nINEX는 거래·결제·송금 전 구간을 라이선스 위에서 운영합니다.",
+  description: "거래 · 결제 · 송금 서비스 레일은 VASP의 규제 준수 하에 철저한 컴플라이언스를 통해 이루어집니다.",
 }
 
 export interface FeatureShowcaseItem {

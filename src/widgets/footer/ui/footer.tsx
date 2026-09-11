@@ -130,7 +130,7 @@ export function Footer() {
         {/* 협력 모델(향후 법령 제정 대비 준비 중인 기능) 공통 면책 고지 — 법무
             검토 문구 그대로, 저작권 바로 위에 별도 단락으로 배치. */}
         <div className="container-inex pt-6">
-          <p className="max-w-4xl text-[12px] leading-[1.7] text-muted-foreground/80">
+          <p className="max-w-4xl whitespace-pre-line text-[12px] leading-[1.7] text-muted-foreground/80">
             {footerDisclaimer}
           </p>
         </div>

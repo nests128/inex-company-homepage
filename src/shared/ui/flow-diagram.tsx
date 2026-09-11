@@ -58,37 +58,69 @@ function bezierV(x1: number, y1: number, x2: number, y2: number) {
 }
 
 /**
- * The dot fades out just before `animateMotion` loops back to the path's
- * start and fades back in right after, so the otherwise-instant snap back to
- * the beginning (SMIL loops position but not opacity) reads as the dot
- * disappearing and re-emerging rather than teleporting.
+ * Fraction of the loop each fade-in/fade-out ramp spans on either side of a
+ * seam (a node the dot is passing through). Small enough to read as a
+ * distinct dim-then-brighten at each step rather than a slow pulse.
  */
-function PulseDot({ path, color, begin, dur }: { path: string; color: string; begin: string; dur: string }) {
-  const opacityKeyTimes = "0; 0.06; 0.88; 1"
-  const fadeValues = (peak: number) => `0; ${peak}; ${peak}; 0`
+const SEAM_FADE_SPAN = 0.05
+
+/**
+ * Builds `keyTimes`/`values` for an opacity `<animate>` that dips the dot
+ * near-out and back in at each interior seam (where `animateMotion` — no
+ * `calcMode="paced"`, so it splits time evenly per path *command* — jumps
+ * from one edge's bare `C` command to the next) in addition to the loop's
+ * own start/end fade. `edgeCount` seams land at `i/edgeCount` for
+ * `i = 1..edgeCount-1`, since each edge is exactly one command and SMIL's
+ * default timing gives every command an equal time slice. Per explicit
+ * request that each step's entry read as a slow fade-in rather than a
+ * sudden pop.
+ */
+function buildStepFadeKeyframes(edgeCount: number, peak: number) {
+  const keyTimes = [0, SEAM_FADE_SPAN]
+  const values = [0, peak]
+  for (let seam = 1; seam < edgeCount; seam++) {
+    const t = seam / edgeCount
+    keyTimes.push(t - SEAM_FADE_SPAN, t + SEAM_FADE_SPAN)
+    values.push(0, peak)
+  }
+  keyTimes.push(1 - SEAM_FADE_SPAN, 1)
+  values.push(peak, 0)
+  return { keyTimes: keyTimes.join("; "), values: values.join("; ") }
+}
+
+/**
+ * The dot fades out just before it reaches each node (a seam between two
+ * `animateMotion` path commands, and — at the loop's own start/end — the
+ * otherwise-instant snap back to the path's start, which SMIL loops in
+ * position but not opacity) and fades back in just after, so every step
+ * transition reads as a slow, deliberate fade-in rather than a sudden pop.
+ */
+function PulseDot({ path, color, begin, dur, edgeCount }: { path: string; color: string; begin: string; dur: string; edgeCount: number }) {
+  const outer = buildStepFadeKeyframes(edgeCount, 0.2)
+  const inner = buildStepFadeKeyframes(edgeCount, 1)
 
   return (
     <g className="motion-reduce:hidden">
-      <circle r="5" fill={color}>
+      <circle r="6" fill={color}>
         <animateMotion dur={dur} begin={begin} repeatCount="indefinite" path={path} />
         <animate
           attributeName="opacity"
           dur={dur}
           begin={begin}
           repeatCount="indefinite"
-          keyTimes={opacityKeyTimes}
-          values={fadeValues(0.2)}
+          keyTimes={outer.keyTimes}
+          values={outer.values}
         />
       </circle>
-      <circle r="2.2" fill={color}>
+      <circle r="2.6" fill={color}>
         <animateMotion dur={dur} begin={begin} repeatCount="indefinite" path={path} />
         <animate
           attributeName="opacity"
           dur={dur}
           begin={begin}
           repeatCount="indefinite"
-          keyTimes={opacityKeyTimes}
-          values={fadeValues(1)}
+          keyTimes={inner.keyTimes}
+          values={inner.values}
         />
       </circle>
     </g>
@@ -202,10 +234,24 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
           aria-label={ariaLabel}
           className="h-auto w-full"
         >
+          <defs>
+            <linearGradient id="flowEdgeDesktop" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stopColor="#C4CEDC" />
+              <stop offset="1" stopColor="#0ea5e9" />
+            </linearGradient>
+          </defs>
           {desktopEdges.map((edge, i) => (
-            <path key={i} d={edge} fill="none" stroke="currentColor" className="text-border" strokeWidth="1.5" />
+            <path
+              key={i}
+              d={edge}
+              fill="none"
+              stroke="url(#flowEdgeDesktop)"
+              className="dashflow"
+              strokeWidth="1.5"
+              strokeDasharray="5 6"
+            />
           ))}
-          <PulseDot path={desktopPath} color="#0ea5e9" begin="0s" dur={dotDur} />
+          <PulseDot path={desktopPath} color="#0ea5e9" begin="0s" dur={dotDur} edgeCount={desktopEdges.length} />
           {nodes.map((node, i) => (
             <NodeBox
               key={node.step}
@@ -228,10 +274,24 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
           aria-label={ariaLabel}
           className="mx-auto h-auto w-full max-w-[280px]"
         >
+          <defs>
+            <linearGradient id="flowEdgeMobile" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#C4CEDC" />
+              <stop offset="1" stopColor="#0ea5e9" />
+            </linearGradient>
+          </defs>
           {mobileEdges.map((edge, i) => (
-            <path key={i} d={edge} fill="none" stroke="currentColor" className="text-border" strokeWidth="1.5" />
+            <path
+              key={i}
+              d={edge}
+              fill="none"
+              stroke="url(#flowEdgeMobile)"
+              className="dashflow"
+              strokeWidth="1.5"
+              strokeDasharray="5 6"
+            />
           ))}
-          <PulseDot path={mobilePathJoined} color="#0ea5e9" begin="0s" dur={dotDur} />
+          <PulseDot path={mobilePathJoined} color="#0ea5e9" begin="0s" dur={dotDur} edgeCount={mobileEdges.length} />
           {nodes.map((node, i) => (
             <NodeBox
               key={node.step}
