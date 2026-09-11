@@ -68,6 +68,12 @@ export function Hero() {
             <p className="mx-auto mt-3.5 max-w-[520px] text-[14.5px] leading-[1.65] text-slate-600 lg:mt-6 lg:max-w-none lg:text-lg lg:leading-[1.6] lg:whitespace-nowrap">
               {heroContent.subcopy}
             </p>
+            {/* `inline-flex` badge — centered via the flex-col parent's
+                `items-center`. */}
+            <TrustIndicator
+              label={heroContent.trustLabel}
+              className="mt-4 text-[11.5px] lg:mt-[22px] lg:text-[13.5px]"
+            />
             <div className="mt-5 flex justify-center lg:mt-8">
               <Button
                 variant="pill-solid"
@@ -84,12 +90,6 @@ export function Hero() {
                 {heroContent.primaryCta.label}
               </Button>
             </div>
-            {/* `inline-flex` badge — centered via the flex-col parent's
-                `items-center`. */}
-            <TrustIndicator
-              label={heroContent.trustLabel}
-              className="mt-4 text-[11.5px] lg:mt-[22px] lg:text-[13.5px]"
-            />
           </HeroReveal>
         </div>
       </AuroraBackground>

@@ -31,7 +31,7 @@ export const trustGridCards: TrustGridCard[] = [
     iconKey: "chart",
     title: "임베디드 차트",
     description:
-      "캔들·라인·지표를 지원하는 차트를 iframe 또는 SDK로 서비스에 즉시 삽입합니다.",
+      "캔들·라인·지표를 지원하는 차트를 iframe 또는 SDK로 파트너 서비스에 그대로 연동할 수 있습니다.",
   },
   {
     iconKey: "orderbook",

@@ -35,13 +35,27 @@ export const footerContacts: FooterContactItem[] = [
 ]
 
 export const footerLegal = {
-  companyName: "인피니티익스체인지코리아",
+  companyName: "(주)인피니티익스체인지코리아",
   ceoLabel: "대표이사",
   ceoName: "이재강",
   address: "서울특별시 강남구 테헤란로 116, 12층 (동경빌딩)",
   businessRegistrationNumber: "783-81-02738",
   vaspRegistrationNumber: "2024-3",
+  // 상위 `company-homepage` 프로젝트(`lib/i18n/locales/ko.ts`의
+  // `footer.cpoLabel`/`cpoName`)와 동일한 실제 개인정보보호책임자.
+  cpoLabel: "개인정보보호책임자",
+  cpoName: "이재강",
 }
+
+export const footerPrivacyPolicy = {
+  label: "개인정보처리방침",
+  href: "https://www.inexcoin.com/terms/privacy_original_terms",
+}
+
+// 협력 모델(향후 법령 제정에 맞춰 준비 중인 기능) 관련 공통 면책 고지. 실제
+// 서비스 여부/범위를 명확히 하기 위한 법무 검토 문구 — 임의 수정 금지.
+export const footerDisclaimer =
+  "※ 서비스 안내 및 면책 고지: 본 웹사이트에 소개된 기능 중 일부는 향후 디지털자산기본법 및 스테이블코인 관련 법령 제정에 맞추어 추진·준비 중인 협력 모델을 포함합니다. 실제 제공 범위와 시기는 관계 법령 및 제휴 계약 조건에 따라 확정되며, 법정화폐 정산 및 외환 업무는 정식 인허가를 보유한 제휴 금융기관 및 등록 사업자와의 연계를 통해 적법하게 제공됩니다."
 
 export interface FooterSocialLink {
   label: string
