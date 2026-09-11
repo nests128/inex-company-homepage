@@ -204,9 +204,24 @@ function NavBar({
                     href={item.href}
                     target={item.external ? "_blank" : undefined}
                     rel={item.external ? "noopener noreferrer" : undefined}
-                    className="rounded-none p-0 text-[14.5px] font-medium text-foreground hover:bg-transparent hover:text-muted-foreground"
+                    // `NavigationMenuLink`'s own default className (this
+                    // file, below) bakes in `focus:bg-muted`/
+                    // `data-active:bg-muted` for dropdown-item use — this
+                    // plain nav-bar link isn't a dropdown item, so cancel
+                    // both explicitly (same pattern the mega-menu trigger
+                    // above already uses for hover/focus/data-open).
+                    //
+                    // Hover underline (ref: bridge.xyz): an absolutely
+                    // positioned `span` scaled from 0 to full width on
+                    // hover/focus, anchored `left` so it grows left-to-right
+                    // rather than from center.
+                    className="group/navlink relative rounded-none p-0 text-[14.5px] font-medium text-foreground hover:bg-transparent hover:text-muted-foreground focus:bg-transparent data-active:bg-transparent data-active:hover:bg-transparent data-active:focus:bg-transparent"
                   >
                     {item.label}
+                    <span
+                      aria-hidden="true"
+                      className="absolute right-0 -bottom-0.5 left-0 h-px origin-left scale-x-0 bg-current transition-transform duration-300 ease-out group-hover/navlink:scale-x-100 group-focus-visible/navlink:scale-x-100"
+                    />
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               )
