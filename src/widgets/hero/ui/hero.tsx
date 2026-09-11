@@ -65,7 +65,7 @@ export function Hero() {
                 </TextAnimate>
               ))}
             </h1>
-            <p className="mx-auto mt-3.5 max-w-[520px] text-[14.5px] leading-[1.65] text-slate-600 lg:mt-6 lg:text-lg lg:leading-[1.6]">
+            <p className="mx-auto mt-3.5 max-w-[520px] text-[14.5px] leading-[1.65] text-slate-600 lg:mt-6 lg:max-w-none lg:text-lg lg:leading-[1.6] lg:whitespace-nowrap">
               {heroContent.subcopy}
             </p>
             <div className="mt-5 flex justify-center lg:mt-8">
