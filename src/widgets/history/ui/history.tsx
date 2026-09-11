@@ -72,18 +72,18 @@ export function HistorySection({ eyebrow, title, subtitle, years, className }: H
         </div>
 
         <div className="mt-10 lg:mt-14">
-          {/* `itemWidth="360px"` fixes the item width at every breakpoint
-              (per `Carousel`'s own JSDoc, an inline style always wins over a
-              responsive className override) — swap to a responsive
-              `className="[--carousel-item-width:...]"` instead of this prop
-              if a narrower mobile card width is wanted later. */}
+          {/* Item width is responsive (`className`, not the `itemWidth`
+              prop — an inline style would fix it at every breakpoint, per
+              `Carousel`'s own JSDoc): 360px was tuned for desktop's widened
+              `pr-36` gap, but the same fixed width on a 390px mobile
+              viewport left only a sliver of the next card peeking past a
+              huge trailing gap. Mobile gets a narrower item that actually
+              fits the viewport with a visible peek of the next one. */}
           <Carousel
             label={title}
             prevLabel="이전 연도"
             nextLabel="다음 연도"
-            gap="0px"
-            itemWidth="360px"
-            className="[&_button]:cursor-pointer"
+            className="[--carousel-gap:0px] [--carousel-item-width:280px] [&_button]:cursor-pointer lg:[--carousel-item-width:360px]"
           >
             {years.map((entry, index) => (
               <HistoryYearCard
@@ -116,19 +116,21 @@ function HistoryYearCard({
   const { year, heading, items } = entry
 
   return (
-    <div data-slot="history-year-card" className="flex flex-col pr-36">
+    <div data-slot="history-year-card" className="flex flex-col pr-16 lg:pr-36">
       {/* Timeline rail: a horizontal line with a dot aligned to the year
           text's left edge below (not centered in the item) — the whole card
           reads flush-left against the year, per explicit request that the
           first year sit flush against the track's start with no leading
           gap. The line still runs full-width within this item's box so
           consecutive items' lines connect into one continuous rule; the
-          first/last item mask their outer half so it doesn't overshoot. */}
+          first/last item mask their outer half so it doesn't overshoot.
+          Inset matches this card's own `pr-*` (mobile's narrower gap needs a
+          smaller overshoot than desktop's widened one). */}
       <div className="relative flex h-6 items-center">
         <span
           aria-hidden="true"
           className={cn(
-            "absolute top-1/2 -left-36 right-0 h-px -translate-y-1/2 bg-border",
+            "absolute top-1/2 -left-16 right-0 h-px -translate-y-1/2 bg-border lg:-left-36",
             // `hidden` (not `invisible`): an invisible span at the last item
             // would still be an absolutely-positioned box contributing its
             // `-right-36` overhang to the scroller's scrollable overflow,
@@ -139,7 +141,7 @@ function HistoryYearCard({
         <span
           aria-hidden="true"
           className={cn(
-            "absolute top-1/2 left-0 -right-36 h-px -translate-y-1/2 bg-border",
+            "absolute top-1/2 left-0 -right-16 h-px -translate-y-1/2 bg-border lg:-right-36",
             isLast && "hidden"
           )}
         />
