@@ -57,76 +57,6 @@ function bezierV(x1: number, y1: number, x2: number, y2: number) {
   return `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`
 }
 
-/**
- * Fraction of the loop each fade-in/fade-out ramp spans on either side of a
- * seam (a node the dot is passing through). Small enough to read as a
- * distinct dim-then-brighten at each step rather than a slow pulse.
- */
-const SEAM_FADE_SPAN = 0.05
-
-/**
- * Builds `keyTimes`/`values` for an opacity `<animate>` that dips the dot
- * near-out and back in at each interior seam (where `animateMotion` — no
- * `calcMode="paced"`, so it splits time evenly per path *command* — jumps
- * from one edge's bare `C` command to the next) in addition to the loop's
- * own start/end fade. `edgeCount` seams land at `i/edgeCount` for
- * `i = 1..edgeCount-1`, since each edge is exactly one command and SMIL's
- * default timing gives every command an equal time slice. Per explicit
- * request that each step's entry read as a slow fade-in rather than a
- * sudden pop.
- */
-function buildStepFadeKeyframes(edgeCount: number, peak: number) {
-  const keyTimes = [0, SEAM_FADE_SPAN]
-  const values = [0, peak]
-  for (let seam = 1; seam < edgeCount; seam++) {
-    const t = seam / edgeCount
-    keyTimes.push(t - SEAM_FADE_SPAN, t + SEAM_FADE_SPAN)
-    values.push(0, peak)
-  }
-  keyTimes.push(1 - SEAM_FADE_SPAN, 1)
-  values.push(peak, 0)
-  return { keyTimes: keyTimes.join("; "), values: values.join("; ") }
-}
-
-/**
- * The dot fades out just before it reaches each node (a seam between two
- * `animateMotion` path commands, and — at the loop's own start/end — the
- * otherwise-instant snap back to the path's start, which SMIL loops in
- * position but not opacity) and fades back in just after, so every step
- * transition reads as a slow, deliberate fade-in rather than a sudden pop.
- */
-function PulseDot({ path, color, begin, dur, edgeCount }: { path: string; color: string; begin: string; dur: string; edgeCount: number }) {
-  const outer = buildStepFadeKeyframes(edgeCount, 0.2)
-  const inner = buildStepFadeKeyframes(edgeCount, 1)
-
-  return (
-    <g className="motion-reduce:hidden">
-      <circle r="8" fill={color}>
-        <animateMotion dur={dur} begin={begin} repeatCount="indefinite" path={path} />
-        <animate
-          attributeName="opacity"
-          dur={dur}
-          begin={begin}
-          repeatCount="indefinite"
-          keyTimes={outer.keyTimes}
-          values={outer.values}
-        />
-      </circle>
-      <circle r="3.6" fill={color}>
-        <animateMotion dur={dur} begin={begin} repeatCount="indefinite" path={path} />
-        <animate
-          attributeName="opacity"
-          dur={dur}
-          begin={begin}
-          repeatCount="indefinite"
-          keyTimes={inner.keyTimes}
-          values={inner.values}
-        />
-      </circle>
-    </g>
-  )
-}
-
 function NodeBox({
   x,
   y,
@@ -184,6 +114,12 @@ function NodeBox({
  * (e.g. one column of a `container-inex` `lg:grid-cols-2` layout). Do NOT
  * nest this inside a narrower fixed-width wrapper or text/strokes will
  * render undersized relative to the node boxes.
+ *
+ * The connectors are a static animated-dashed line (`dashflow`, see
+ * `app/globals.css`) only — an earlier version also had a traveling pulse
+ * dot (`animateMotion` along the joined edge path), removed per explicit
+ * request ("동그라미는 그냥 빼자") after several rounds of trying to make
+ * its per-step transition read smoothly.
  */
 function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
   const desktopCenters = DESKTOP_POSITIONS.map(({ row, col }) => ({
@@ -214,16 +150,6 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
   const mobileEdges = mobileY.slice(0, -1).map((y, i) =>
     bezierV(mobileNodeCenterX, y + MOBILE_NODE_H, mobileNodeCenterX, mobileY[i + 1])
   )
-
-  // Single dot traveling the whole path (not one dot per segment): joining
-  // each edge's own "M ..." into one path string (via a bare space, so the
-  // browser treats each as a new subpath command) makes `animateMotion`
-  // trace all segments back-to-back as one continuous loop, per explicit
-  // request that the flow read as one connection end-to-end rather than
-  // several independent per-step pulses.
-  const desktopPath = desktopEdges.join(" ")
-  const mobilePathJoined = mobileEdges.join(" ")
-  const dotDur = "6s"
 
   return (
     <div className={className}>
@@ -264,7 +190,6 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
               strokeDasharray="5 6"
             />
           ))}
-          <PulseDot path={desktopPath} color="#0ea5e9" begin="0s" dur={dotDur} edgeCount={desktopEdges.length} />
           {nodes.map((node, i) => (
             <NodeBox
               key={node.step}
@@ -311,7 +236,6 @@ function FlowDiagram({ nodes, ariaLabel, className }: FlowDiagramProps) {
               strokeDasharray="5 6"
             />
           ))}
-          <PulseDot path={mobilePathJoined} color="#0ea5e9" begin="0s" dur={dotDur} edgeCount={mobileEdges.length} />
           {nodes.map((node, i) => (
             <NodeBox
               key={node.step}
