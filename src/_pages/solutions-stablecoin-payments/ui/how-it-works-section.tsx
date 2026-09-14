@@ -32,7 +32,7 @@ export function HowItWorksSection() {
           <FlowRail
             ariaLabel={stablecoinPaymentsFlow.ariaLabel}
             nodes={stablecoinPaymentsFlow.nodes}
-            rowSize={6}
+            rowSize={5}
           />
         </Reveal>
       </div>

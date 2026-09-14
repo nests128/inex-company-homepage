@@ -11,6 +11,7 @@ const STATIC_ROUTES = [
   "/news",
   "/solutions/crypto-trading",
   "/solutions/stablecoin-payments",
+  "/solutions/custody",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -17,12 +17,9 @@ export const navNewsLink = {
  */
 export type SolutionIconKey = "trading" | "payments" | "custody"
 
-// TODO(real-data): 커스터디는 아직 실제 라우트가 없어 `#` 플레이스홀더
-// 링크였고, 사용자 요청(2026-09-14: "일단 커스터디 메뉴는 hide")에 따라
-// 목록에서 제외했다. 페이지 라우팅 확정되면 아래 주석 처리된 항목을
-// 복원하면 된다 (회사소개는 `/company`, 크립토 트레이딩은
-// `/solutions/crypto-trading`, 스테이블코인 결제는
-// `/solutions/stablecoin-payments`로 이미 연결됨).
+// 커스터디 상세 페이지 구현 완료(2026-09-14) — `/solutions/custody`로 연결.
+// 이전에는 실 라우트가 없어 `#` 플레이스홀더였고 사용자 요청("일단 커스터디
+// 메뉴는 hide")에 따라 목록에서 제외했었으나, 페이지 구현 후 복원.
 
 export const navSolutionItems: Array<{
   label: string
@@ -42,12 +39,12 @@ export const navSolutionItems: Array<{
     href: "/solutions/stablecoin-payments",
     iconKey: "payments",
   },
-  // {
-  //   label: "커스터디",
-  //   description: "MPC 다중 승인, 핫·콜드 분리 보관",
-  //   href: "#",
-  //   iconKey: "custody",
-  // },
+  {
+    label: "커스터디",
+    description: "다중 승인 정책, 핫·콜드 분리 보관",
+    href: "/solutions/custody",
+    iconKey: "custody",
+  },
 ]
 
 export const navSolutionFooter = {

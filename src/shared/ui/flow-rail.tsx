@@ -51,7 +51,7 @@ function NodeBox({ label, accent, className }: { label: string; accent?: boolean
   return (
     <div
       className={cn(
-        "flex h-14 w-[132px] shrink-0 items-center justify-center rounded-xl border px-3 text-center text-[12.5px] font-bold shadow-[0_1px_3px_rgba(0,0,0,.06)]",
+        "flex min-h-14 w-[132px] shrink-0 items-center justify-center rounded-xl border px-3 py-2 text-center text-[12.5px] leading-[1.35] font-bold whitespace-pre-line shadow-[0_1px_3px_rgba(0,0,0,.06)]",
         accent ? "border-sky-500/40 bg-sky-50 text-sky-600" : "border-border bg-background text-foreground",
         className,
       )}

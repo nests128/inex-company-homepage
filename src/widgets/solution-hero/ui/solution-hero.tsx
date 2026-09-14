@@ -59,6 +59,14 @@ export interface SolutionHeroProps {
   };
   /** Overrides the section's default vertical padding (`py-14 lg:py-24`) — e.g. a shorter hero for a page whose visual doesn't need as much room. */
   className?: string;
+  /**
+   * Overrides the `visual` slot's aspect ratio (default `aspect-[2/1]`) — for
+   * a `visual` whose content is taller/more portrait than the orbit-style
+   * visuals this default was tuned for (e.g. a vertical approval-card mockup
+   * that clips against the 2/1 box's ~180px mobile height). Ignored when
+   * `visual` isn't provided.
+   */
+  visualClassName?: string;
 }
 
 export function SolutionHero({
@@ -72,6 +80,7 @@ export function SolutionHero({
   exchangeLink,
   appLinks,
   className,
+  visualClassName,
 }: SolutionHeroProps) {
   return (
     <section className={cn("py-14 lg:py-24", className)}>
@@ -154,7 +163,12 @@ export function SolutionHero({
             // 요청되어 16/9에서 한 단계 더 낮춤). `PaymentOrbitHeroVisual`의
             // 궤도 반경은 이 컨테이너의 실측 높이(데스크톱 기준 약 300px)에
             // 맞춰 함께 조정해야 잘리지 않는다.
-            <div className="relative flex aspect-[2/1] w-full items-center justify-center overflow-hidden">
+            <div
+              className={cn(
+                "relative flex aspect-[2/1] w-full items-center justify-center overflow-hidden",
+                visualClassName
+              )}
+            >
               {visual}
             </div>
           ) : (

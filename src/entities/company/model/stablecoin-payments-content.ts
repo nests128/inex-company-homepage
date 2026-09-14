@@ -129,21 +129,25 @@ export const stablecoinPaymentsHowItWorksContent = {
   title: "스테이블코인 결제의 흐름",
 };
 
+// 사용자 명시적 요청(2026-09-14)으로 제공된 흐름을 그대로 레일 노드로
+// 반영: 고객·가맹점 KYC/KYB -> 결제 요청 -> 결제 검증 -> 사전 KYT/AML/제재
+// 스크리닝 -> 결제 승인 -> 스테이블코인 전송(Internal Ledger 또는
+// On-chain) -> 블록체인 확인 -> 결제 완료 -> T+0 정산(수수료 차감) ->
+// 가맹점 지급.
 export const stablecoinPaymentsFlow = {
   ariaLabel:
-    "고객·가맹점의 결제가 KYC, 입금 확인, 스테이블코인 전환, 온체인 전송, KYT·AML 검토, 수취 확인, 스테이블코인 매도, 결제 완료, 정산, 지급(가맹점)을 거치는 단일 레일 흐름",
+    "고객·가맹점의 결제가 KYC·KYB, 결제 요청, 결제 검증, 사전 KYT·AML·제재 스크리닝, 결제 승인, 스테이블코인 전송(Internal Ledger 또는 On-chain), 블록체인 확인, 결제 완료, T+0 정산, 가맹점 지급을 거치는 단일 레일 흐름",
   nodes: [
-    { label: "고객·가맹점" },
-    { label: "KYC", accent: true },
-    { label: "입금 확인" },
-    { label: "스테이블코인 전환" },
-    { label: "온체인 전송", accent: true },
-    { label: "KYT·AML 검토", accent: true },
-    { label: "수취 확인" },
-    { label: "스테이블코인 매도" },
+    { label: "고객·가맹점\nKYC·KYB", accent: true },
+    { label: "결제 요청" },
+    { label: "결제 검증" },
+    { label: "사전 KYT·AML\n제재 스크리닝", accent: true },
+    { label: "결제 승인" },
+    { label: "스테이블코인 전송", accent: true },
+    { label: "블록체인 확인" },
     { label: "결제 완료" },
-    { label: "정산" },
-    { label: "지급(가맹점)" },
+    { label: "T+0 정산\n(수수료 차감)" },
+    { label: "가맹점 지급" },
   ],
 } as const;
 
