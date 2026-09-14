@@ -1,7 +1,7 @@
 // Page-local section: "Key use cases" 3카드 그리드. 다른 두 솔루션 페이지의
 // 동일 섹션과 같은 마크업(흰 배경, 좌측정렬 헤딩 + 회색 배경 카드)을 그대로
 // 따른다.
-import { FileClockIcon, ShieldCheckIcon, SnowflakeIcon } from "lucide-react";
+import { BriefcaseIcon, LandmarkIcon, WalletIcon } from "lucide-react";
 
 import { Reveal } from "@/shared/ui";
 import {
@@ -12,12 +12,12 @@ import {
 
 function FeatureGridIcon({ iconKey }: { iconKey: CustodyFeatureGridIconKey }) {
   switch (iconKey) {
-    case "policy":
-      return <ShieldCheckIcon aria-hidden="true" />;
-    case "cold":
-      return <SnowflakeIcon aria-hidden="true" />;
-    case "audit":
-      return <FileClockIcon aria-hidden="true" />;
+    case "exchange":
+      return <LandmarkIcon aria-hidden="true" />;
+    case "wallet":
+      return <WalletIcon aria-hidden="true" />;
+    case "treasury":
+      return <BriefcaseIcon aria-hidden="true" />;
   }
 }
 
@@ -58,7 +58,7 @@ export function FeatureGridSection() {
                 </span>
                 <h3 className="text-[15.5px] font-bold">{item.title}</h3>
               </div>
-              <p className="mt-4 text-[13.5px] leading-[1.6] text-muted-foreground">
+              <p className="mt-4 text-[14.5px] leading-[1.6] text-muted-foreground">
                 {item.description}
               </p>
             </div>

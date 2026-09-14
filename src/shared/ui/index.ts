@@ -198,3 +198,4 @@ export {
   type NewsCategoryFilterProps,
 } from "./news-category-filter"
 export { NewsPagination, type NewsPaginationProps } from "./news-pagination"
+export { BorderBeam, type BorderBeamProps } from "./border-beam"

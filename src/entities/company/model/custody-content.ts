@@ -23,14 +23,24 @@ export const custodyHeroContent: CustodyHeroContent = {
     "다중 승인 정책과 핫·콜드 분리 보관 체계로 고객 자산을 관리합니다. 자체 거래소를 직접 운영하며 다져온 보안·운영 체계를 그대로 커스터디 인프라로 제공합니다.",
 };
 
-// "Key use cases" 3카드 그리드 — 정책 승인, 보관 구조, 감사 추적 세 축으로
-// 구성(BitGo/Fireblocks 제품 페이지의 공통 골격 참고).
+// "Key use cases" 3카드 그리드 — 이전엔 통제 장치(다중 승인/핫·콜드
+// 분리/감사 로그) 나열이었으나, "Tools to build" 섹션(실제 운영 콘솔)과
+// 개념이 거의 1:1로 겹친다는 지적(2026-09-14: "내용 좀 겹치지 않아?")에
+// 따라 "누가 어떻게 쓰는가" 유즈케이스 중심으로 재구성(Bridge 커스터디
+// 페이지의 세그먼트별 유즈케이스 구성 참고, 사용자 제시).
+// - 거래소·거래 플랫폼: INEX가 직접 검증한 유즈케이스(ProvenSection의
+//   "자체 거래소 운영" 근거와 동일선상) — "OO 거래소가 쓰고 있다" 식의
+//   실적 주장이 아니라 "이런 목적에 쓸 수 있다"는 용도 설명으로 작성.
+// - 지갑 · 핀테크 서비스, 디지털 자산 보유 기업은 INEX 커스터디가 대응
+//   가능한 용도로 서술하되(TODO(real-data): 실제 해당 세그먼트 고객 사례
+//   확보 시 구체 사례로 교체), 감사 로그·리포트(구 3번째 카드)는 기업
+//   세그먼트 설명에 규제 대응 맥락으로 흡수해 정보 손실 없앰.
 export const custodyFeatureGridContent = {
   eyebrow: "KEY USE CASES",
-  title: "자산 보관에 필요한\n모든 통제 장치",
+  title: "어디서든, 어떤 규모든\n안전하게",
 };
 
-export type CustodyFeatureGridIconKey = "policy" | "cold" | "audit";
+export type CustodyFeatureGridIconKey = "exchange" | "wallet" | "treasury";
 
 export interface CustodyFeatureGridItem {
   iconKey: CustodyFeatureGridIconKey;
@@ -40,78 +50,58 @@ export interface CustodyFeatureGridItem {
 
 export const custodyFeatureGridItems: CustodyFeatureGridItem[] = [
   {
-    iconKey: "policy",
-    title: "다중 승인 정책",
+    iconKey: "exchange",
+    title: "거래소 · 거래 플랫폼",
     description:
-      "출금 한도·화이트리스트·승인자 그룹을 정책으로 설정해, 설정된 조건을 만족해야만 자산이 이동합니다.",
+      "고객 예치 자산을 다중 승인 정책과 핫·콜드 분리 보관으로 관리해, 대규모 거래 환경에서도 자산 이동을 안전하게 통제합니다.",
   },
   {
-    iconKey: "cold",
-    title: "핫 · 콜드 분리 보관",
+    iconKey: "wallet",
+    title: "지갑 · 핀테크 서비스",
     description:
-      // TODO(real-data): 실제 콜드월렛 비중/보관 방식(예: 오프라인 서명 절차) 확정 후 구체화 필요.
-      "일상적인 입출금은 핫월렛으로, 대부분의 자산은 오프라인 콜드월렛으로 분리해 보관합니다.",
+      "자체 커스터디 인프라를 구축하지 않고도, 검증된 보관 체계를 백엔드로 연결해 디지털 자산 서비스를 빠르게 출시할 수 있습니다.",
   },
   {
-    iconKey: "audit",
-    title: "감사 로그 · 리포트",
+    iconKey: "treasury",
+    title: "디지털 자산 보유 기업",
     description:
-      "모든 승인·서명·출금 요청을 타임스탬프와 함께 기록해, 내부 감사와 규제 대응에 그대로 활용할 수 있습니다.",
+      "보유 자산의 입출금·서명 이력을 타임스탬프와 함께 기록해, 내부 감사와 규제 대응에 필요한 근거를 그대로 확보합니다.",
   },
 ];
 
-// "Tools to build"(이 프로젝트 카피로는 "핵심 역량") — 스테이블코인 결제
-// 페이지와 동일한 2x2 정적 그리드 패턴. 정확히 4개 유지(레이아웃 CSS가
-// index % 2 기준 divider를 가정).
+// "Tools to build" — Fireblocks/BitGo 콘솔 화면을 참고한 3카드 그리드.
+// 각 카드는 실제 제품 화면을 축약한 미니 콘솔 UI(이미지 아님, 컴포넌트로 구현)
+// + 소제목 + 설명으로 구성. consoleKey로 카드별 콘솔을 매칭한다.
 export const custodyCapabilitiesContent = {
   eyebrow: "TOOLS TO BUILD",
-  title: "커스터디를 만드는\n핵심 역량",
+  title: "커스터디를 움직이는\n핵심 기능",
 };
 
+export type CustodyCapabilityConsoleKey = "policy" | "approval" | "assets";
+
 export interface CustodyCapabilityItem {
+  consoleKey: CustodyCapabilityConsoleKey;
   title: string;
   description: string;
 }
 
 export const custodyCapabilities: CustodyCapabilityItem[] = [
   {
-    title: "정책 엔진",
-    description: "승인자 수, 출금 한도, 화이트리스트 주소를 조합한 승인 규칙을 자산·계정 단위로 설정합니다.",
+    consoleKey: "policy",
+    title: "실시간 모니터링",
+    description: "입출금·서명·잔고 변동을 실시간으로 추적하고, 이상 징후는 즉시 알림으로 전달합니다.",
   },
   {
+    consoleKey: "approval",
     title: "다중 서명 · 승인",
     description: "여러 승인자의 개별 승인을 모아야 서명이 완성되도록 해, 단일 키 탈취로 인한 유출을 막습니다.",
   },
   {
+    consoleKey: "assets",
     title: "지갑 분리 관리",
     description: "입출금용 핫월렛과 장기 보관용 콜드월렛을 계정 단위로 분리해 자산 이동 동선을 통제합니다.",
   },
-  {
-    title: "API · 대시보드",
-    description: "잔고·승인 대기·서명 상태를 API와 대시보드로 함께 제공해, 운영팀이 실시간으로 추적합니다.",
-  },
 ];
-
-// "How it works" — 다른 두 솔루션 페이지와 동일한 `FlowRail` 단일 레일.
-export const custodyHowItWorksContent = {
-  eyebrow: "HOW IT WORKS",
-  title: "출금 요청이 처리되는 과정",
-};
-
-export const custodyFlow = {
-  ariaLabel:
-    "출금 요청이 정책 검증, 승인자 알림, 다중 승인, 서명, 콜드월렛 반출, 온체인 전송, 완료 확인을 거치는 단일 레일 흐름",
-  nodes: [
-    { label: "출금 요청" },
-    { label: "정책 검증" },
-    { label: "승인자 알림" },
-    { label: "다중 승인", accent: true },
-    { label: "서명", accent: true },
-    { label: "콜드월렛 반출" },
-    { label: "온체인 전송" },
-    { label: "완료 확인" },
-  ],
-} as const;
 
 // "Proven" 신뢰 섹션 — 다른 두 솔루션 페이지와 동일하게 실제 검증된 근거만
 // 사용. 구체 보관 규모·가동률 등은 실데이터 확정 전까지 넣지 않는다.
@@ -121,21 +111,6 @@ export const custodyProvenContent = {
   description:
     "INEX는 자체 거래소를 직접 운영하며 다중 승인·핫·콜드 분리 보관 체계를 실서비스 자산 위에서 운영해 왔습니다. 그 체계를 그대로 커스터디 인프라로 제공합니다.",
 };
-
-export interface CustodyStat {
-  value: string;
-  caption: string;
-}
-
-// TODO(real-data): 콜드월렛 보관 비중, 다중 승인 정책 기본값(최소 승인자
-// 수) 등 커스터디 특화 수치가 확정되면 두 번째·세 번째 통계로 추가한다.
-// 그 전까지는 미완성 플레이스홀더("N/N" 등)를 노출하지 않기 위해 실제
-// 검증된 항목 하나만 게시한다.
-export const custodyStats: CustodyStat[] = [
-  // 실데이터: VASP 신고 수리(2024.10 · FIU), ISMS 본인증(2025.04 · KISA) —
-  // crypto-trading-content.ts의 동일 항목과 같은 근거, 플레이스홀더 아님.
-  { value: "VASP · ISMS", caption: "규제 라이선스 완비" },
-];
 
 // 마무리 CTA.
 export const custodyCtaContent = {

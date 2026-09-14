@@ -17,10 +17,6 @@ export const navNewsLink = {
  */
 export type SolutionIconKey = "trading" | "payments" | "custody"
 
-// 커스터디 상세 페이지(`/solutions/custody`)는 구현 완료 상태지만, 사용자
-// 요청(2026-09-14: "커스터디 hide")에 따라 메뉴 노출만 다시 내렸다 — 페이지
-// 자체는 삭제하지 않았으므로 아래 주석을 해제하면 바로 복원된다.
-
 export const navSolutionItems: Array<{
   label: string
   description: string
@@ -39,12 +35,12 @@ export const navSolutionItems: Array<{
     href: "/solutions/stablecoin-payments",
     iconKey: "payments",
   },
-  // {
-  //   label: "커스터디",
-  //   description: "다중 승인 정책, 핫·콜드 분리 보관",
-  //   href: "/solutions/custody",
-  //   iconKey: "custody",
-  // },
+  {
+    label: "커스터디",
+    description: "다중 승인 정책, 핫·콜드 분리 보관",
+    href: "/solutions/custody",
+    iconKey: "custody",
+  },
 ]
 
 export const navSolutionFooter = {
