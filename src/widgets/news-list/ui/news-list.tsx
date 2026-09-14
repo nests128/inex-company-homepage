@@ -25,14 +25,14 @@ export async function NewsListSection({ page = 1 }: NewsListSectionProps) {
   ]
 
   return (
-    <section aria-label="INEX 소식 목록" className="py-14 lg:py-20">
-      <div className="container-inex flex flex-col gap-10 lg:gap-14">
+    <section aria-label="INEX 소식 목록" className="py-10 lg:py-14">
+      <div className="container-inex flex flex-col gap-8 lg:gap-10">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2 text-[13px] font-medium text-foreground/80">
             <span aria-hidden="true" className="size-2.5 rounded-[3px] bg-sky-500" />
             {newsListContent.eyebrow}
           </div>
-          <h1 className="text-3xl leading-[1.15] font-bold tracking-[-.02em] sm:text-[44px]">
+          <h1 className="text-2xl leading-[1.2] font-bold tracking-[-.015em] lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
             {newsListContent.title}
           </h1>
         </div>

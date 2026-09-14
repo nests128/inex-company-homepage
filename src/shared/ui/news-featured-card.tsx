@@ -41,7 +41,7 @@ function NewsFeaturedCard({
       <NewsImage
         src={thumbnailUrl ?? null}
         alt={`이미지: ${title}`}
-        className="aspect-[16/10] w-full scale-100 transition-transform duration-300 ease-out group-hover:scale-110 sm:aspect-auto sm:h-full"
+        className="aspect-[16/10] w-full scale-100 transition-transform duration-300 ease-out group-hover:scale-110 sm:aspect-auto sm:h-[380px]"
       />
 
       {/* bg color sampled directly from ref/news/image.png's featured-card
