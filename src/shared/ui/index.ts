@@ -1,5 +1,6 @@
 export { Button, buttonVariants } from "./button"
 export { Input } from "./input"
+export { StoreBadgeLinks, type StoreBadgeLinksProps } from "./store-badge-links"
 export {
   FooterLinkGroup,
   type FooterLinkItem,
@@ -143,6 +144,7 @@ export {
 export { CaseStudyBanner, type CaseStudyBannerProps } from "./case-study-banner"
 export { WorldMap, type WorldMapProps, type WorldMapConnection } from "./world-map"
 export { FlowDiagram, type FlowDiagramProps, type FlowDiagramNode } from "./flow-diagram"
+export { FlowRail, type FlowRailProps, type FlowRailNode } from "./flow-rail"
 export {
   BalanceBarChartCard,
   type BalanceBarChartCardProps,
@@ -161,6 +163,14 @@ export {
   type EmbeddedChartPreviewCandle,
 } from "./embedded-chart-preview"
 export {
+  Terminal,
+  AnimatedSpan,
+  TypingAnimation,
+  type TerminalProps,
+  type AnimatedSpanProps,
+  type TypingAnimationProps,
+} from "./terminal"
+export {
   OrderbookPreview,
   type OrderbookPreviewProps,
   type OrderbookPreviewRow,
@@ -171,6 +181,8 @@ export {
   type RampFlowPreviewNode,
 } from "./ramp-flow-preview"
 export { NetworkXVisual, type NetworkXVisualProps } from "./network-x-visual"
+export { GlobeVisual, type GlobeVisualProps } from "./globe-visual"
+export { OrbitingCircles, type OrbitingCirclesProps } from "./orbiting-circles"
 export {
   StablecoinOrderCard,
   type StablecoinOrderCardProps,

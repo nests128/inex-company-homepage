@@ -149,8 +149,20 @@ function NavBar({
             {items.map((item) =>
               isMegaGroup(item) ? (
                 <NavigationMenuItem key={item.label}>
-                  <NavigationMenuTrigger className="h-auto rounded-none p-0 text-[14.5px] font-medium text-foreground hover:bg-transparent focus:bg-transparent data-open:bg-transparent data-popup-open:bg-transparent data-popup-open:hover:bg-transparent">
+                  {/* Same hover-underline treatment as the plain nav links
+                      below (`group/navlink` + absolutely positioned span
+                      scaled from 0 to full width) — the trigger already uses
+                      an unnamed `group` internally (for the chevron's
+                      rotation), so this is a second, separately-named group
+                      scoped to the underline only. `cursor-pointer` matches
+                      the plain links' native `<a>` cursor, since this is a
+                      `<button>` by default. */}
+                  <NavigationMenuTrigger className="group/navlink h-auto cursor-pointer rounded-none p-0 text-[14.5px] font-medium text-foreground hover:bg-transparent hover:text-muted-foreground focus:bg-transparent data-open:bg-transparent data-popup-open:bg-transparent data-popup-open:hover:bg-transparent">
                     {item.label}
+                    <span
+                      aria-hidden="true"
+                      className="absolute right-0 -bottom-0.5 left-0 h-px origin-left scale-x-0 bg-current transition-transform duration-300 ease-out group-hover/navlink:scale-x-100 group-focus-visible/navlink:scale-x-100"
+                    />
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className="w-[340px] p-2.5">
                     <ul className="flex flex-col gap-0.5">
@@ -158,15 +170,15 @@ function NavBar({
                         <li key={sub.label}>
                           <NavigationMenuLink
                             href={sub.href}
-                            className="items-start gap-3.5 rounded-xl p-3.5 hover:bg-muted"
+                            className="group/sublink items-start gap-3.5 rounded-xl p-3.5 hover:bg-muted"
                           >
                             {sub.icon ? (
-                              <span className="flex size-[38px] shrink-0 items-center justify-center rounded-[10px] bg-foreground text-background">
+                              <span className="flex size-[38px] shrink-0 items-center justify-center rounded-[10px] border border-border text-foreground">
                                 {sub.icon}
                               </span>
                             ) : null}
                             <span className="flex flex-col">
-                              <span className="text-[14.5px] font-bold text-foreground">
+                              <span className="text-[14.5px] font-bold text-foreground group-hover/sublink:text-sky-600">
                                 {sub.label}
                               </span>
                               <span className="mt-0.5 text-[12.5px] leading-relaxed text-muted-foreground">

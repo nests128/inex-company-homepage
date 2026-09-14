@@ -50,7 +50,7 @@ export function TrustGrid() {
             <span aria-hidden="true" className="size-2.5 rounded-[3px] bg-sky-500" />
             {trustGridContent.eyebrow}
           </div>
-          <h2 className="max-w-2xl text-2xl leading-[1.2] font-bold tracking-[-.015em] lg:text-[36px] lg:leading-[1.15] lg:tracking-[-.02em]">
+          <h2 className="max-w-2xl text-2xl leading-[1.2] tracking-[-.015em] lg:text-[36px] lg:leading-[1.15] lg:tracking-[-.02em]">
             {trustGridContent.heading}
           </h2>
         </Reveal>

@@ -23,6 +23,14 @@ export interface StatItemProps extends Omit<ComponentPropsWithoutRef<"div">, "ch
   countTo?: number
   prefix?: string
   suffix?: string
+  /**
+   * Caption color tone. `"dark"` (default) is the original hardcoded
+   * `text-white/65`, for a dark (#111) background. `"light"` uses
+   * `text-muted-foreground` for a white/light background (added for
+   * `solutions/crypto-trading`'s `ProvenSection`, which moved off the dark
+   * band per explicit request).
+   */
+  tone?: "dark" | "light"
 }
 
 /**
@@ -30,12 +38,6 @@ export interface StatItemProps extends Omit<ComponentPropsWithoutRef<"div">, "ch
  * the final `value` immediately (SSR-safe, no flash of "0"); if `countTo` is
  * given and the user hasn't requested reduced motion, animates the number
  * up from 0 once scrolled into view, client-side only.
- *
- * NOTE: caption color (`text-white/65`) is hardcoded for a dark (#111)
- * background — this intentionally does NOT follow the "widget owns the
- * background" boundary rule, because the wireframe never places this stat
- * style on a light section. Do not reuse `StatGrid`/`StatItem` on a light
- * background as-is.
  *
  * NOTE: if a `StatItem` is rendered above the fold (already in the viewport
  * on load), the intersection observer fires immediately and the display
@@ -49,6 +51,7 @@ function StatItem({
   countTo,
   prefix = "",
   suffix = "",
+  tone = "dark",
   className,
   ...props
 }: StatItemProps) {
@@ -95,8 +98,15 @@ function StatItem({
 
   return (
     <div data-slot="stat-item" ref={ref} className={cn(className)} {...props}>
-      <div className="font-sans text-[26px] font-bold sm:text-[38px]">{display}</div>
-      <div className="mt-1.5 text-[11.5px] text-white/65 sm:text-[13.5px]">{caption}</div>
+      <div className="font-sans text-[26px] font-bold sm:text-[28px] lg:text-[38px]">{display}</div>
+      <div
+        className={cn(
+          "mt-1.5 text-[11.5px] sm:text-[13.5px]",
+          tone === "dark" ? "text-white/65" : "text-muted-foreground"
+        )}
+      >
+        {caption}
+      </div>
     </div>
   )
 }

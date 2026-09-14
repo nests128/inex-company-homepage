@@ -65,7 +65,7 @@ export function OperationsSplit() {
             <span aria-hidden="true" className="size-2.5 rounded-[3px] bg-sky-500" />
             {operationsSplitContent.eyebrow}
           </div>
-          <h2 className="text-[40px] leading-[1.15] font-bold tracking-[-.02em] whitespace-pre-line">
+          <h2 className="text-[36px] leading-[1.2] tracking-[-.02em] whitespace-pre-line">
             {operationsSplitContent.title}
           </h2>
           <div className="mt-36 flex flex-col gap-1">

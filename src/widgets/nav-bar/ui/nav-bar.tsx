@@ -1,6 +1,6 @@
 // Owner: page-agent. Ref: ref/INEX SaaS wireframe/INEX Home Wireframe.dc.html (~L60-145, nav + mega menu + mobile hamburger).
 import type { ReactNode } from "react"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, LineChartIcon, ShieldIcon, WalletIcon } from "lucide-react"
 import Link from "next/link"
 
 import {
@@ -15,7 +15,6 @@ import {
   navExchangeLink,
   navLogoLabel,
   navNewsLink,
-  navSolutionFooter,
   navSolutionItems,
   navTrailingLinks,
   type SolutionIconKey,
@@ -23,50 +22,44 @@ import {
 
 /**
  * Maps the mega-menu data's `iconKey` to the small glyph rendered in the
- * 38x38 dark tile (wireframe ~L57 triangle / L63 ring / L69 rotated square).
- * Kept out of the `entities/company` model file since JSX can't live there.
+ * 38x38 dark tile. Originally CSS-shape placeholders (wireframe ~L57
+ * triangle / L63 ring / L69 rotated square); replaced with outline
+ * `lucide-react` icons matched to each solution (사용자 요청, 2026-09-14:
+ * "filled 보다 outline으로 해주고 해당 메뉴에 맞는 아이콘"). Kept out of the
+ * `entities/company` model file since JSX can't live there.
  */
 function SolutionIcon({ iconKey }: { iconKey: SolutionIconKey }) {
   switch (iconKey) {
     case "trading":
-      return (
-        <span
-          aria-hidden="true"
-          className="size-0 border-x-[6px] border-b-[10px] border-x-transparent border-b-background"
-        />
-      )
+      return <LineChartIcon aria-hidden="true" strokeWidth={1.75} className="size-[18px]" />
     case "payments":
-      return (
-        <span
-          aria-hidden="true"
-          className="size-3.5 rounded-full border-[2.5px] border-background"
-        />
-      )
+      return <WalletIcon aria-hidden="true" strokeWidth={1.75} className="size-[18px]" />
     case "custody":
-      return (
-        <span aria-hidden="true" className="size-[13px] rotate-45 bg-background" />
-      )
+      return <ShieldIcon aria-hidden="true" strokeWidth={1.75} className="size-[18px]" />
   }
 }
 
-// "솔루션" mega-menu item hidden per explicit request (2026-09-10) — solution
-// detail pages aren't built yet ("나중에 개발"). Data/mapping
-// (navSolutionItems/navSolutionFooter/SolutionIcon) is left intact so
-// re-adding is just restoring the commented-out item below.
+// "솔루션" mega-menu re-enabled (2026-09-14) — 크립토 트레이딩/스테이블코인
+// 결제 상세 페이지가 생겨 두 항목이 실제 라우트를 가리킨다. 커스터디는
+// 아직 `#` 플레이스홀더 (`entities/company/model/nav-content.ts` TODO 참고).
+// 위치는 "회사소개" 바로 옆(사용자 명시적 요청, 2026-09-14) — 원래 "INEX 소식"
+// 뒤였던 것을 앞으로 옮김.
 const navItems: NavItem[] = [
   { type: "link", label: navCompanyLink.label, href: navCompanyLink.href },
+  {
+    type: "mega",
+    label: "솔루션",
+    items: navSolutionItems.map((item) => ({
+      label: item.label,
+      description: item.description,
+      href: item.href,
+      icon: <SolutionIcon iconKey={item.iconKey} />,
+    })),
+    // 드롭다운 하단 "어떤 레일이 맞는지 모르시나요? 파트너십 문의 →" 푸터
+    // 제거(사용자 명시적 요청, 2026-09-14) — navSolutionFooter 데이터/타입은
+    // 그대로 두고 여기서만 전달하지 않는다.
+  },
   { type: "link", label: navNewsLink.label, href: navNewsLink.href },
-  // {
-  //   type: "mega",
-  //   label: "솔루션",
-  //   items: navSolutionItems.map((item) => ({
-  //     label: item.label,
-  //     description: item.description,
-  //     href: item.href,
-  //     icon: <SolutionIcon iconKey={item.iconKey} />,
-  //   })),
-  //   footer: navSolutionFooter,
-  // },
   ...navTrailingLinks.map(
     (item): NavItem => ({
       type: "link",

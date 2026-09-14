@@ -1,8 +1,7 @@
 import type { ComponentPropsWithoutRef } from "react"
 import { cn } from "cn"
 
-export interface CandlestickChartProps
-  extends Omit<ComponentPropsWithoutRef<"svg">, "viewBox"> {}
+export type CandlestickChartProps = Omit<ComponentPropsWithoutRef<"svg">, "viewBox">
 
 interface Candle {
   open: number

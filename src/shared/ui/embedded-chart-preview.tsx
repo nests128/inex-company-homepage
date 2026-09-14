@@ -41,7 +41,7 @@ function EmbeddedChartPreview({
     <div
       data-slot="embedded-chart-preview"
       className={cn(
-        "w-full overflow-hidden rounded-xl border border-white/8 bg-[#0B101C]",
+        "flex w-full flex-col overflow-hidden rounded-xl border border-white/8 bg-[#0B101C]",
         className
       )}
       {...props}
@@ -53,7 +53,15 @@ function EmbeddedChartPreview({
         </span>
       </div>
 
-      <div className="relative flex h-20 items-stretch justify-between gap-[3px] px-3 pb-3 pt-2">
+      <div className="relative flex h-20 flex-1 items-stretch justify-between gap-[2px] px-3 pb-3 pt-2">
+        {/* ref/exchange/chart.png: faint horizontal gridlines behind the
+            candles, TradingView-style. Decorative only. */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-3 top-2 bottom-3 flex flex-col justify-between">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="h-px bg-white/[0.06]" />
+          ))}
+        </div>
+
         {candles.map((candle, index) => (
           <div key={index} aria-hidden="true" className="relative flex-1">
             <div

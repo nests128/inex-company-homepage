@@ -40,6 +40,13 @@ export interface PlaceholderMediaProps
    * branch.
    */
   compact?: boolean
+  /**
+   * `object-position` for the `fill` + `src` branch (ignored otherwise).
+   * Defaults to `"center"` (previous behaviour). Use e.g. `"top"` when the
+   * meaningful part of a screenshot sits at its top edge and would
+   * otherwise get cropped by `object-cover`'s center crop.
+   */
+  objectPosition?: "center" | "top" | "bottom" | "left" | "right"
 }
 
 /**
@@ -58,6 +65,7 @@ function PlaceholderMedia({
   priority,
   quality,
   compact = false,
+  objectPosition = "center",
   className,
   ...props
 }: PlaceholderMediaProps) {
@@ -78,6 +86,7 @@ function PlaceholderMedia({
           priority={priority}
           quality={quality}
           className={cn(fill ? "object-cover" : undefined)}
+          style={fill ? { objectPosition } : undefined}
         />
       </div>
     )

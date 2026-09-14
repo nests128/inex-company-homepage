@@ -22,12 +22,35 @@ export interface AuroraBackgroundProps extends Omit<ComponentPropsWithoutRef<"di
   children?: ReactNode
   /** Fades the aurora out toward the edges via a radial mask. Default true, matching the source. */
   showRadialGradient?: boolean
+  /**
+   * Overrides the aurora sweep's 5-stop color palette (defaults to the
+   * source's blue/indigo/violet). Each stop is a plain CSS color. Used to
+   * give different pages a distinct aurora tint (e.g. green for the crypto
+   * trading hero, orange for the stablecoin payments hero) while reusing the
+   * same gradient/blur/animation mechanics.
+   */
+  palette?: {
+    c300: string
+    c400: string
+    c500: string
+    indigo300: string
+    violet200: string
+  }
+}
+
+const DEFAULT_PALETTE: NonNullable<AuroraBackgroundProps["palette"]> = {
+  c300: "#93c5fd",
+  c400: "#60a5fa",
+  c500: "#3b82f6",
+  indigo300: "#a5b4fc",
+  violet200: "#ddd6fe",
 }
 
 function AuroraBackground({
   className,
   children,
   showRadialGradient = true,
+  palette = DEFAULT_PALETTE,
   ...props
 }: AuroraBackgroundProps) {
   return (
@@ -42,11 +65,11 @@ function AuroraBackground({
         className="absolute inset-0 overflow-hidden"
         style={
           {
-            "--blue-300": "#93c5fd",
-            "--blue-400": "#60a5fa",
-            "--blue-500": "#3b82f6",
-            "--indigo-300": "#a5b4fc",
-            "--violet-200": "#ddd6fe",
+            "--blue-300": palette.c300,
+            "--blue-400": palette.c400,
+            "--blue-500": palette.c500,
+            "--indigo-300": palette.indigo300,
+            "--violet-200": palette.violet200,
             "--black": "#000",
             "--white": "#fff",
             "--transparent": "transparent",

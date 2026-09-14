@@ -166,3 +166,55 @@
     animation: none;
   }
 }
+
+/* `GlobeVisual`(solution-hero의 스테이블코인 결제 히어로 비주얼) 위경도선의
+   흐르는 대시 애니메이션. 사용자가 제공한 21st.dev globe 컴포넌트 원본은
+   `styled-jsx`의 `@keyframes flowAnimation`을 썼으나, 이 프로젝트는
+   styled-jsx를 쓰지 않으므로 `dashflow`와 동일한 패턴으로 전역 CSS에 둔다. */
+@keyframes globe-flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.globe-flow {
+  animation: globe-flow 10s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-flow {
+    animation: none;
+  }
+}
+
+/* `OrbitingCircles`(스테이블코인 결제 히어로의 궤도 아이콘) — Magic UI의
+   OrbitingCircles와 동일한 2단 애니메이션: 궤도 컨테이너를 360도 회전시키고
+   그 안의 각 아이콘에 반대 방향으로 동일 각속도 회전을 걸어 아이콘 자체는
+   똑바로 선 채로 궤도만 도는 것처럼 보이게 한다. `reverse` variant는
+   `animation-direction: reverse`로 안쪽/바깥쪽 궤도가 서로 다른 방향으로
+   돌게 한다(원본 패턴 특징). */
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg);
+  }
+}
+
+.orbit {
+  animation: orbit calc(var(--orbit-duration) * 1s) linear infinite;
+}
+
+.orbit-reverse {
+  animation-direction: reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit {
+    animation: none;
+  }
+}

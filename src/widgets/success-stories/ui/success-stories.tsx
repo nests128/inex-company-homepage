@@ -14,7 +14,7 @@ export async function SuccessStories() {
     <section className="bg-[#111] py-14 lg:py-24">
       <div className="container-inex">
         <Reveal as="div" className="mb-8 lg:mb-12">
-          <h2 className="text-2xl leading-[1.2] font-bold tracking-[-.015em] text-white lg:text-[44px] lg:leading-[1.15] lg:tracking-[-.02em]">
+          <h2 className="text-2xl leading-[1.2] tracking-[-.015em] text-white lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
             {successStoriesContent.heading}
           </h2>
         </Reveal>

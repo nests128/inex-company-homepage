@@ -38,7 +38,7 @@ export function FeatureShowcase() {
             <span aria-hidden="true" className="size-2.5 rounded-[3px] bg-sky-500" />
             {featureShowcaseContent.eyebrow}
           </div>
-          <h2 className="text-2xl leading-[1.25] font-bold tracking-[-.015em] whitespace-normal lg:text-[44px] lg:leading-[1.15] lg:tracking-[-.02em] lg:whitespace-pre-line">
+          <h2 className="text-2xl leading-[1.25] tracking-[-.015em] whitespace-normal lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em] lg:whitespace-pre-line">
             {featureShowcaseContent.title}
           </h2>
           <p className="mt-3 max-w-xl whitespace-pre-line text-sm leading-[1.65] text-muted-foreground lg:mt-5 lg:text-[16.5px] lg:leading-[1.7]">

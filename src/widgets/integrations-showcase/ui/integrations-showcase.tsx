@@ -19,7 +19,7 @@ export function IntegrationsShowcase() {
       <div className="container-inex grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-20">
         {/* Left: heading + description. */}
         <Reveal as="div">
-          <h2 className="text-2xl leading-[1.2] font-bold tracking-[-.015em] lg:text-[44px] lg:leading-[1.15] lg:tracking-[-.02em]">
+          <h2 className="text-2xl leading-[1.2] tracking-[-.015em] lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
             {integrationsContent.heading}
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-[1.65] text-muted-foreground lg:mt-5 lg:text-[16.5px] lg:leading-[1.7]">

@@ -33,7 +33,7 @@ export function AccountHighlight() {
          * per explicit request) and no CTA button (removed earlier, also per
          * explicit request). */}
         <Reveal as="div" delay={0.1}>
-          <h2 className="text-2xl leading-[1.2] font-bold tracking-[-.015em] whitespace-pre-line lg:text-[44px] lg:leading-[1.15] lg:tracking-[-.02em]">
+          <h2 className="text-2xl leading-[1.2] tracking-[-.015em] whitespace-pre-line lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
             {accountHighlightContent.heading}
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-[1.65] text-muted-foreground lg:mt-5 lg:text-[16.5px] lg:leading-[1.7]">

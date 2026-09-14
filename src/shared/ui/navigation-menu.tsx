@@ -48,7 +48,13 @@ function NavigationMenuItem({
   return (
     <NavigationMenuPrimitive.Item
       data-slot="navigation-menu-item"
-      className={cn("relative", className)}
+      // `items-center` keeps this item's own box height pinned to its
+      // child's content height regardless of whether that child is an `<a>`
+      // (plain link) or a `<button>` (mega-menu trigger) — without it, a
+      // `<button>` child's default inline layout made this `<li>`-role
+      // element ~2px taller than its sibling links, visibly misaligning the
+      // "솔루션" trigger from the rest of the nav row (측정: 24px vs 21.75px).
+      className={cn("relative flex items-center", className)}
       {...props}
     />
   )
@@ -112,7 +118,7 @@ function NavigationMenuPositioner({
         )}
         {...props}
       >
-        <NavigationMenuPrimitive.Popup className="data-[ending-style]:easing-[ease] xs:w-(--popup-width) relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) rounded-lg bg-popover text-popover-foreground shadow ring-1 ring-foreground/10 transition-[opacity,transform,width,height,scale,translate] duration-[0.35s] ease-[cubic-bezier(0.22,1,0.36,1)] outline-none data-ending-style:scale-90 data-ending-style:opacity-0 data-ending-style:duration-150 data-starting-style:scale-90 data-starting-style:opacity-0">
+        <NavigationMenuPrimitive.Popup className="data-[ending-style]:easing-[ease] xs:w-(--popup-width) relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) rounded-lg bg-popover text-popover-foreground shadow-lg transition-[opacity,transform,width,height,scale,translate] duration-[0.35s] ease-[cubic-bezier(0.22,1,0.36,1)] outline-none data-ending-style:scale-90 data-ending-style:opacity-0 data-ending-style:duration-150 data-starting-style:scale-90 data-starting-style:opacity-0">
           <NavigationMenuPrimitive.Viewport className="relative size-full overflow-hidden" />
         </NavigationMenuPrimitive.Popup>
       </NavigationMenuPrimitive.Positioner>
