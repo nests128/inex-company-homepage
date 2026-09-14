@@ -50,7 +50,7 @@ export const cryptoTradingHeroContent: CryptoTradingHeroContent = {
 // 강조하는 텍스트 + 신뢰 배지/통계 조합.
 export const cryptoTradingProvenContent = {
   eyebrow: "PROVEN INFRASTRUCTURE",
-  title: "데모가 아니라, 실제 운영중인 인프라입니다",
+  title: "실서비스 트래픽으로 검증된 인프라입니다",
   description:
     "INEX는 자체 거래소를 직접 운영하며 매칭 엔진, 유동성, 리스크 관리 체계를 실서비스 트래픽 위에서 검증해 왔습니다. 그 인프라를 그대로 API·SDK로 제공하기 때문에, 파트너사는 별도의 검증 기간 없이 바로 도입할 수 있습니다.",
 };

@@ -228,9 +228,7 @@ export function CapabilitiesSection() {
             CAPABILITIES
           </div>
           <h2 className="text-2xl leading-[1.2] tracking-[-.015em] lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
-            연동 방식은 세 가지,
-            <br />
-            엔진은 하나입니다
+            차트부터 주문 API까지, 하나의 인프라로
           </h2>
           <div className="mt-8 flex flex-col gap-1 lg:mt-12">
             {cryptoTradingFeatures.map((item) => (
