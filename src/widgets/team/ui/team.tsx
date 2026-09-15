@@ -1,7 +1,7 @@
 import { Link2Icon } from "lucide-react"
 import { cn } from "cn"
 
-import { PlaceholderMedia } from "@/shared/ui"
+import { Carousel, PlaceholderMedia } from "@/shared/ui"
 
 /** Known brand hint for a social link's icon. `iconSrc` (real logo image) always wins when both are provided. */
 export type TeamMemberSocialIconKey = "linkedin" | "x" | "blog"
@@ -76,10 +76,17 @@ export function TeamSection({ eyebrow, title, subtitle, members, className }: Te
           ) : null}
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-x-8">
-          {members.map((member) => (
-            <TeamMemberCard key={member.name} member={member} />
-          ))}
+        <div className="mt-10 lg:mt-14">
+          <Carousel
+            label={title}
+            prevLabel="이전 팀원"
+            nextLabel="다음 팀원"
+            className="[--carousel-item-width:170px] sm:[--carousel-item-width:200px] lg:[--carousel-item-width:240px]"
+          >
+            {members.map((member) => (
+              <TeamMemberCard key={member.name} member={member} />
+            ))}
+          </Carousel>
         </div>
       </div>
     </section>
@@ -96,14 +103,14 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
         alt={imageAlt ?? `${name} 프로필 사진`}
         fill
         sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-        className="aspect-[4/5] w-full rounded-2xl"
+        className="aspect-square w-full rounded-2xl"
       />
 
-      <h3 className="mt-4 text-[18px] font-bold text-foreground lg:mt-5 lg:text-[19px]">
+      <h3 className="mt-3 text-[16px] font-bold text-foreground lg:mt-4 lg:text-[17px]">
         {name}
       </h3>
-      <p className="text-[15.5px] font-medium text-foreground/70">{role}</p>
-      <p className="mt-3 text-[14.5px] leading-[1.6] whitespace-pre-line text-muted-foreground">
+      <p className="text-[13.5px] font-medium text-foreground/70">{role}</p>
+      <p className="mt-2 text-[13.5px] leading-[1.55] whitespace-pre-line text-muted-foreground">
         {bio}
       </p>
 

@@ -26,7 +26,8 @@ export const teamMembers: TeamMemberContent[] = [
     name: "이재강",
     role: "대표이사",
     bio: "IT/디지털자산 산업에서 축적한 창업·사업 경험을 바탕으로,\nINEX의 디지털자산 금융 인프라 사업과 성장 전략을 이끕니다.",
-    imageSrc: `${TEAM_PHOTO_BASE}/ceo_2.png`,
+    // 로컬 제공 이미지로 교체 (다른 항목처럼 public/images/team/ 정적 자산 참조).
+    imageSrc: "/images/team/ceo.png",
     imageAlt: "이재강 대표이사 프로필 사진",
   },
   {
@@ -57,6 +58,9 @@ export const teamMembers: TeamMemberContent[] = [
     // 다른 팀원은 상위 프로젝트의 실제 CDN 사진(TEAM_PHOTO_BASE)을 쓰지만,
     // CBO 사진은 CDN에 아직 없는 로컬 제공 이미지(ref/team/cbo.png)라
     // public/images/team/에 정적 자산으로 넣어 참조한다.
+    // 원본(ref/team/cbo.png, 1024x1024 정사각형)은 상반신이 넓게 나와 다른
+    // 팀원과 톤이 달랐음 — public 자산은 얼굴 중심으로 확대 크롭해 맞춘 버전
+    // (640x800, 카드는 정사각형 표시 영역이라 세로가 추가로 크롭됨).
     imageSrc: "/images/team/cbo.png",
     imageAlt: "김태현 CBO 프로필 사진",
   },
