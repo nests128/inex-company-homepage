@@ -1,85 +1,58 @@
 "use client"
 
-import { CheckIcon, GlobeIcon } from "lucide-react"
+import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 
 import { locales, publicPath, type Locale } from "@/shared/lib/i18n"
 import { cn } from "cn"
 
-import { Popover, PopoverContent, PopoverTrigger } from "./popover"
-
 const LOCALE_LABEL: Record<Locale, string> = {
-  ko: "한국어",
-  en: "English",
+  ko: "KO",
+  en: "EN",
+}
+
+/** `pathname`에서 로케일 접두사(`/ko`, `/en`)를 벗겨내 로케일-무관 route로 되돌린다. */
+function stripLocalePrefix(pathname: string): string {
+  if (pathname === "/en" || pathname.startsWith("/en/")) return pathname.slice(3) || "/"
+  if (pathname === "/ko" || pathname.startsWith("/ko/")) return pathname.slice(3) || "/"
+  return pathname
 }
 
 /**
- * `usePathname()`은 `proxy.ts`의 rewrite 이후 값(공개 URL)을 돌려주므로 —
- * 한국어는 "/company", 영어는 "/en/company" — 앞의 "/en" 접두사만 벗겨내면
- * 로케일-무관 route가 남는다. 이렇게 현재 페이지의 route를 그대로 유지한 채
- * 다른 언어로 전환한다(서브페이지에서 눌러도 그 언어의 홈으로 돌아가지 않음).
+ * `usePathname()`은 이 페이지가 정적 프리렌더된 뒤 `proxy.ts`의 rewrite로
+ * 도달된 경우, 서버 렌더링 시점에는 **rewrite 전 내부 경로**(`/ko/company`
+ * 형태)를 반환하고 클라이언트 마운트 후에야 실제 브라우저 URL(`/company`)로
+ * 바뀐다(Next 공식 문서 "Avoid hydration mismatch with rewrites" 항목).
+ * 이 차이를 놓치고 "/en" 접두사만 벗겨내면, 한국어 페이지의 서버 렌더 값
+ * "/ko/company"가 그대로 남아 "/en/ko/company" 같은 잘못된 링크가 만들어진다
+ * (실제로 발생했던 버그). 그래서 "/ko"/"/en" 둘 다 벗겨내고, 서버 값을 믿지
+ * 않도록 마운트 후에만 실제 pathname을 반영한다(마운트 전에는 안전한 "/"
+ * 폴백 — 링크가 항상 유효한 route를 가리키게 유지하기 위함).
  */
 function useLocaleRoute() {
   const pathname = usePathname() ?? "/"
-  return pathname.startsWith("/en") ? pathname.slice(3) || "/" : pathname
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  return mounted ? stripLocalePrefix(pathname) : "/"
 }
 
 /**
- * 데스크톱 nav-bar용 언어 전환 트리거. 지구본 아이콘 버튼을 누르면 두 로케일을
- * 나열하는 팝오버 드롭다운이 뜬다. `PopoverContent`는 Portal로 렌더링되므로
- * 모바일 시트 내부(포커스 트랩 + z-index 충돌)에서는 쓰지 않는다 —
- * `MobileLanguageSwitcher`를 대신 사용.
+ * "KO / EN" 두 라벨을 나란히 두고 클릭하면 바로 전환하는 언어 스위처.
+ * 드롭다운 없이 즉시 클릭 가능하게 해달라는 사용자 요청(2026-09-15)에 따라
+ * 이전의 Globe 아이콘 + Popover 드롭다운을 대체했다. 데스크톱 nav-bar와
+ * 모바일 시트 양쪽에서 동일하게 쓴다.
  */
 export function LanguageSwitcher({ current }: { current: Locale }) {
   const route = useLocaleRoute()
 
   return (
-    <Popover>
-      <PopoverTrigger
-        aria-label={LOCALE_LABEL[current]}
-        openOnHover
-        delay={0}
-        closeDelay={100}
-        className="flex size-9 cursor-pointer items-center justify-center rounded-full text-foreground outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/50"
-      >
-        <GlobeIcon aria-hidden="true" className="size-[18px]" />
-      </PopoverTrigger>
-      <PopoverContent align="end" className="w-40 p-1.5">
-        {locales.map((locale) => (
-          <a
-            key={locale}
-            href={publicPath(locale, route)}
-            lang={locale}
-            aria-current={locale === current ? "true" : undefined}
-            className={cn(
-              "flex cursor-pointer items-center justify-between gap-2 rounded-md px-2.5 py-2 text-sm font-medium text-foreground outline-none hover:bg-muted",
-              locale === current && "text-foreground"
-            )}
-          >
-            {LOCALE_LABEL[locale]}
-            {locale === current ? (
-              <CheckIcon aria-hidden="true" className="size-3.5 shrink-0" />
-            ) : null}
-          </a>
-        ))}
-      </PopoverContent>
-    </Popover>
-  )
-}
-
-/**
- * 모바일 시트 푸터용 언어 전환 링크 목록. `LanguageSwitcher`와 달리 팝오버가
- * 아닌 평범한 링크 두 개를 나란히 배치한다 — `PopoverContent`가 Portal로
- * 시트 바깥에 렌더링되면 포커스 트랩과 z-index가 꼬이기 때문(사이드바가 이미
- * 풀폭 세로 스택이라 팝오버 자체가 불필요하기도 함).
- */
-export function MobileLanguageSwitcher({ current }: { current: Locale }) {
-  const route = useLocaleRoute()
-
-  return (
-    <div className="flex items-center gap-2 text-sm font-medium">
+    <div className="flex items-center gap-1.5 text-sm font-medium">
       {locales.map((locale, index) => (
-        <div key={locale} className="flex items-center gap-2">
+        <div key={locale} className="flex items-center gap-1.5">
           {index > 0 ? (
             <span aria-hidden="true" className="text-border">
               /
@@ -90,8 +63,8 @@ export function MobileLanguageSwitcher({ current }: { current: Locale }) {
             lang={locale}
             aria-current={locale === current ? "true" : undefined}
             className={cn(
-              "text-muted-foreground",
-              locale === current && "text-foreground underline underline-offset-4"
+              "cursor-pointer text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50",
+              locale === current && "text-foreground"
             )}
           >
             {LOCALE_LABEL[locale]}
@@ -101,3 +74,6 @@ export function MobileLanguageSwitcher({ current }: { current: Locale }) {
     </div>
   )
 }
+
+/** `LanguageSwitcher`의 별칭 — 데스크톱/모바일 모두 같은 구현을 쓴다. */
+export { LanguageSwitcher as MobileLanguageSwitcher }
