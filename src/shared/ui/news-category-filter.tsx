@@ -8,6 +8,8 @@ export interface NewsCategoryFilterProps
   categories: string[]
   active: string
   onSelect: (category: string) => void
+  /** Accessible group label. Defaults to Korean for backward compatibility. */
+  groupLabel?: string
 }
 
 /**
@@ -25,6 +27,7 @@ function NewsCategoryFilter({
   categories,
   active,
   onSelect,
+  groupLabel = "카테고리 필터",
   className,
   ...props
 }: NewsCategoryFilterProps) {
@@ -32,7 +35,7 @@ function NewsCategoryFilter({
     <div
       data-slot="news-category-filter"
       role="group"
-      aria-label="카테고리 필터"
+      aria-label={groupLabel}
       className={cn("flex flex-wrap gap-2", className)}
       {...props}
     >

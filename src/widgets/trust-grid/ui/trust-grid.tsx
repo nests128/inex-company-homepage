@@ -9,9 +9,11 @@
 // `IconFeatureCard` (via its `image` slot) rather than as a sibling element
 // below the card.
 import { CandlestickChartIcon, BookOpenTextIcon, ArrowLeftRightIcon } from "lucide-react"
+import { locale as getLocale } from "next/root-params"
 
 import { IconFeatureCard, PlaceholderMedia, Reveal } from "@/shared/ui"
-import { trustGridCards, trustGridContent, type TrustGridIconKey } from "@/entities/company"
+import { trustGridContentByLocale, type TrustGridIconKey } from "@/entities/company"
+import { isLocale, defaultLocale } from "@/shared/lib/i18n"
 
 /**
  * Maps `trustGridCards`' `iconKey` to the glyph rendered in each
@@ -30,18 +32,28 @@ function FeatureIcon({ iconKey }: { iconKey: TrustGridIconKey }) {
 }
 
 /** Maps `trustGridCards`' `iconKey` to its `ref/b2b` reference photo. */
-function trustGridCardImage(iconKey: TrustGridIconKey) {
+function trustGridCardImage(iconKey: TrustGridIconKey, locale: "ko" | "en") {
+  const alt = {
+    chart: { ko: "임베디드 차트 위젯 스크린샷", en: "Embedded chart widget screenshot" },
+    orderbook: { ko: "API 이미지", en: "API image" },
+    ramp: { ko: "결제 승인 화면 사진", en: "Payment approval screen photo" },
+  }[iconKey][locale]
+
   switch (iconKey) {
     case "chart":
-      return { src: "/images/b2b/embed.png", alt: "임베디드 차트 위젯 스크린샷" }
+      return { src: "/images/b2b/embed.png", alt }
     case "orderbook":
-      return { src: "/images/b2b/api.png", alt: "API 이미지" }
+      return { src: "/images/b2b/api.png", alt }
     case "ramp":
-      return { src: "/images/b2b/pay.png", alt: "결제 승인 화면 사진" }
+      return { src: "/images/b2b/pay.png", alt }
   }
 }
 
-export function TrustGrid() {
+export async function TrustGrid() {
+  const rawLocale = await getLocale()
+  const locale = isLocale(rawLocale) ? rawLocale : defaultLocale
+  const trustGridContent = trustGridContentByLocale[locale]
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex">
@@ -60,8 +72,8 @@ export function TrustGrid() {
           delay={0.1}
           className="mt-8 grid grid-cols-1 gap-5 lg:mt-12 lg:grid-cols-3 lg:gap-6"
         >
-          {trustGridCards.map((card) => {
-            const image = trustGridCardImage(card.iconKey)
+          {trustGridContent.cards.map((card) => {
+            const image = trustGridCardImage(card.iconKey, locale)
             return (
               <IconFeatureCard
                 key={card.iconKey}

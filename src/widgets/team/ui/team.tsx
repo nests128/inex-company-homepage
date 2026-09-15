@@ -42,6 +42,16 @@ export interface TeamSectionProps {
   /** Optional supporting copy under the title. Supports `\n` line breaks. */
   subtitle?: string
   members: TeamMember[]
+  /** Accessible label for the carousel's "previous" button. Defaults to Korean for backward compatibility. */
+  prevLabel?: string
+  /** Accessible label for the carousel's "next" button. Defaults to Korean for backward compatibility. */
+  nextLabel?: string
+  /**
+   * Fallback alt text template when a member has no `imageAlt` — receives
+   * the member's `name`. Defaults to Korean ("{name} 프로필 사진") for
+   * backward compatibility.
+   */
+  imageAltFallback?: (name: string) => string
   className?: string
 }
 
@@ -55,7 +65,16 @@ export interface TeamSectionProps {
  * padding only) + `container-inex` (horizontal gutter) per this codebase's
  * widget convention (see `docs/design-tokens.md`).
  */
-export function TeamSection({ eyebrow, title, subtitle, members, className }: TeamSectionProps) {
+export function TeamSection({
+  eyebrow,
+  title,
+  subtitle,
+  members,
+  prevLabel = "이전 팀원",
+  nextLabel = "다음 팀원",
+  imageAltFallback = (name) => `${name} 프로필 사진`,
+  className,
+}: TeamSectionProps) {
   return (
     <section className={cn("py-14 lg:py-24", className)}>
       <div className="container-inex">
@@ -66,7 +85,7 @@ export function TeamSection({ eyebrow, title, subtitle, members, className }: Te
               {eyebrow}
             </div>
           ) : null}
-          <h2 className="text-2xl leading-[1.2] font-bold tracking-[-.015em] whitespace-pre-line lg:text-[44px] lg:leading-[1.15] lg:tracking-[-.02em] lg:whitespace-nowrap">
+          <h2 className="text-2xl leading-[1.2] font-bold tracking-[-.015em] whitespace-pre-line lg:text-[44px] lg:leading-[1.15] lg:tracking-[-.02em]">
             {title}
           </h2>
           {subtitle ? (
@@ -79,12 +98,12 @@ export function TeamSection({ eyebrow, title, subtitle, members, className }: Te
         <div className="mt-10 lg:mt-14">
           <Carousel
             label={title}
-            prevLabel="이전 팀원"
-            nextLabel="다음 팀원"
+            prevLabel={prevLabel}
+            nextLabel={nextLabel}
             className="[--carousel-item-width:170px] sm:[--carousel-item-width:200px] lg:[--carousel-item-width:240px]"
           >
             {members.map((member) => (
-              <TeamMemberCard key={member.name} member={member} />
+              <TeamMemberCard key={member.name} member={member} imageAltFallback={imageAltFallback} />
             ))}
           </Carousel>
         </div>
@@ -93,14 +112,20 @@ export function TeamSection({ eyebrow, title, subtitle, members, className }: Te
   )
 }
 
-function TeamMemberCard({ member }: { member: TeamMember }) {
+function TeamMemberCard({
+  member,
+  imageAltFallback,
+}: {
+  member: TeamMember
+  imageAltFallback: (name: string) => string
+}) {
   const { name, role, bio, imageSrc, imageAlt, social } = member
 
   return (
     <div data-slot="team-member-card" className="flex flex-col">
       <PlaceholderMedia
         src={imageSrc}
-        alt={imageAlt ?? `${name} 프로필 사진`}
+        alt={imageAlt ?? imageAltFallback(name)}
         fill
         sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
         className="aspect-square w-full rounded-2xl"

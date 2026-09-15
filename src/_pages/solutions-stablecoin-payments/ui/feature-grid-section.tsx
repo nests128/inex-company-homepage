@@ -8,11 +8,8 @@
 import { QrCodeIcon, ShieldCheckIcon, TimerIcon } from "lucide-react";
 
 import { Reveal } from "@/shared/ui";
-import {
-  stablecoinPaymentsFeatureGridContent,
-  stablecoinPaymentsFeatureGridItems,
-  type StablecoinPaymentsFeatureGridIconKey,
-} from "@/entities/company";
+import { type StablecoinPaymentsFeatureGridIconKey } from "@/entities/company";
+import { getStablecoinPaymentsContent } from "@/entities/company/server";
 
 function FeatureGridIcon({ iconKey }: { iconKey: StablecoinPaymentsFeatureGridIconKey }) {
   switch (iconKey) {
@@ -35,14 +32,16 @@ function SectionEyebrow({ label }: { label: string }) {
   );
 }
 
-export function FeatureGridSection() {
+export async function FeatureGridSection() {
+  const content = await getStablecoinPaymentsContent();
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex">
         <Reveal as="div">
-          <SectionEyebrow label={stablecoinPaymentsFeatureGridContent.eyebrow} />
+          <SectionEyebrow label={content.featureGridContent.eyebrow} />
           <h2 className="text-2xl leading-[1.2] tracking-[-.015em] whitespace-pre-line lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
-            {stablecoinPaymentsFeatureGridContent.title}
+            {content.featureGridContent.title}
           </h2>
         </Reveal>
 
@@ -51,7 +50,7 @@ export function FeatureGridSection() {
           delay={0.1}
           className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3"
         >
-          {stablecoinPaymentsFeatureGridItems.map((item) => (
+          {content.featureGridItems.map((item) => (
             <div
               key={item.title}
               className="flex flex-col rounded-2xl bg-muted p-6"

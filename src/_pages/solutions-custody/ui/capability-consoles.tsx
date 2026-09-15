@@ -3,44 +3,28 @@
 // 카드 박스(`h-[240px] lg:h-[280px]`, overflow-hidden)보다 콘솔 폭을 살짝
 // 넓게 잡아(`w-[110%]` 등) 레퍼런스처럼 제품 화면이 카드 밖으로 자연스럽게
 // 걸치도록 한다 — 딱 맞춘 미니어처보다 실제 제품 캡처처럼 보이는 효과.
+//
+// 세 컴포넌트 모두 서버 컴포넌트이며, 로케일별 라벨/데이터는
+// `custody-content.ts`(`getCustodyContent()`)에서 가져온다.
 import { ActivityIcon, KeyIcon, LockIcon } from "lucide-react";
 import { cn } from "cn";
 
-import { MonitorAnimatedList, type MonitorEvent } from "./monitor-animated-list";
+import { getCustodyContent } from "@/entities/company/server";
 
-interface KeyShare {
-  label: string;
-  combined: boolean;
-}
-
-const KEY_SHARES: KeyShare[] = [
-  { label: "Share A", combined: true },
-  { label: "Share B", combined: true },
-  { label: "Share C", combined: false },
-];
-
-// magicui AnimatedList(https://magicui.design/docs/components/animated-list)
-// 패턴 적용(사용자 요청, 2026-09-15) — 항목이 순차 등장하며 순환하므로
-// "방금 전/3분 전" 같은 상대 시간은 재등장 시 의미가 어긋난다. 대신
-// 재순환해도 항상 유효한 상태 라벨을 쓴다.
-const MONITOR_EVENTS: MonitorEvent[] = [
-  { id: "e1", label: "입금 확인", status: "온체인 컨펌 완료", type: "in" },
-  { id: "e2", label: "출금 서명 완료", status: "2 of 3 승인", type: "out" },
-  { id: "e3", label: "한도 초과 시도 차단", status: "정책 엔진 자동 차단", type: "alert" },
-  { id: "e4", label: "입금 확인", status: "온체인 컨펌 완료", type: "in" },
-  { id: "e5", label: "출금 서명 완료", status: "2 of 3 승인", type: "out" },
-];
+import { MonitorAnimatedList } from "./monitor-animated-list";
 
 // 카드 1: 모니터링 — 입출금·서명·이상 징후를 실시간으로 추적하는 활동 로그.
 // 이벤트 순환 애니메이션은 클라이언트 상태가 필요해 `monitor-animated-list.tsx`로
 // 분리했고, 이 컴포넌트 자체는 서버 컴포넌트로 유지한다.
-export function PolicyConsole() {
+export async function PolicyConsole() {
+  const custodyContent = await getCustodyContent();
+
   return (
     <div className="w-[112%] max-w-none bg-background p-4 shadow-[0_4px_16px_rgba(0,0,0,.10)] lg:p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <ActivityIcon aria-hidden="true" className="size-3.5 text-sky-500" />
-          <p className="text-[12px] font-bold text-foreground lg:text-[13px]">실시간 모니터링</p>
+          <p className="text-[12px] font-bold text-foreground lg:text-[13px]">{custodyContent.monitorConsoleLabel}</p>
         </div>
         <span className="flex items-center gap-1 text-[10px] font-medium text-muted-foreground">
           <span aria-hidden="true" className="size-1.5 rounded-full bg-sky-500" />
@@ -48,7 +32,7 @@ export function PolicyConsole() {
         </span>
       </div>
 
-      <MonitorAnimatedList events={MONITOR_EVENTS} />
+      <MonitorAnimatedList events={custodyContent.monitorEvents} />
     </div>
   );
 }
@@ -62,13 +46,15 @@ export function PolicyConsole() {
 // 카드와 톤이 맞지 않아 바로 복원("다시 넣어줘") — 정책/자산 카드와 동일한
 // 흰 배경 카드 안에 다이어그램을 담는다. 각 키 셰어 육각형 안에는 열쇠
 // 아이콘을 넣어 "분산된 키 조각"이라는 의미를 더 분명히 한다.
-export function ApprovalConsole() {
+export async function ApprovalConsole() {
+  const { keyShareTitle, keyShares, keyShareResultLabel } = await getCustodyContent();
+
   return (
     <div className="w-[88%] max-w-none bg-background p-4 shadow-[0_4px_16px_rgba(0,0,0,.10)] lg:p-5">
-      <p className="text-[12px] font-bold text-foreground lg:text-[13px]">다중서명 2 of 3</p>
+      <p className="text-[12px] font-bold text-foreground lg:text-[13px]">{keyShareTitle}</p>
 
       <svg viewBox="0 0 220 98" className="mt-4 w-full lg:mt-6">
-        {KEY_SHARES.map((share, i) => {
+        {keyShares.map((share, i) => {
           const x = 30 + i * 80;
           const combined = share.combined;
           return (
@@ -85,7 +71,7 @@ export function ApprovalConsole() {
           );
         })}
 
-        {KEY_SHARES.map((share, i) => {
+        {keyShares.map((share, i) => {
           const x = 30 + i * 80;
           return (
             <g key={share.label}>
@@ -110,7 +96,7 @@ export function ApprovalConsole() {
 
         <circle cx={110} cy={73} r={16} className="fill-sky-500" />
         <text x={110} y={77} textAnchor="middle" className="fill-white text-[10px] font-bold">
-          서명
+          {keyShareResultLabel}
         </text>
       </svg>
     </div>
@@ -124,27 +110,17 @@ function hexagonPoints(cx: number, cy: number, r: number) {
   }).join(" ");
 }
 
-interface AssetSplit {
-  label: string;
-  ratio: number;
-  colorClassName: string;
-}
-
-const ASSET_SPLITS: AssetSplit[] = [
-  { label: "콜드월렛", ratio: 0.82, colorClassName: "text-sky-500" },
-  { label: "핫월렛", ratio: 0.18, colorClassName: "text-sky-200" },
-];
-
 // 카드 3: 지갑 분리 관리 — 핫/콜드 비중 도넛 차트 + 잔고 요약.
-export function AssetsConsole() {
-  const coldRatio = ASSET_SPLITS[0].ratio;
+export async function AssetsConsole() {
+  const { assetSplits, assetsConsoleLabel } = await getCustodyContent();
+  const coldRatio = assetSplits[0].ratio;
   const circumference = 2 * Math.PI * 26;
   const coldDash = circumference * coldRatio;
 
   return (
     <div className="w-[88%] max-w-none bg-background p-4 shadow-[0_4px_16px_rgba(0,0,0,.10)] lg:p-5">
       <div className="flex items-center justify-between">
-        <p className="text-[12px] font-bold text-foreground lg:text-[13px]">보관 자산 분포</p>
+        <p className="text-[12px] font-bold text-foreground lg:text-[13px]">{assetsConsoleLabel}</p>
         <LockIcon aria-hidden="true" className="size-3.5 text-muted-foreground" />
       </div>
 
@@ -167,12 +143,12 @@ export function AssetsConsole() {
             textAnchor="middle"
             className="fill-foreground text-[14px] font-bold"
           >
-            82%
+            {Math.round(coldRatio * 100)}%
           </text>
         </svg>
 
         <div className="flex flex-col gap-2.5">
-          {ASSET_SPLITS.map((split) => (
+          {assetSplits.map((split) => (
             <div key={split.label} className="flex items-center gap-1.5">
               <span
                 aria-hidden="true"

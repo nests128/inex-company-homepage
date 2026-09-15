@@ -3,17 +3,19 @@
 import { ArrowUpRight } from "lucide-react";
 
 import { Button, CaseStudyBanner, InexLogoMark, Reveal } from "@/shared/ui";
-import { custodyCtaContent } from "@/entities/company";
+import { getCustodyContent } from "@/entities/company/server";
 
-export function CustodyCtaSection() {
+export async function CustodyCtaSection() {
+  const { cta } = await getCustodyContent();
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex">
         <Reveal as="div">
           <CaseStudyBanner
-            tag={custodyCtaContent.eyebrow}
-            title={custodyCtaContent.title}
-            description={custodyCtaContent.description}
+            tag={cta.eyebrow}
+            title={cta.title}
+            description={cta.description}
             bodySlot={
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Button
@@ -21,13 +23,13 @@ export function CustodyCtaSection() {
                   size="pill-lg"
                   render={
                     <a
-                      href={custodyCtaContent.primaryCta.href}
-                      target={custodyCtaContent.primaryCta.external ? "_blank" : undefined}
-                      rel={custodyCtaContent.primaryCta.external ? "noopener noreferrer" : undefined}
+                      href={cta.primaryCta.href}
+                      target={cta.primaryCta.external ? "_blank" : undefined}
+                      rel={cta.primaryCta.external ? "noopener noreferrer" : undefined}
                     />
                   }
                 >
-                  {custodyCtaContent.primaryCta.label}
+                  {cta.primaryCta.label}
                 </Button>
                 <Button
                   variant="outline"
@@ -35,13 +37,13 @@ export function CustodyCtaSection() {
                   className="gap-2 border-foreground bg-transparent text-foreground hover:bg-background/40"
                   render={
                     <a
-                      href={custodyCtaContent.secondaryCta.href}
-                      target={custodyCtaContent.secondaryCta.external ? "_blank" : undefined}
-                      rel={custodyCtaContent.secondaryCta.external ? "noopener noreferrer" : undefined}
+                      href={cta.secondaryCta.href}
+                      target={cta.secondaryCta.external ? "_blank" : undefined}
+                      rel={cta.secondaryCta.external ? "noopener noreferrer" : undefined}
                     />
                   }
                 >
-                  {custodyCtaContent.secondaryCta.label}
+                  {cta.secondaryCta.label}
                   <ArrowUpRight className="size-4" aria-hidden="true" />
                 </Button>
               </div>

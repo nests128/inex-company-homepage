@@ -17,13 +17,13 @@
 // order), stacked full-width.
 import { Reveal, VideoCard } from "@/shared/ui"
 import { cn } from "@/shared/lib/utils"
-import {
-  featureShowcaseContent,
-  featureShowcaseHighlights,
-  featureShowcaseVideo,
-} from "@/entities/company"
+import { featureShowcaseVideo } from "@/entities/company"
+import { getFeatureShowcaseContent } from "@/entities/company/server"
 
-export function FeatureShowcase() {
+export async function FeatureShowcase() {
+  const { content: featureShowcaseContent, highlights: featureShowcaseHighlights } =
+    await getFeatureShowcaseContent()
+
   return (
     // Full-bleed section: vertical padding only (design-tokens.md "풀블리드
     // 배경 + 컨테이너 콘텐츠"). Background is white, so no bg utility needed.

@@ -3,9 +3,11 @@
 import { ArrowUpRight } from "lucide-react";
 
 import { Button, CaseStudyBanner, InexLogoMark, Reveal } from "@/shared/ui";
-import { stablecoinPaymentsCtaContent } from "@/entities/company";
+import { getStablecoinPaymentsContent } from "@/entities/company/server";
 
-export function StablecoinPaymentsCtaSection() {
+export async function StablecoinPaymentsCtaSection() {
+  const { cta: stablecoinPaymentsCtaContent } = await getStablecoinPaymentsContent();
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex">

@@ -5,13 +5,7 @@ import { TeamSection } from "@/widgets/team";
 import { HistorySection } from "@/widgets/history";
 import { WorldMap } from "@/shared/ui";
 
-import {
-  missionContent,
-  teamContent,
-  teamMembers,
-  historyContent,
-  historyYears,
-} from "@/entities/company";
+import { getMissionContent, getTeamContent, getHistoryContent } from "@/entities/company/server";
 
 // INEX가 온/오프램프·정산으로 잇는 원화(한국)와 주요 디지털자산 허브를 표시.
 // 실제 파트너십/서비스 지역 확정 전 대략적 좌표 — 정확한 지리적 클레임이
@@ -22,7 +16,13 @@ const missionWorldMapDots = [
   { start: { lat: 37.5665, lng: 126.978 }, end: { lat: 51.5072, lng: -0.1276 } }, // 서울 → 런던
 ];
 
-export function CompanyPage() {
+export async function CompanyPage() {
+  const [missionContent, teamContent, historyContent] = await Promise.all([
+    getMissionContent(),
+    getTeamContent(),
+    getHistoryContent(),
+  ]);
+
   return (
     <div className="flex min-h-svh flex-col">
       <NavBar />
@@ -39,13 +39,17 @@ export function CompanyPage() {
           eyebrow={teamContent.eyebrow}
           title={teamContent.title}
           subtitle={teamContent.subtitle}
-          members={teamMembers}
+          members={teamContent.members}
+          prevLabel={teamContent.prevLabel}
+          nextLabel={teamContent.nextLabel}
         />
         <HistorySection
           eyebrow={historyContent.eyebrow}
           title={historyContent.title}
           subtitle={historyContent.subtitle}
-          years={historyYears}
+          years={historyContent.years}
+          prevLabel={historyContent.prevLabel}
+          nextLabel={historyContent.nextLabel}
         />
       </main>
       <Footer />

@@ -10,8 +10,45 @@ import { locale } from "next/root-params";
 import { isLocale, defaultLocale } from "@/shared/lib/i18n";
 import { heroContentByLocale, type HeroContent } from "./model/hero-content";
 import { navContentByLocale, type NavContent } from "./model/nav-content";
+import {
+  featureShowcaseContentByLocale,
+  featureShowcaseHighlightsByLocale,
+  featureShowcaseItemsByLocale,
+} from "./model/feature-showcase-content";
+import { logoMarqueeContentByLocale } from "./model/logo-marquee-content";
+import { integrationsContentByLocale } from "./model/integrations-content";
+import { custodyContentByLocale } from "./model/custody-content";
+import { missionContentByLocale } from "./model/mission-content";
+import { teamContentByLocale } from "./model/team-content";
+import { historyContentByLocale } from "./model/history-content";
+import {
+  cryptoTradingHeroContentByLocale,
+  cryptoTradingProvenContentByLocale,
+  cryptoTradingStatsByLocale,
+  cryptoTradingCapabilitiesContentByLocale,
+  cryptoTradingFeaturesByLocale,
+  cryptoTradingFeatureGridContentByLocale,
+  cryptoTradingFeatureGridItemsByLocale,
+  cryptoTradingHowItWorksContentByLocale,
+  cryptoTradingHowItWorksStepsByLocale,
+  cryptoTradingHowItWorksImageByLocale,
+  cryptoTradingCtaContentByLocale,
+} from "./model/crypto-trading-content";
+import {
+  stablecoinPaymentsHeroContentByLocale,
+  stablecoinPaymentsFeatureGridContentByLocale,
+  stablecoinPaymentsFeatureGridItemsByLocale,
+  stablecoinPaymentsCapabilitiesContentByLocale,
+  stablecoinPaymentsCapabilitiesByLocale,
+  stablecoinPaymentsHowItWorksContentByLocale,
+  stablecoinPaymentsFlowByLocale,
+  stablecoinPaymentsDemoContentByLocale,
+  stablecoinPaymentsDemoStepsByLocale,
+  stablecoinPaymentsCtaContentByLocale,
+} from "./model/stablecoin-payments-content";
 
-async function getCurrentLocale() {
+/** Also exported for pages that need the raw locale value itself (e.g. to pass as a prop into a client component). */
+export async function getCurrentLocale() {
   const value = await locale();
   return isLocale(value) ? value : defaultLocale;
 }
@@ -22,4 +59,70 @@ export async function getHeroContent(): Promise<HeroContent> {
 
 export async function getNavContent(): Promise<NavContent> {
   return navContentByLocale[await getCurrentLocale()];
+}
+
+export async function getFeatureShowcaseContent() {
+  const current = await getCurrentLocale();
+  return {
+    content: featureShowcaseContentByLocale[current],
+    highlights: featureShowcaseHighlightsByLocale[current],
+    items: featureShowcaseItemsByLocale[current],
+  };
+}
+
+export async function getLogoMarqueeContent() {
+  return logoMarqueeContentByLocale[await getCurrentLocale()];
+}
+
+export async function getIntegrationsContent() {
+  return integrationsContentByLocale[await getCurrentLocale()];
+}
+
+export async function getMissionContent() {
+  return missionContentByLocale[await getCurrentLocale()];
+}
+
+export async function getTeamContent() {
+  return teamContentByLocale[await getCurrentLocale()];
+}
+
+export async function getHistoryContent() {
+  return historyContentByLocale[await getCurrentLocale()];
+}
+
+export async function getCustodyContent() {
+  return custodyContentByLocale[await getCurrentLocale()];
+}
+
+export async function getCryptoTradingContent() {
+  const current = await getCurrentLocale();
+  return {
+    hero: cryptoTradingHeroContentByLocale[current],
+    proven: cryptoTradingProvenContentByLocale[current],
+    stats: cryptoTradingStatsByLocale[current],
+    capabilitiesContent: cryptoTradingCapabilitiesContentByLocale[current],
+    features: cryptoTradingFeaturesByLocale[current],
+    featureGridContent: cryptoTradingFeatureGridContentByLocale[current],
+    featureGridItems: cryptoTradingFeatureGridItemsByLocale[current],
+    howItWorksContent: cryptoTradingHowItWorksContentByLocale[current],
+    howItWorksSteps: cryptoTradingHowItWorksStepsByLocale[current],
+    howItWorksImage: cryptoTradingHowItWorksImageByLocale[current],
+    cta: cryptoTradingCtaContentByLocale[current],
+  };
+}
+
+export async function getStablecoinPaymentsContent() {
+  const current = await getCurrentLocale();
+  return {
+    hero: stablecoinPaymentsHeroContentByLocale[current],
+    featureGridContent: stablecoinPaymentsFeatureGridContentByLocale[current],
+    featureGridItems: stablecoinPaymentsFeatureGridItemsByLocale[current],
+    capabilitiesContent: stablecoinPaymentsCapabilitiesContentByLocale[current],
+    capabilities: stablecoinPaymentsCapabilitiesByLocale[current],
+    howItWorksContent: stablecoinPaymentsHowItWorksContentByLocale[current],
+    flow: stablecoinPaymentsFlowByLocale[current],
+    demoContent: stablecoinPaymentsDemoContentByLocale[current],
+    demoSteps: stablecoinPaymentsDemoStepsByLocale[current],
+    cta: stablecoinPaymentsCtaContentByLocale[current],
+  };
 }

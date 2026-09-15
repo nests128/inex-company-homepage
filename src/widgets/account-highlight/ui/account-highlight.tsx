@@ -8,10 +8,18 @@
 // mobile artboard for this sketch, so this stacks (card panel above
 // heading) on small screens via a plain `grid gap-* lg:grid-cols-2` rather
 // than being hidden below `lg`.
-import { FlowDiagram, Reveal } from "@/shared/ui"
-import { accountHighlightContent, accountHighlightFlow } from "@/entities/company"
+import { locale as getLocale } from "next/root-params"
 
-export function AccountHighlight() {
+import { FlowDiagram, Reveal } from "@/shared/ui"
+import { accountHighlightContentByLocale, accountHighlightFlowByLocale } from "@/entities/company"
+import { isLocale, defaultLocale } from "@/shared/lib/i18n"
+
+export async function AccountHighlight() {
+  const rawLocale = await getLocale()
+  const locale = isLocale(rawLocale) ? rawLocale : defaultLocale
+  const accountHighlightContent = accountHighlightContentByLocale[locale]
+  const accountHighlightFlow = accountHighlightFlowByLocale[locale]
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-20">
@@ -36,7 +44,7 @@ export function AccountHighlight() {
           <h2 className="text-2xl leading-[1.2] tracking-[-.015em] whitespace-pre-line lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
             {accountHighlightContent.heading}
           </h2>
-          <p className="mt-4 max-w-xl text-sm leading-[1.65] text-muted-foreground lg:mt-5 lg:text-[16.5px] lg:leading-[1.7]">
+          <p className="mt-4 max-w-xl text-sm leading-[1.65] text-muted-foreground lg:mt-5 lg:max-w-2xl lg:text-[16.5px] lg:leading-[1.7]">
             {accountHighlightContent.description}
           </p>
         </Reveal>

@@ -1,8 +1,10 @@
 import Link from "next/link"
+import { locale as getLocale } from "next/root-params"
 
 import { Badge, NewsCard } from "@/shared/ui"
 import type { NewsPost } from "@/shared/lib/confluence"
-import { newsDetailContent } from "@/entities/company"
+import { newsDetailContentByLocale, newsListContentByLocale } from "@/entities/company"
+import { isLocale, defaultLocale, publicPath } from "@/shared/lib/i18n"
 
 export interface NewsDetailSectionProps {
   post: NewsPost
@@ -26,13 +28,18 @@ export interface NewsDetailSectionProps {
  * descendant-selector styling on the `dangerouslySetInnerHTML` wrapper
  * instead of a `prose` class.
  */
-export function NewsDetailSection({ post, relatedPosts }: NewsDetailSectionProps) {
+export async function NewsDetailSection({ post, relatedPosts }: NewsDetailSectionProps) {
+  const rawLocale = await getLocale()
+  const locale = isLocale(rawLocale) ? rawLocale : defaultLocale
+  const newsDetailContent = newsDetailContentByLocale[locale]
+  const imageAltPrefix = newsListContentByLocale[locale].imageAltPrefix
+
   return (
-    <section aria-label="INEX 소식 상세" className="py-14 lg:py-20">
+    <section aria-label={locale === "ko" ? "INEX 소식 상세" : "INEX news detail"} className="py-14 lg:py-20">
       <div className="container-inex flex flex-col gap-10 lg:gap-14">
         <div className="mx-auto flex w-full max-w-[960px] flex-col gap-5">
           <Link
-            href="/news"
+            href={publicPath(locale, "/news")}
             className="w-fit text-[13.5px] font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
             {newsDetailContent.backToListLabel}
@@ -70,7 +77,8 @@ export function NewsDetailSection({ post, relatedPosts }: NewsDetailSectionProps
                   excerpt={related.excerpt}
                   category={related.category}
                   thumbnailUrl={related.thumbnailUrl}
-                  href={`/news/${related.slug}`}
+                  href={publicPath(locale, `/news/${related.slug}`)}
+                  imageAltPrefix={imageAltPrefix}
                 />
               ))}
             </div>

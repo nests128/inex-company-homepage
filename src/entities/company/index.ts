@@ -12,9 +12,9 @@ export {
 } from "./model/hero-content"
 
 export {
-  featureShowcaseContent,
-  featureShowcaseHighlights,
-  featureShowcaseItems,
+  featureShowcaseContentByLocale,
+  featureShowcaseHighlightsByLocale,
+  featureShowcaseItemsByLocale,
   featureShowcaseVideo,
   type FeatureShowcaseItem,
   type FeatureShowcaseHighlight,
@@ -27,65 +27,60 @@ export {
 } from "./model/operations-split-content"
 
 export {
-  footerBrand,
-  footerMainLinks,
-  footerContacts,
-  footerLegal,
-  footerPartnershipCta,
-  footerPrivacyPolicy,
-  footerDisclaimer,
-  footerSocialLinks,
+  footerBrandByLocale,
+  footerMainLinksByLocale,
+  footerContactsByLocale,
+  footerLegalByLocale,
+  footerPartnershipCtaByLocale,
+  footerPrivacyPolicyByLocale,
+  footerDisclaimerByLocale,
+  footerSocialLinksByLocale,
   type FooterContactItem,
+  type FooterLegalContent,
   type FooterSocialLink,
 } from "./model/footer-content"
 
 export { partners, type Partner } from "./model/partners"
 
-export { logoMarqueeContent } from "./model/logo-marquee-content"
+export { logoMarqueeContentByLocale } from "./model/logo-marquee-content"
 
 export {
-  accountHighlightContent,
-  accountHighlightFlow,
+  accountHighlightContentByLocale,
+  accountHighlightFlowByLocale,
 } from "./model/account-highlight-content"
 
 export {
-  integrationsContent,
+  integrationsContentByLocale,
   stablecoinChainIcons,
   type StablecoinChainIcon,
 } from "./model/integrations-content"
 
-export { newsletterHeroContent } from "./model/newsletter-hero-content"
+export { newsletterHeroContentByLocale } from "./model/newsletter-hero-content"
 
-export { successStoriesContent } from "./model/success-stories-content"
+export { successStoriesContentByLocale } from "./model/success-stories-content"
 
 export {
-  trustGridContent,
-  trustGridCards,
-  trustGridChartCandles,
-  trustGridChartSymbol,
-  trustGridChartPrice,
-  trustGridOrderbookAsks,
-  trustGridOrderbookBids,
-  trustGridRampNodes,
+  trustGridContentByLocale,
   type TrustGridCard,
   type TrustGridIconKey,
   type TrustGridRampNode,
   type TrustGridRampNodeIconKey,
 } from "./model/trust-grid-content"
 
-export { missionContent } from "./model/mission-content"
+export { missionContentByLocale } from "./model/mission-content"
 
-export { teamContent, teamMembers } from "./model/team-content"
+export { teamContentByLocale } from "./model/team-content"
 
-export { historyContent, historyYears } from "./model/history-content"
+export { historyContentByLocale } from "./model/history-content"
 
-export { newsListContent, newsDetailContent } from "./model/news-content"
+export { newsListContentByLocale, newsDetailContentByLocale } from "./model/news-content"
 
 export {
-  cryptoTradingHeroContent,
-  cryptoTradingProvenContent,
-  cryptoTradingStats,
-  cryptoTradingFeatures,
+  cryptoTradingHeroContentByLocale,
+  cryptoTradingProvenContentByLocale,
+  cryptoTradingStatsByLocale,
+  cryptoTradingCapabilitiesContentByLocale,
+  cryptoTradingFeaturesByLocale,
   cryptoTradingSdkSnippet,
   cryptoTradingOrderbookApiRequest,
   cryptoTradingOrderbookApiResponse,
@@ -94,12 +89,12 @@ export {
   cryptoTradingChartCandles,
   cryptoTradingOrderbookAsks,
   cryptoTradingOrderbookBids,
-  cryptoTradingCtaContent,
-  cryptoTradingFeatureGridContent,
-  cryptoTradingFeatureGridItems,
-  cryptoTradingHowItWorksContent,
-  cryptoTradingHowItWorksSteps,
-  cryptoTradingHowItWorksImage,
+  cryptoTradingCtaContentByLocale,
+  cryptoTradingFeatureGridContentByLocale,
+  cryptoTradingFeatureGridItemsByLocale,
+  cryptoTradingHowItWorksContentByLocale,
+  cryptoTradingHowItWorksStepsByLocale,
+  cryptoTradingHowItWorksImageByLocale,
   type CryptoTradingHeroContent,
   type CryptoTradingStat,
   type CryptoTradingFeatureIconKey,
@@ -110,16 +105,16 @@ export {
 } from "./model/crypto-trading-content"
 
 export {
-  stablecoinPaymentsHeroContent,
-  stablecoinPaymentsFeatureGridContent,
-  stablecoinPaymentsFeatureGridItems,
-  stablecoinPaymentsCapabilitiesContent,
-  stablecoinPaymentsCapabilities,
-  stablecoinPaymentsHowItWorksContent,
-  stablecoinPaymentsFlow,
-  stablecoinPaymentsDemoContent,
-  stablecoinPaymentsDemoSteps,
-  stablecoinPaymentsCtaContent,
+  stablecoinPaymentsHeroContentByLocale,
+  stablecoinPaymentsFeatureGridContentByLocale,
+  stablecoinPaymentsFeatureGridItemsByLocale,
+  stablecoinPaymentsCapabilitiesContentByLocale,
+  stablecoinPaymentsCapabilitiesByLocale,
+  stablecoinPaymentsHowItWorksContentByLocale,
+  stablecoinPaymentsFlowByLocale,
+  stablecoinPaymentsDemoContentByLocale,
+  stablecoinPaymentsDemoStepsByLocale,
+  stablecoinPaymentsCtaContentByLocale,
   type StablecoinPaymentsHeroContent,
   type StablecoinPaymentsFeatureGridIconKey,
   type StablecoinPaymentsFeatureGridItem,
@@ -131,16 +126,11 @@ export {
 } from "./model/stablecoin-payments-content"
 
 export {
-  custodyHeroContent,
-  custodyFeatureGridContent,
-  custodyFeatureGridItems,
-  custodyCapabilitiesContent,
-  custodyCapabilities,
-  custodyProvenContent,
-  custodyCtaContent,
+  custodyContentByLocale,
   type CustodyHeroContent,
   type CustodyFeatureGridIconKey,
   type CustodyFeatureGridItem,
   type CustodyCapabilityConsoleKey,
   type CustodyCapabilityItem,
+  type CustodyMonitorEvent,
 } from "./model/custody-content"

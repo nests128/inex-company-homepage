@@ -5,8 +5,8 @@ export {
   type SettlementApprover,
 } from "./ui/settlement-rail-card"
 export {
-  heroSettlementRailCard,
-  heroSettlementRailCardMobile,
+  heroSettlementRailCardByLocale,
+  heroSettlementRailCardMobileByLocale,
 } from "./model/hero-rails"
 export {
   SettlementQueueTable,
@@ -14,8 +14,8 @@ export {
   type SettlementQueueRow,
 } from "./ui/settlement-queue-table"
 export {
-  settlementQueueContent,
-  settlementQueueRows,
+  settlementQueueContentByLocale,
+  settlementQueueRowsByLocale,
 } from "./model/settlement-queue"
 export {
   SettlementStatusCard,
@@ -23,9 +23,9 @@ export {
   type SettlementStatusBar,
 } from "./ui/settlement-status-card"
 export {
-  settlementStatusContent,
-  settlementStatusBars,
+  settlementStatusContentByLocale,
+  settlementStatusBarsByLocale,
 } from "./model/settlement-status"
-export { paymentCardContent } from "./model/payment-card"
-export { custodyStatusCard } from "./model/custody-card"
-export { stablecoinOrderContent } from "./model/stablecoin-order"
+export { paymentCardContentByLocale } from "./model/payment-card"
+export { custodyStatusCardByLocale } from "./model/custody-card"
+export { stablecoinOrderContentByLocale } from "./model/stablecoin-order"

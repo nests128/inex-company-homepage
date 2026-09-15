@@ -17,7 +17,7 @@ import {
   operationsSplitContentByLocale,
   type OperationsFeatureIconKey,
 } from "@/entities/company"
-import { custodyStatusCard, stablecoinOrderContent } from "@/entities/settlement"
+import { custodyStatusCardByLocale, stablecoinOrderContentByLocale } from "@/entities/settlement"
 import type { Locale } from "@/shared/lib/i18n"
 
 /**
@@ -41,6 +41,8 @@ export function OperationsSplit({ locale }: { locale: Locale }) {
   const operationsSplitContent = operationsSplitContentByLocale[locale]
   const operationsSplitFeatures = operationsSplitContent.features
   const tradingTerminalHeader = operationsSplitContent.tradingTerminalHeader
+  const custodyStatusCard = custodyStatusCardByLocale[locale]
+  const stablecoinOrderContent = stablecoinOrderContentByLocale[locale]
 
   // Defaults to the item flagged `active` in the data (falls back to the
   // first item), preserving the previous static "Invoicing highlighted"
@@ -131,10 +133,13 @@ export function OperationsSplit({ locale }: { locale: Locale }) {
               ) : selected.visual === "account-card" ? (
                 <BalanceBarChartCard
                   title={custodyStatusCard.title}
-                  bars={custodyStatusCard.segments.map((segment) => ({
+                  bars={custodyStatusCard.segments.map((segment, index) => ({
                     label: segment.label,
                     percent: segment.percent,
-                    accent: segment.label === "콜드월렛",
+                    // 콜드월렛은 항상 0번째 세그먼트(entities/settlement/model/custody-card.ts) —
+                    // 로케일별로 라벨 문자열이 달라지므로("콜드월렛" vs "Cold
+                    // Wallet") 문자열 비교 대신 위치로 판별한다.
+                    accent: index === 0,
                   }))}
                   className="w-[74%]"
                 />
@@ -143,6 +148,8 @@ export function OperationsSplit({ locale }: { locale: Locale }) {
                   symbol={tradingTerminalHeader.symbol}
                   price={tradingTerminalHeader.price}
                   changePercent={tradingTerminalHeader.changePercent}
+                  priceColumnLabel={locale === "en" ? "Price (USDT)" : "호가(KRW)"}
+                  amountColumnLabel={locale === "en" ? "Amount (BTC)" : "수량(BTC)"}
                   className="w-[74%]"
                 />
               ) : (

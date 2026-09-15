@@ -1,7 +1,21 @@
-export const integrationsContent = {
-  heading: "멀티체인, 하나의 정산 인터페이스",
-  description:
-    "비트코인부터 스테이블코인까지, 서로 다른 체인 위의 자산을 하나의 API로 조회·정산·전송할 수 있습니다.",
+import type { Locale } from "@/shared/lib/i18n"
+
+interface IntegrationsContent {
+  heading: string
+  description: string
+}
+
+export const integrationsContentByLocale: Record<Locale, IntegrationsContent> = {
+  ko: {
+    heading: "멀티체인, 하나의 정산 인터페이스",
+    description:
+      "비트코인부터 스테이블코인까지, 서로 다른 체인 위의 자산을 하나의 API로 조회·정산·전송할 수 있습니다.",
+  },
+  en: {
+    heading: "Multi-chain, one settlement interface",
+    description:
+      "From Bitcoin to stablecoins, query, settle, and transfer assets across different chains through a single API.",
+  },
 }
 
 export interface StablecoinChainIcon {

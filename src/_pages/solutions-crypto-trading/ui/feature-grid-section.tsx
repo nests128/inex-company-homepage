@@ -13,14 +13,8 @@ import {
 import Image from "next/image";
 
 import { Reveal } from "@/shared/ui";
-import {
-  cryptoTradingFeatureGridContent,
-  cryptoTradingFeatureGridItems,
-  cryptoTradingHowItWorksContent,
-  cryptoTradingHowItWorksSteps,
-  cryptoTradingHowItWorksImage,
-  type CryptoTradingFeatureGridIconKey,
-} from "@/entities/company";
+import { type CryptoTradingFeatureGridIconKey } from "@/entities/company";
+import { getCryptoTradingContent } from "@/entities/company/server";
 
 function FeatureGridIcon({ iconKey }: { iconKey: CryptoTradingFeatureGridIconKey }) {
   switch (iconKey) {
@@ -49,16 +43,18 @@ function SectionEyebrow({ label }: { label: string }) {
   );
 }
 
-export function FeatureGridSection() {
+export async function FeatureGridSection() {
+  const content = await getCryptoTradingContent();
+
   return (
     <>
       {/* "Key use cases": 흰 배경, 좌측정렬 헤딩 + 6카드 그리드. */}
       <section className="py-14 lg:py-24">
         <div className="container-inex">
           <Reveal as="div">
-            <SectionEyebrow label={cryptoTradingFeatureGridContent.eyebrow} />
+            <SectionEyebrow label={content.featureGridContent.eyebrow} />
             <h2 className="text-2xl leading-[1.2] tracking-[-.015em] whitespace-pre-line lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
-              {cryptoTradingFeatureGridContent.title}
+              {content.featureGridContent.title}
             </h2>
           </Reveal>
 
@@ -71,7 +67,7 @@ export function FeatureGridSection() {
                 얇은 테두리(outline) 카드. `IconFeatureCard`(다른 곳에서 회색
                 채움으로 쓰이는 공용 컴포넌트)를 재사용하지 않고 이 페이지
                 전용 마크업으로 둔다. */}
-            {cryptoTradingFeatureGridItems.map((item) => (
+            {content.featureGridItems.map((item) => (
               <div
                 key={item.title}
                 className="flex flex-col rounded-2xl border border-border bg-background p-6"
@@ -99,9 +95,9 @@ export function FeatureGridSection() {
       <section className="py-14 lg:py-24">
         <div className="container-inex">
           <Reveal as="div">
-            <SectionEyebrow label={cryptoTradingHowItWorksContent.eyebrow} />
+            <SectionEyebrow label={content.howItWorksContent.eyebrow} />
             <h2 className="text-2xl leading-[1.2] tracking-[-.015em] whitespace-pre-line lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
-              {cryptoTradingHowItWorksContent.title}
+              {content.howItWorksContent.title}
             </h2>
           </Reveal>
 
@@ -111,7 +107,7 @@ export function FeatureGridSection() {
             className="mt-10 grid grid-cols-1 items-center gap-10 overflow-hidden rounded-2xl bg-muted p-6 lg:mt-14 lg:grid-cols-2 lg:gap-16 lg:p-14"
           >
             <ol className="flex flex-col gap-7 lg:gap-9">
-              {cryptoTradingHowItWorksSteps.map((step, index) => (
+              {content.howItWorksSteps.map((step, index) => (
                 <li key={step.title} className="flex gap-4">
                   <span
                     aria-hidden="true"
@@ -144,8 +140,8 @@ export function FeatureGridSection() {
                   카드 하단 쪽으로 크게 내려, 폰 상단부가 더 잘 보이게 한다. */}
               <div className="absolute top-[90%] left-1/2 aspect-square w-[135%] max-w-2xl -translate-x-1/2 -translate-y-1/2">
                 <Image
-                  src={cryptoTradingHowItWorksImage.src}
-                  alt={cryptoTradingHowItWorksImage.alt}
+                  src={content.howItWorksImage.src}
+                  alt={content.howItWorksImage.alt}
                   fill
                   sizes="(min-width: 1024px) 45vw, 90vw"
                   className="object-contain"

@@ -15,12 +15,85 @@ import { cn } from "cn";
 
 import { Reveal, Terminal } from "@/shared/ui";
 import {
-  stablecoinPaymentsDemoContent,
-  stablecoinPaymentsDemoSteps,
+  stablecoinPaymentsDemoContentByLocale,
+  stablecoinPaymentsDemoStepsByLocale,
   type StablecoinPaymentsDemoCodeBlock,
   type StablecoinPaymentsDemoScreen,
   type StablecoinPaymentsDemoStep,
 } from "@/entities/company";
+import type { Locale } from "@/shared/lib/i18n";
+
+/**
+ * Demo 섹션의 UI 라벨(폰 목업 화면 안 문구, 이전/다음 버튼 등)은
+ * `stablecoin-payments-content.ts`의 스텝 데이터가 아니라 이 파일 안에
+ * 하드코딩돼 있었다 — 로케일 분기를 위해 작은 딕셔너리로 뺀다.
+ */
+const DEMO_UI_TEXT = {
+  ko: {
+    payment: "결제",
+    merchant: "가맹점",
+    paymentAmount: "결제 금액",
+    payButton: "결제하기",
+    registerFormTitle: "회원 정보 입력",
+    reviewing: "INEX 검토 중",
+    pleaseWait: "잠시만 기다려 주세요",
+    qrScanToDeposit: "QR 스캔으로 입금",
+    network: "네트워크",
+    depositAmount: "입금 수량",
+    depositAddress: "입금 주소",
+    processing: "INEX 처리 중",
+    paymentCompletedSuffix: "결제 완료",
+    paymentDate: "결제일시",
+    paymentMethod: "결제방법",
+    orderId: "거래번호",
+    transactionDetail: "거래 상세",
+    paymentInfo: "결제 정보",
+    fee: "수수료",
+    finalAmount: "최종 결제액",
+    transactionInfo: "거래 정보",
+    transactionDate: "거래일시",
+    blockchain: "블록체인",
+    confirmations: "컨펌",
+    reviewInProgress: "검토 진행",
+    receiptOnlyNotice: "이 단계는 고객이 거래 내역에서 상세 정보를 확인하는 화면입니다.",
+    prevStep: "이전 단계",
+    next: "다음",
+    request: "Request",
+    response: "Response",
+  },
+  en: {
+    payment: "Payment",
+    merchant: "Merchant",
+    paymentAmount: "Payment amount",
+    payButton: "Pay now",
+    registerFormTitle: "Enter your information",
+    reviewing: "INEX reviewing",
+    pleaseWait: "Please wait a moment",
+    qrScanToDeposit: "Scan QR to deposit",
+    network: "Network",
+    depositAmount: "Deposit amount",
+    depositAddress: "Deposit address",
+    processing: "INEX processing",
+    paymentCompletedSuffix: "payment completed",
+    paymentDate: "Date",
+    paymentMethod: "Method",
+    orderId: "Order ID",
+    transactionDetail: "Transaction detail",
+    paymentInfo: "Payment info",
+    fee: "Fee",
+    finalAmount: "Final amount",
+    transactionInfo: "Transaction info",
+    transactionDate: "Date",
+    blockchain: "Blockchain",
+    confirmations: "Confirmations",
+    reviewInProgress: "Review in progress",
+    receiptOnlyNotice: "This step is where the customer views detailed information in their transaction history.",
+    prevStep: "Previous step",
+    next: "Next",
+    request: "Request",
+    response: "Response",
+  },
+} satisfies Record<Locale, Record<string, string>>;
 
 /**
  * Minimal token-based syntax highlighter — 동일 패턴이 크립토 트레이딩
@@ -170,34 +243,36 @@ function useChecklistProgress(count: number, resetKey: unknown, intervalMs = 110
 function PhoneScreenContent({
   screen,
   progressIndex,
+  ui,
 }: {
   screen: StablecoinPaymentsDemoScreen;
   progressIndex: number;
+  ui: (typeof DEMO_UI_TEXT)[Locale];
 }) {
   switch (screen.kind) {
     case "payment-request":
       return (
         <div className="flex h-full flex-col gap-4 p-5">
-          <p className="text-[13px] font-bold text-foreground">결제</p>
+          <p className="text-[13px] font-bold text-foreground">{ui.payment}</p>
           <div className="rounded-xl border border-border bg-muted px-3 py-3">
-            <p className="text-[9.5px] font-medium text-muted-foreground">가맹점</p>
+            <p className="text-[9.5px] font-medium text-muted-foreground">{ui.merchant}</p>
             <p className="mt-0.5 text-[13px] font-bold text-foreground">{screen.merchant}</p>
           </div>
           <div className="flex flex-col items-center gap-1 rounded-xl bg-sky-50 py-5 text-center">
-            <p className="text-[10.5px] text-muted-foreground">결제 금액</p>
+            <p className="text-[10.5px] text-muted-foreground">{ui.paymentAmount}</p>
             <p className="text-[24px] font-bold text-sky-700">
               {screen.amount} <span className="text-[13px] font-medium">{screen.asset}</span>
             </p>
           </div>
           <span className="mt-auto w-full rounded-lg bg-foreground py-2.5 text-center text-[12.5px] font-bold text-background">
-            결제하기
+            {ui.payButton}
           </span>
         </div>
       );
     case "register-form":
       return (
         <div className="flex h-full flex-col gap-3 overflow-y-auto p-5">
-          <p className="text-[12.5px] font-bold text-foreground">회원 정보 입력</p>
+          <p className="text-[12.5px] font-bold text-foreground">{ui.registerFormTitle}</p>
           {screen.fields.map((field) => (
             <div key={field.label} className="flex flex-col gap-1">
               <span className="text-[9.5px] font-medium text-muted-foreground">{field.label}</span>
@@ -213,8 +288,8 @@ function PhoneScreenContent({
         <div className="flex h-full flex-col items-center justify-center gap-5 p-5">
           <LoaderCircleIcon className="size-9 animate-spin text-sky-600" aria-hidden="true" />
           <div className="text-center">
-            <p className="text-[13px] font-bold text-foreground">INEX 검토 중</p>
-            <p className="mt-0.5 text-[10.5px] text-muted-foreground">잠시만 기다려 주세요</p>
+            <p className="text-[13px] font-bold text-foreground">{ui.reviewing}</p>
+            <p className="mt-0.5 text-[10.5px] text-muted-foreground">{ui.pleaseWait}</p>
           </div>
           <div className="flex w-full flex-col gap-2.5">
             {screen.items.map((item, index) => (
@@ -242,21 +317,21 @@ function PhoneScreenContent({
                 }}
               />
             </div>
-            <p className="text-[10px] text-muted-foreground">QR 스캔으로 입금</p>
+            <p className="text-[10px] text-muted-foreground">{ui.qrScanToDeposit}</p>
           </div>
           <div className="flex flex-col gap-1.5 rounded-xl border border-border bg-muted px-3 py-2.5 text-[10.5px]">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">네트워크</span>
+              <span className="text-muted-foreground">{ui.network}</span>
               <span className="font-bold text-foreground">{screen.network}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">입금 수량</span>
+              <span className="text-muted-foreground">{ui.depositAmount}</span>
               <span className="font-bold text-foreground">
                 {screen.amount} {screen.asset}
               </span>
             </div>
             <div className="flex items-center justify-between gap-2">
-              <span className="shrink-0 text-muted-foreground">입금 주소</span>
+              <span className="shrink-0 text-muted-foreground">{ui.depositAddress}</span>
               <span className="truncate font-bold text-sky-700">{screen.address}</span>
             </div>
           </div>
@@ -267,12 +342,12 @@ function PhoneScreenContent({
         <div className="flex h-full flex-col items-center justify-center gap-4 p-5">
           <LoaderCircleIcon className="size-9 animate-spin text-sky-600" aria-hidden="true" />
           <div className="text-center">
-            <p className="text-[13px] font-bold text-foreground">INEX 처리 중</p>
-            <p className="mt-0.5 text-[10.5px] text-muted-foreground">잠시만 기다려 주세요</p>
+            <p className="text-[13px] font-bold text-foreground">{ui.processing}</p>
+            <p className="mt-0.5 text-[10.5px] text-muted-foreground">{ui.pleaseWait}</p>
           </div>
           <div className="flex w-full flex-col gap-2.5 rounded-xl border border-border bg-muted px-3 py-3">
             <div className="flex items-center justify-between">
-              <span className="text-[10.5px] text-muted-foreground">결제 금액</span>
+              <span className="text-[10.5px] text-muted-foreground">{ui.paymentAmount}</span>
               <span className="text-[13px] font-bold text-foreground">
                 {screen.amount} {screen.asset}
               </span>
@@ -298,21 +373,21 @@ function PhoneScreenContent({
               <CheckIcon className="size-5" aria-hidden="true" />
             </span>
             <p className="text-[15px] font-bold text-foreground">
-              {screen.amount} {screen.asset} 결제 완료
+              {screen.amount} {screen.asset} {ui.paymentCompletedSuffix}
             </p>
             <p className="text-[11px] text-muted-foreground">{screen.merchant}</p>
           </div>
           <div className="flex flex-col gap-1.5 rounded-xl border border-border bg-muted px-3 py-2.5 text-[10.5px]">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">결제일시</span>
+              <span className="text-muted-foreground">{ui.paymentDate}</span>
               <span className="font-bold text-foreground">{screen.date}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">결제방법</span>
+              <span className="text-muted-foreground">{ui.paymentMethod}</span>
               <span className="font-bold text-foreground">{screen.method}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">거래번호</span>
+              <span className="text-muted-foreground">{ui.orderId}</span>
               <span className="font-bold text-sky-700">{screen.orderId}</span>
             </div>
           </div>
@@ -321,46 +396,46 @@ function PhoneScreenContent({
     case "receipt-detail":
       return (
         <div className="flex h-full flex-col gap-3 overflow-y-auto p-5 text-[10.5px]">
-          <p className="text-[12.5px] font-bold text-foreground">거래 상세</p>
+          <p className="text-[12.5px] font-bold text-foreground">{ui.transactionDetail}</p>
           <div className="flex flex-col gap-1.5 rounded-xl border border-border bg-muted px-3 py-2.5">
-            <p className="mb-0.5 text-[9.5px] font-bold tracking-[.06em] text-muted-foreground uppercase">결제 정보</p>
+            <p className="mb-0.5 text-[9.5px] font-bold tracking-[.06em] text-muted-foreground uppercase">{ui.paymentInfo}</p>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">가맹점</span>
+              <span className="text-muted-foreground">{ui.merchant}</span>
               <span className="font-bold text-foreground">{screen.merchant}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">결제 금액</span>
+              <span className="text-muted-foreground">{ui.paymentAmount}</span>
               <span className="font-bold text-foreground">{screen.amount}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">수수료</span>
+              <span className="text-muted-foreground">{ui.fee}</span>
               <span className="font-bold text-foreground">{screen.fee}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">최종 결제액</span>
+              <span className="text-muted-foreground">{ui.finalAmount}</span>
               <span className="font-bold text-sky-700">{screen.total}</span>
             </div>
           </div>
           <div className="flex flex-col gap-1.5 rounded-xl border border-border bg-muted px-3 py-2.5">
-            <p className="mb-0.5 text-[9.5px] font-bold tracking-[.06em] text-muted-foreground uppercase">거래 정보</p>
+            <p className="mb-0.5 text-[9.5px] font-bold tracking-[.06em] text-muted-foreground uppercase">{ui.transactionInfo}</p>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">거래번호</span>
+              <span className="text-muted-foreground">{ui.orderId}</span>
               <span className="font-bold text-sky-700">{screen.orderId}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">거래일시</span>
+              <span className="text-muted-foreground">{ui.transactionDate}</span>
               <span className="font-bold text-foreground">{screen.date}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">결제 수단</span>
+              <span className="text-muted-foreground">{ui.paymentMethod}</span>
               <span className="font-bold text-foreground">{screen.method}</span>
             </div>
           </div>
           <div className="flex flex-col gap-1.5 rounded-xl border border-border bg-muted px-3 py-2.5">
-            <p className="mb-0.5 text-[9.5px] font-bold tracking-[.06em] text-muted-foreground uppercase">블록체인</p>
+            <p className="mb-0.5 text-[9.5px] font-bold tracking-[.06em] text-muted-foreground uppercase">{ui.blockchain}</p>
             <p className="truncate font-bold text-sky-700">{screen.txId}</p>
             <div className="mt-1 flex justify-between">
-              <span className="text-muted-foreground">컨펌</span>
+              <span className="text-muted-foreground">{ui.confirmations}</span>
               <span className="font-bold text-foreground">{screen.confirmations}</span>
             </div>
           </div>
@@ -370,7 +445,15 @@ function PhoneScreenContent({
 }
 
 /** iPhone-style frame (rounded bezel + notch) wrapping the step's phone screen. */
-function PhoneMockup({ step, progressIndex }: { step: StablecoinPaymentsDemoStep; progressIndex: number }) {
+function PhoneMockup({
+  step,
+  progressIndex,
+  ui,
+}: {
+  step: StablecoinPaymentsDemoStep;
+  progressIndex: number;
+  ui: (typeof DEMO_UI_TEXT)[Locale];
+}) {
   return (
     <div className="flex aspect-[9/17.5] w-[220px] max-w-full flex-col rounded-[2.5rem] border-[6px] border-foreground bg-background p-1.5 shadow-xl lg:w-[240px]">
       <div className="relative flex-1 overflow-hidden rounded-[2rem] bg-background">
@@ -379,14 +462,20 @@ function PhoneMockup({ step, progressIndex }: { step: StablecoinPaymentsDemoStep
           className="absolute top-2 left-1/2 h-4 w-20 -translate-x-1/2 rounded-full bg-foreground"
         />
         <div className="flex h-full flex-col pt-8">
-          <PhoneScreenContent screen={step.screen} progressIndex={progressIndex} />
+          <PhoneScreenContent screen={step.screen} progressIndex={progressIndex} ui={ui} />
         </div>
       </div>
     </div>
   );
 }
 
-function CodeBlock({ block }: { block: StablecoinPaymentsDemoCodeBlock }) {
+function CodeBlock({
+  block,
+  ui,
+}: {
+  block: StablecoinPaymentsDemoCodeBlock;
+  ui: (typeof DEMO_UI_TEXT)[Locale];
+}) {
   return (
     <Terminal tone="light" showTrafficLights={false} className="overflow-hidden">
       <div className="mb-1 flex items-center justify-between border-b border-border pb-2">
@@ -400,19 +489,27 @@ function CodeBlock({ block }: { block: StablecoinPaymentsDemoCodeBlock }) {
         </div>
         <span className="text-[10.5px] font-bold text-sky-600">{block.status}</span>
       </div>
-      <p className="mt-1 text-[9.5px] font-bold tracking-[.06em] text-muted-foreground uppercase">Request</p>
+      <p className="mt-1 text-[9.5px] font-bold tracking-[.06em] text-muted-foreground uppercase">{ui.request}</p>
       <CodeLines lines={block.request} />
-      <p className="mt-3 text-[9.5px] font-bold tracking-[.06em] text-muted-foreground uppercase">Response</p>
+      <p className="mt-3 text-[9.5px] font-bold tracking-[.06em] text-muted-foreground uppercase">{ui.response}</p>
       <CodeLines lines={block.response} />
     </Terminal>
   );
 }
 
 /** Step-3/5 checklist-only panel — 원본 데모에는 코드 블록 없이 폰 화면의 체크리스트만 확대된 형태로 보였다. */
-function ChecklistPanel({ items, progressIndex }: { items: Array<{ label: string }>; progressIndex: number }) {
+function ChecklistPanel({
+  items,
+  progressIndex,
+  label,
+}: {
+  items: Array<{ label: string }>;
+  progressIndex: number;
+  label: string;
+}) {
   return (
     <div className="rounded-xl border border-border bg-muted p-5">
-      <p className="mb-3 text-[11px] font-bold tracking-[.06em] text-muted-foreground uppercase">검토 진행</p>
+      <p className="mb-3 text-[11px] font-bold tracking-[.06em] text-muted-foreground uppercase">{label}</p>
       <div className="flex flex-col gap-3">
         {items.map((item, index) => (
           <ChecklistRow
@@ -427,7 +524,10 @@ function ChecklistPanel({ items, progressIndex }: { items: Array<{ label: string
   );
 }
 
-export function DemoSection() {
+export function DemoSection({ locale }: { locale: Locale }) {
+  const ui = DEMO_UI_TEXT[locale];
+  const stablecoinPaymentsDemoContent = stablecoinPaymentsDemoContentByLocale[locale];
+  const stablecoinPaymentsDemoSteps = stablecoinPaymentsDemoStepsByLocale[locale];
   const [stepIndex, setStepIndex] = useState(0);
   const step = stablecoinPaymentsDemoSteps[stepIndex];
   const isFirst = stepIndex === 0;
@@ -463,7 +563,7 @@ export function DemoSection() {
           {/* 좌측: 회색 배경 박스 안 폰 목업만(사용자 명시적 요청, 2026-09-14
               — 스텝 라벨/설명은 우측 컬럼 상단, 코드 프리뷰 위로 이동). */}
           <div className="flex items-center justify-center rounded-2xl bg-muted p-8 lg:p-14">
-            <PhoneMockup step={step} progressIndex={progressIndex} />
+            <PhoneMockup step={step} progressIndex={progressIndex} ui={ui} />
           </div>
 
           {/* 우측: 탭 + 스텝 라벨/설명 + 코드 프리뷰(또는 체크리스트) + 이전/다음. */}
@@ -494,12 +594,12 @@ export function DemoSection() {
 
             <div className="mt-5 flex flex-1 flex-col gap-4">
               {step.codeBlocks.length > 0 ? (
-                step.codeBlocks.map((block) => <CodeBlock key={block.path} block={block} />)
+                step.codeBlocks.map((block) => <CodeBlock key={block.path} block={block} ui={ui} />)
               ) : step.screen.kind === "review-checklist" || step.screen.kind === "processing-checklist" ? (
-                <ChecklistPanel items={step.screen.items} progressIndex={progressIndex} />
+                <ChecklistPanel items={step.screen.items} progressIndex={progressIndex} label={ui.reviewInProgress} />
               ) : (
                 <p className="text-[13px] text-muted-foreground">
-                  이 단계는 고객이 거래 내역에서 상세 정보를 확인하는 화면입니다.
+                  {ui.receiptOnlyNotice}
                 </p>
               )}
             </div>
@@ -509,7 +609,7 @@ export function DemoSection() {
                 type="button"
                 onClick={() => setStepIndex((i) => Math.max(0, i - 1))}
                 disabled={isFirst}
-                aria-label="이전 단계"
+                aria-label={ui.prevStep}
                 className="flex size-9 items-center justify-center rounded-full bg-foreground text-background disabled:opacity-30"
               >
                 <ArrowLeftIcon className="size-4" aria-hidden="true" />
@@ -520,7 +620,7 @@ export function DemoSection() {
                 disabled={isLast}
                 className="flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-[13px] font-bold text-background disabled:opacity-30"
               >
-                다음
+                {ui.next}
                 <ArrowRightIcon className="size-4" aria-hidden="true" />
               </button>
             </div>

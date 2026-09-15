@@ -4,11 +4,8 @@
 import { BriefcaseIcon, LandmarkIcon, WalletIcon } from "lucide-react";
 
 import { Reveal } from "@/shared/ui";
-import {
-  custodyFeatureGridContent,
-  custodyFeatureGridItems,
-  type CustodyFeatureGridIconKey,
-} from "@/entities/company";
+import { type CustodyFeatureGridIconKey } from "@/entities/company";
+import { getCustodyContent } from "@/entities/company/server";
 
 function FeatureGridIcon({ iconKey }: { iconKey: CustodyFeatureGridIconKey }) {
   switch (iconKey) {
@@ -31,14 +28,16 @@ function SectionEyebrow({ label }: { label: string }) {
   );
 }
 
-export function FeatureGridSection() {
+export async function FeatureGridSection() {
+  const { featureGridContent, featureGridItems } = await getCustodyContent();
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex">
         <Reveal as="div">
-          <SectionEyebrow label={custodyFeatureGridContent.eyebrow} />
+          <SectionEyebrow label={featureGridContent.eyebrow} />
           <h2 className="text-2xl leading-[1.2] tracking-[-.015em] whitespace-pre-line lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
-            {custodyFeatureGridContent.title}
+            {featureGridContent.title}
           </h2>
         </Reveal>
 
@@ -47,7 +46,7 @@ export function FeatureGridSection() {
           delay={0.1}
           className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3"
         >
-          {custodyFeatureGridItems.map((item) => (
+          {featureGridItems.map((item) => (
             <div key={item.title} className="flex flex-col rounded-2xl bg-muted p-6">
               <div className="flex items-center gap-3">
                 <span

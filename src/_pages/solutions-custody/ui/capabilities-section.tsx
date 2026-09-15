@@ -6,11 +6,8 @@
 import { cn } from "cn";
 
 import { Reveal } from "@/shared/ui";
-import {
-  custodyCapabilities,
-  custodyCapabilitiesContent,
-  type CustodyCapabilityConsoleKey,
-} from "@/entities/company";
+import { type CustodyCapabilityConsoleKey } from "@/entities/company";
+import { getCustodyContent } from "@/entities/company/server";
 
 import { ApprovalConsole, AssetsConsole, PolicyConsole } from "./capability-consoles";
 
@@ -25,22 +22,24 @@ function CapabilityConsole({ consoleKey }: { consoleKey: CustodyCapabilityConsol
   }
 }
 
-export function CapabilitiesSection() {
+export async function CapabilitiesSection() {
+  const custodyContent = await getCustodyContent();
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex">
         <Reveal as="div">
           <div className="mb-3 flex items-center gap-2 text-[13px] font-medium text-foreground/80 lg:mb-4">
             <span aria-hidden="true" className="size-2.5 rounded-[3px] bg-sky-500" />
-            {custodyCapabilitiesContent.eyebrow}
+            {custodyContent.capabilitiesContent.eyebrow}
           </div>
           <h2 className="max-w-2xl text-2xl leading-[1.2] tracking-[-.015em] whitespace-pre-line lg:text-[37px] lg:leading-[1.2] lg:tracking-[-.02em]">
-            {custodyCapabilitiesContent.title}
+            {custodyContent.capabilitiesContent.title}
           </h2>
         </Reveal>
 
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-8">
-          {custodyCapabilities.map((item, index) => (
+          {custodyContent.capabilities.map((item, index) => (
             <Reveal as="div" delay={index * 0.08} key={item.title}>
               <div
                 className={cn(

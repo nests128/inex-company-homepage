@@ -1,16 +1,30 @@
+import { locale as getLocale } from "next/root-params"
+
 import { Button, FooterLinkGroup, InexLogoMark } from "@/shared/ui"
 import {
-  footerBrand,
-  footerContacts,
-  footerDisclaimer,
-  footerLegal,
-  footerMainLinks,
-  footerPartnershipCta,
-  footerPrivacyPolicy,
-  footerSocialLinks,
+  footerBrandByLocale,
+  footerContactsByLocale,
+  footerDisclaimerByLocale,
+  footerLegalByLocale,
+  footerMainLinksByLocale,
+  footerPartnershipCtaByLocale,
+  footerPrivacyPolicyByLocale,
+  footerSocialLinksByLocale,
 } from "@/entities/company"
+import { isLocale, defaultLocale, publicPath } from "@/shared/lib/i18n"
 
-export function Footer() {
+export async function Footer() {
+  const rawLocale = await getLocale()
+  const locale = isLocale(rawLocale) ? rawLocale : defaultLocale
+  const footerBrand = footerBrandByLocale[locale]
+  const footerContacts = footerContactsByLocale[locale]
+  const footerDisclaimer = footerDisclaimerByLocale[locale]
+  const footerLegal = footerLegalByLocale[locale]
+  const footerMainLinks = footerMainLinksByLocale[locale]
+  const footerPartnershipCta = footerPartnershipCtaByLocale[locale]
+  const footerPrivacyPolicy = footerPrivacyPolicyByLocale[locale]
+  const footerSocialLinks = footerSocialLinksByLocale[locale]
+
   return (
     // Full-bleed section: dark background + section-edge border + vertical
     // padding only (design-tokens.md "풀블리드 배경 + 컨테이너 콘텐츠"). Horizontal
@@ -33,7 +47,7 @@ export function Footer() {
             />
             <div className="flex flex-col gap-1.5 text-[14.5px] leading-relaxed text-muted-foreground">
               <span className="flex items-baseline gap-1.5">
-                <span className="text-white">법인명</span>
+                <span className="text-white">{footerLegal.companyNameLabel}</span>
                 <span>{footerLegal.companyName}</span>
               </span>
               <span className="flex items-baseline gap-1.5">
@@ -41,15 +55,15 @@ export function Footer() {
                 <span>{footerLegal.ceoName}</span>
               </span>
               <span className="flex items-baseline gap-1.5">
-                <span className="text-white">주소</span>
+                <span className="text-white">{footerLegal.addressLabel}</span>
                 <span>{footerLegal.address}</span>
               </span>
               <span className="flex items-baseline gap-1.5">
-                <span className="text-white">사업자등록번호</span>
+                <span className="text-white">{footerLegal.businessRegistrationLabel}</span>
                 <span>{footerLegal.businessRegistrationNumber}</span>
               </span>
               <span className="flex items-baseline gap-1.5">
-                <span className="text-white">가상자산사업자(VASP) 등록번호</span>
+                <span className="text-white">{footerLegal.vaspRegistrationLabel}</span>
                 <span>{footerLegal.vaspRegistrationNumber}</span>
               </span>
               <span className="flex items-baseline gap-1.5">
@@ -93,8 +107,14 @@ export function Footer() {
               CONTACT US는 더 붙여줘"). */}
           <div className="flex flex-col gap-10 sm:flex-row sm:gap-20">
             <FooterLinkGroup
-              title="메뉴"
-              links={footerMainLinks}
+              title={footerLegal.menuGroupLabel}
+              links={footerMainLinks.map((link) => ({
+                ...link,
+                href:
+                  link.href && !link.href.startsWith("http")
+                    ? publicPath(locale, link.href)
+                    : link.href,
+              }))}
               className="[&_a:focus-visible]:text-white [&_a:hover]:text-white [&_h2]:text-[15px] [&_h2]:text-white [&_ul]:text-[14.5px]"
             />
 

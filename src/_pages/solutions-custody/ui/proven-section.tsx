@@ -8,30 +8,32 @@
 // 전용이라 이 URL과 겹치지 않아, 여기선 원본 URL을 직접 참조하는 plain
 // `<img>`를 쓴다(SVG는 next/image 최적화 대상도 아님).
 import { Reveal } from "@/shared/ui";
-import { custodyProvenContent } from "@/entities/company";
+import { getCustodyContent } from "@/entities/company/server";
 
 const ISMS_BADGE_SRC = "https://cdn.inexcoin.com/service/common/isms.svg";
 
-export function ProvenSection() {
+export async function ProvenSection() {
+  const { proven } = await getCustodyContent();
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_auto] lg:gap-20">
         <Reveal as="div">
           <div className="mb-3 flex items-center gap-2 text-[13px] font-medium text-foreground/80 lg:mb-4">
             <span aria-hidden="true" className="size-2.5 rounded-[3px] bg-sky-500" />
-            {custodyProvenContent.eyebrow}
+            {proven.eyebrow}
           </div>
           <h2 className="text-2xl leading-[1.2] tracking-[-.015em] whitespace-pre-line lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
-            {custodyProvenContent.title}
+            {proven.title}
           </h2>
           <p className="mt-4 max-w-2xl text-[14.5px] leading-[1.6] text-muted-foreground lg:text-[16.5px] lg:leading-[1.7]">
-            {custodyProvenContent.description}
+            {proven.description}
           </p>
         </Reveal>
 
         <Reveal as="div" delay={0.1} className="shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element -- 외부 CDN SVG, next/image 최적화 대상 아님 */}
-          <img src={ISMS_BADGE_SRC} alt="ISMS 인증 마크" className="h-28 w-auto lg:h-40" />
+          <img src={ISMS_BADGE_SRC} alt="ISMS certification mark" className="h-28 w-auto lg:h-40" />
         </Reveal>
       </div>
     </section>

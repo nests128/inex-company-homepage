@@ -1,5 +1,8 @@
+import { locale as getLocale } from "next/root-params"
+
 import { fetchNewsPosts } from "@/shared/lib/confluence"
-import { newsListContent } from "@/entities/company"
+import { newsListContentByLocale } from "@/entities/company"
+import { isLocale, defaultLocale } from "@/shared/lib/i18n"
 import { NewsListClient } from "./news-list-client"
 
 export interface NewsListSectionProps {
@@ -15,6 +18,10 @@ export interface NewsListSectionProps {
  * (`NewsCategoryFilter` requires a client event-handler prop).
  */
 export async function NewsListSection({ page = 1 }: NewsListSectionProps) {
+  const rawLocale = await getLocale()
+  const locale = isLocale(rawLocale) ? rawLocale : defaultLocale
+  const newsListContent = newsListContentByLocale[locale]
+
   const posts = await fetchNewsPosts()
 
   const categories = [
@@ -25,7 +32,7 @@ export async function NewsListSection({ page = 1 }: NewsListSectionProps) {
   ]
 
   return (
-    <section aria-label="INEX 소식 목록" className="py-10 lg:py-14">
+    <section aria-label={newsListContent.sectionAriaLabel} className="py-10 lg:py-14">
       <div className="container-inex flex flex-col gap-8 lg:gap-10">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2 text-[13px] font-medium text-foreground/80">
@@ -42,7 +49,7 @@ export async function NewsListSection({ page = 1 }: NewsListSectionProps) {
             {newsListContent.emptyMessage}
           </p>
         ) : (
-          <NewsListClient posts={posts} categories={categories} page={page} />
+          <NewsListClient posts={posts} categories={categories} page={page} locale={locale} />
         )}
       </div>
     </section>

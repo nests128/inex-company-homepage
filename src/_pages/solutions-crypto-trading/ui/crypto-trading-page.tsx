@@ -1,8 +1,7 @@
 import { NavBar } from "@/widgets/nav-bar";
 import { Footer } from "@/widgets/footer";
 import { SolutionHero } from "@/widgets/solution-hero";
-import { cryptoTradingHeroContent } from "@/entities/company";
-import { getNavContent } from "@/entities/company/server";
+import { getNavContent, getCryptoTradingContent, getCurrentLocale } from "@/entities/company/server";
 
 import { FeatureGridSection } from "./feature-grid-section";
 import { ProvenSection } from "./proven-section";
@@ -10,23 +9,27 @@ import { CapabilitiesSection } from "./capabilities-section";
 import { CryptoTradingCtaSection } from "./crypto-trading-cta-section";
 
 export async function CryptoTradingPage() {
-  const nav = await getNavContent();
+  const [nav, content, locale] = await Promise.all([
+    getNavContent(),
+    getCryptoTradingContent(),
+    getCurrentLocale(),
+  ]);
 
   return (
     <div className="flex min-h-svh flex-col">
       <NavBar />
       <main>
         <SolutionHero
-          title={cryptoTradingHeroContent.title}
-          description={cryptoTradingHeroContent.description}
-          imageSrc={cryptoTradingHeroContent.imageSrc}
-          imageAlt={cryptoTradingHeroContent.imageAlt}
+          title={content.hero.title}
+          description={content.hero.description}
+          imageSrc={content.hero.imageSrc}
+          imageAlt={content.hero.imageAlt}
           exchangeLink={nav.exchangeLink}
-          appLinks={cryptoTradingHeroContent.appLinks}
+          appLinks={content.hero.appLinks}
         />
         <FeatureGridSection />
         <ProvenSection />
-        <CapabilitiesSection />
+        <CapabilitiesSection locale={locale} />
         <CryptoTradingCtaSection />
       </main>
       <Footer />

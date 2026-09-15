@@ -1,9 +1,12 @@
 // Owner: page-agent. Ref: ref/INEX SaaS wireframe/INEX Home Wireframe.dc.html
 // (logo marquee, ~L136-145 desktop / ~L353-359 mobile).
 import { Marquee, PartnerLogoCard, Reveal } from "@/shared/ui"
-import { logoMarqueeContent, partners } from "@/entities/company"
+import { partners } from "@/entities/company"
+import { getLogoMarqueeContent } from "@/entities/company/server"
 
-export function LogoMarquee() {
+export async function LogoMarquee() {
+  const logoMarqueeContent = await getLogoMarqueeContent()
+
   return (
     // Full-bleed section: vertical padding only (design-tokens.md "풀블리드
     // 배경 + 컨테이너 콘텐츠"). Wireframe desktop padding is 48px 0 64px;

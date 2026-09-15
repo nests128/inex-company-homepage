@@ -13,79 +13,149 @@ import {
   DialogTitle,
 } from "./dialog"
 import { cn } from "cn"
+import type { Locale } from "@/shared/lib/i18n"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const ERROR_MESSAGES: Record<string, string> = {
-  invalid_email: "올바른 이메일 주소를 입력해주세요.",
-  not_configured: "지금은 구독을 받을 수 없어요. 잠시 후 다시 시도해주세요.",
-  upstream_error: "일시적인 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
-  network_error: "네트워크 연결을 확인하고 다시 시도해주세요.",
-  bad_request: "요청을 처리할 수 없어요. 다시 시도해주세요.",
+interface NewsletterFormCopy {
+  errorMessages: Record<string, string>
+  defaultErrorMessage: string
+  placeholder: string
+  submitLabel: string
+  loadingLabel: string
+  successMessage: string
+  /** Also exposed as `NEWSLETTER_CONSENT_NOTICE_BY_LOCALE` for callers that position it outside this form (e.g. `CaseStudyBanner`'s card corner). */
+  consentNotice: string
+  consentLabel: string
+  consentDialogTitle: string
+  consentDialogDescription: string
+  consentItemA: { title: string; body: string; bullets: string[] }
+  consentItemB: { title: string; body: string; bullets: string[] }
+  cancelLabel: string
+  agreeLabel: string
 }
 
-const DEFAULT_ERROR_MESSAGE = "구독에 실패했어요. 잠시 후 다시 시도해주세요."
+// TODO(real-data): 「1. 광고성 정보(뉴스레터) 전송 시 준수 가이드」 최신판과 대조 필요.
+// 영문 컨센트 문구는 한글 원문의 의미를 그대로 옮긴 번역이며, 법무 검토
+// 문구 자체를 새로 작성한 것이 아니다.
+const COPY_BY_LOCALE: Record<Locale, NewsletterFormCopy> = {
+  ko: {
+    errorMessages: {
+      invalid_email: "올바른 이메일 주소를 입력해주세요.",
+      not_configured: "지금은 구독을 받을 수 없어요. 잠시 후 다시 시도해주세요.",
+      upstream_error: "일시적인 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
+      network_error: "네트워크 연결을 확인하고 다시 시도해주세요.",
+      bad_request: "요청을 처리할 수 없어요. 다시 시도해주세요.",
+    },
+    defaultErrorMessage: "구독에 실패했어요. 잠시 후 다시 시도해주세요.",
+    placeholder: "이메일 주소를 입력하세요",
+    submitLabel: "구독하기",
+    loadingLabel: "구독 처리 중...",
+    successMessage: "구독해주셔서 감사합니다!",
+    consentNotice: "동의 후에도 언제든 수신을 거부하거나 동의를 철회할 수 있습니다.",
+    consentLabel: "(필수) 마케팅 목적 개인정보 수집·이용 및 광고성 정보 수신에 동의합니다",
+    consentDialogTitle: "뉴스레터 수신 및 개인정보 처리 동의",
+    consentDialogDescription:
+      "뉴스레터 구독을 위해 아래 두 가지 사항에 대한 동의를 받고 있습니다. 내용을 확인하신 뒤 동의해주세요.",
+    consentItemA: {
+      title: "A. 마케팅 목적 개인정보 수집·이용 동의",
+      body: "회사는 아래와 같이 마케팅 목적의 개인정보 수집 및 이용에 관한 동의를 받고 있습니다. 본 동의는 선택 사항이며, 동의하지 않으셔도 서비스 이용에는 제한이 없습니다. 다만, 동의를 거부하실 경우 가상자산 시장 동향 레터 발송 및 신규 서비스·이벤트 안내 등이 제한될 수 있습니다.",
+      bullets: [
+        "수집·이용 목적: 가상자산 시장 동향 정보 레터 발송, 신규 서비스·이벤트 안내, 고객 맞춤형 정보 제공",
+        "수집 항목: 이메일 주소",
+        "보유·이용 기간: 동의 철회 시까지",
+      ],
+    },
+    consentItemB: {
+      title: "B. 광고성 정보 수신 동의",
+      body: "회사가 전송하는 광고성 정보(가상자산 동향 레터, 이벤트·혜택 안내 등)를 수신하는 데 대한 동의입니다. 본 동의는 선택 사항이며, 동의하지 않으셔도 서비스 이용에는 제한이 없습니다.",
+      bullets: [
+        "전송 매체: 이메일 수신 동의",
+        "수신 동의 후에도 언제든지 수신을 거부하거나 동의를 철회하실 수 있으며, 회사는 수신 동의일부터 2년마다 수신 동의 유지 여부를 확인합니다.",
+        "수신 거부·철회 방법: 광고성 정보 발송 메일 내 수신거부 링크",
+      ],
+    },
+    cancelLabel: "취소",
+    agreeLabel: "동의합니다",
+  },
+  en: {
+    errorMessages: {
+      invalid_email: "Please enter a valid email address.",
+      not_configured: "We can't accept subscriptions right now. Please try again shortly.",
+      upstream_error: "A temporary error occurred. Please try again shortly.",
+      network_error: "Please check your network connection and try again.",
+      bad_request: "We couldn't process that request. Please try again.",
+    },
+    defaultErrorMessage: "Subscription failed. Please try again shortly.",
+    placeholder: "Enter your email address",
+    submitLabel: "Subscribe",
+    loadingLabel: "Subscribing...",
+    successMessage: "Thanks for subscribing!",
+    consentNotice: "You can opt out or withdraw consent at any time after agreeing.",
+    consentLabel:
+      "(Required) I agree to the collection/use of personal information for marketing purposes and to receive promotional information",
+    consentDialogTitle: "Newsletter & Personal Information Consent",
+    consentDialogDescription:
+      "Subscribing to the newsletter requires consent to the two items below. Please review them before agreeing.",
+    consentItemA: {
+      title: "A. Consent to Collection/Use of Personal Information for Marketing",
+      body: "We collect and use personal information for marketing purposes as described below. This consent is optional, and declining it does not limit your use of the service. However, declining may limit delivery of digital asset market trend letters and notices about new services/events.",
+      bullets: [
+        "Purpose: Sending digital asset market trend letters, notices about new services/events, personalized information",
+        "Items collected: Email address",
+        "Retention period: Until consent is withdrawn",
+      ],
+    },
+    consentItemB: {
+      title: "B. Consent to Receive Promotional Information",
+      body: "This is consent to receive promotional information sent by the company (digital asset trend letters, event/benefit notices, etc.). This consent is optional, and declining it does not limit your use of the service.",
+      bullets: [
+        "Delivery channel: Email",
+        "You may opt out or withdraw consent at any time after agreeing; we reconfirm consent every 2 years from the date of agreement.",
+        "How to opt out: Unsubscribe link in each promotional email",
+      ],
+    },
+    cancelLabel: "Cancel",
+    agreeLabel: "I agree",
+  },
+}
 
-function getErrorMessage(code: string | undefined) {
-  if (!code) return DEFAULT_ERROR_MESSAGE
-  return ERROR_MESSAGES[code] ?? DEFAULT_ERROR_MESSAGE
+function getErrorMessage(copy: NewsletterFormCopy, code: string | undefined) {
+  if (!code) return copy.defaultErrorMessage
+  return copy.errorMessages[code] ?? copy.defaultErrorMessage
 }
 
 type SubscribeStatus = "idle" | "loading" | "done"
 
 interface NewsletterSubscribeFormProps {
+  locale: Locale
   /** Visual tone for the surface this form is placed on. Defaults to `"light"`. */
   tone?: "light" | "dark"
   placeholder?: string
   submitLabel?: string
   loadingLabel?: string
   successMessage?: string
-  /** Short consent notice shown under the form. Pass `null` to omit it. */
+  /** Short consent notice shown under the form. Pass `null` to omit it. Defaults to the locale's own notice. */
   consentNotice?: string | null
   className?: string
 }
 
-const DEFAULT_PLACEHOLDER = "이메일 주소를 입력하세요"
-const DEFAULT_SUBMIT_LABEL = "구독하기"
-const DEFAULT_LOADING_LABEL = "구독 처리 중..."
-const DEFAULT_SUCCESS_MESSAGE = "구독해주셔서 감사합니다!"
-/** Also exported as `NEWSLETTER_CONSENT_NOTICE` for callers that position it outside this form (e.g. `CaseStudyBanner`'s card corner). */
-const DEFAULT_CONSENT_NOTICE =
-  "동의 후에도 언제든 수신을 거부하거나 동의를 철회할 수 있습니다."
-
-const CONSENT_LABEL =
-  "(필수) 마케팅 목적 개인정보 수집·이용 및 광고성 정보 수신에 동의합니다"
-
-// TODO(real-data): 「1. 광고성 정보(뉴스레터) 전송 시 준수 가이드」 최신판과 대조 필요
-const CONSENT_ITEM_A = {
-  title: "A. 마케팅 목적 개인정보 수집·이용 동의",
-  body: "회사는 아래와 같이 마케팅 목적의 개인정보 수집 및 이용에 관한 동의를 받고 있습니다. 본 동의는 선택 사항이며, 동의하지 않으셔도 서비스 이용에는 제한이 없습니다. 다만, 동의를 거부하실 경우 가상자산 시장 동향 레터 발송 및 신규 서비스·이벤트 안내 등이 제한될 수 있습니다.",
-  bullets: [
-    "수집·이용 목적: 가상자산 시장 동향 정보 레터 발송, 신규 서비스·이벤트 안내, 고객 맞춤형 정보 제공",
-    "수집 항목: 이메일 주소",
-    "보유·이용 기간: 동의 철회 시까지",
-  ],
-}
-
-const CONSENT_ITEM_B = {
-  title: "B. 광고성 정보 수신 동의",
-  body: "회사가 전송하는 광고성 정보(가상자산 동향 레터, 이벤트·혜택 안내 등)를 수신하는 데 대한 동의입니다. 본 동의는 선택 사항이며, 동의하지 않으셔도 서비스 이용에는 제한이 없습니다.",
-  bullets: [
-    "전송 매체: 이메일 수신 동의",
-    "수신 동의 후에도 언제든지 수신을 거부하거나 동의를 철회하실 수 있으며, 회사는 수신 동의일부터 2년마다 수신 동의 유지 여부를 확인합니다.",
-    "수신 거부·철회 방법: 광고성 정보 발송 메일 내 수신거부 링크",
-  ],
-}
-
 function NewsletterSubscribeForm({
+  locale,
   tone = "light",
-  placeholder = DEFAULT_PLACEHOLDER,
-  submitLabel = DEFAULT_SUBMIT_LABEL,
-  loadingLabel = DEFAULT_LOADING_LABEL,
-  successMessage = DEFAULT_SUCCESS_MESSAGE,
-  consentNotice = DEFAULT_CONSENT_NOTICE,
+  placeholder,
+  submitLabel,
+  loadingLabel,
+  successMessage,
+  consentNotice,
   className,
 }: NewsletterSubscribeFormProps) {
+  const copy = COPY_BY_LOCALE[locale]
+  placeholder ??= copy.placeholder
+  submitLabel ??= copy.submitLabel
+  loadingLabel ??= copy.loadingLabel
+  successMessage ??= copy.successMessage
+  if (consentNotice === undefined) consentNotice = copy.consentNotice
   const [email, setEmail] = useState("")
   const [agreed, setAgreed] = useState(false)
   const [consentOpen, setConsentOpen] = useState(false)
@@ -104,7 +174,7 @@ function NewsletterSubscribeForm({
     if (status === "loading" || !agreed) return
 
     if (!EMAIL_RE.test(email)) {
-      setError(getErrorMessage("invalid_email"))
+      setError(getErrorMessage(copy, "invalid_email"))
       return
     }
 
@@ -122,11 +192,11 @@ function NewsletterSubscribeForm({
       if (res.ok && data?.code === "0") {
         setStatus("done")
       } else {
-        setError(getErrorMessage(data?.code))
+        setError(getErrorMessage(copy, data?.code))
         setStatus("idle")
       }
     } catch {
-      setError(getErrorMessage("network_error"))
+      setError(getErrorMessage(copy, "network_error"))
       setStatus("idle")
     }
   }
@@ -176,20 +246,17 @@ function NewsletterSubscribeForm({
             isDark ? "text-white/80" : "text-foreground"
           )}
         >
-          {CONSENT_LABEL}
+          {copy.consentLabel}
         </label>
       </div>
       <Dialog open={consentOpen} onOpenChange={setConsentOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>뉴스레터 수신 및 개인정보 처리 동의</DialogTitle>
-            <DialogDescription>
-              뉴스레터 구독을 위해 아래 두 가지 사항에 대한 동의를 받고
-              있습니다. 내용을 확인하신 뒤 동의해주세요.
-            </DialogDescription>
+            <DialogTitle>{copy.consentDialogTitle}</DialogTitle>
+            <DialogDescription>{copy.consentDialogDescription}</DialogDescription>
           </DialogHeader>
           <div className="flex max-h-[65vh] flex-col gap-5 overflow-y-auto pr-1 text-sm">
-            {[CONSENT_ITEM_A, CONSENT_ITEM_B].map((item) => (
+            {[copy.consentItemA, copy.consentItemB].map((item) => (
               <div key={item.title} className="flex flex-col gap-2">
                 <h3 className="font-medium text-foreground">{item.title}</h3>
                 <p className="text-muted-foreground">{item.body}</p>
@@ -210,7 +277,7 @@ function NewsletterSubscribeForm({
               variant="outline"
               onClick={() => setConsentOpen(false)}
             >
-              취소
+              {copy.cancelLabel}
             </Button>
             <Button
               type="button"
@@ -219,7 +286,7 @@ function NewsletterSubscribeForm({
                 setConsentOpen(false)
               }}
             >
-              동의합니다
+              {copy.agreeLabel}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -291,8 +358,13 @@ function NewsletterSubscribeForm({
   )
 }
 
+const NEWSLETTER_CONSENT_NOTICE_BY_LOCALE: Record<Locale, string> = {
+  ko: COPY_BY_LOCALE.ko.consentNotice,
+  en: COPY_BY_LOCALE.en.consentNotice,
+}
+
 export {
   NewsletterSubscribeForm,
   type NewsletterSubscribeFormProps,
-  DEFAULT_CONSENT_NOTICE as NEWSLETTER_CONSENT_NOTICE,
+  NEWSLETTER_CONSENT_NOTICE_BY_LOCALE,
 }

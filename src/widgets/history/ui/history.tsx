@@ -24,6 +24,10 @@ export interface HistorySectionProps {
   /** Optional supporting copy under the title. Supports `\n` line breaks. */
   subtitle?: string
   years: HistoryYearEntry[]
+  /** Accessible label for the carousel's "previous" button. Defaults to Korean for backward compatibility. */
+  prevLabel?: string
+  /** Accessible label for the carousel's "next" button. Defaults to Korean for backward compatibility. */
+  nextLabel?: string
   className?: string
 }
 
@@ -50,7 +54,15 @@ export interface HistorySectionProps {
  * continuous horizontal rule across the whole track, which a nonzero
  * `Carousel` gap would visibly break.
  */
-export function HistorySection({ eyebrow, title, subtitle, years, className }: HistorySectionProps) {
+export function HistorySection({
+  eyebrow,
+  title,
+  subtitle,
+  years,
+  prevLabel = "이전 연도",
+  nextLabel = "다음 연도",
+  className,
+}: HistorySectionProps) {
   return (
     <section className={cn("bg-muted py-14 lg:py-24", className)}>
       <div className="container-inex">
@@ -81,8 +93,8 @@ export function HistorySection({ eyebrow, title, subtitle, years, className }: H
               fits the viewport with a visible peek of the next one. */}
           <Carousel
             label={title}
-            prevLabel="이전 연도"
-            nextLabel="다음 연도"
+            prevLabel={prevLabel}
+            nextLabel={nextLabel}
             className="[--carousel-gap:0px] [--carousel-item-width:280px] [&_button]:cursor-pointer lg:[--carousel-item-width:360px]"
           >
             {years.map((entry, index) => (

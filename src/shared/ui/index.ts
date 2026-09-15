@@ -140,7 +140,7 @@ export {
 export {
   NewsletterSubscribeForm,
   type NewsletterSubscribeFormProps,
-  NEWSLETTER_CONSENT_NOTICE,
+  NEWSLETTER_CONSENT_NOTICE_BY_LOCALE,
 } from "./newsletter-subscribe-form"
 export { CaseStudyBanner, type CaseStudyBannerProps } from "./case-study-banner"
 export { WorldMap, type WorldMapProps, type WorldMapConnection } from "./world-map"

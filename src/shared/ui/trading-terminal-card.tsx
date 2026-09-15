@@ -36,6 +36,10 @@ export interface TradingTerminalCardProps
   asks?: TradingTerminalOrderRow[]
   /** Buy-side order rows, rendered top to bottom (highest price first). */
   bids?: TradingTerminalOrderRow[]
+  /** Order book price column header, e.g. "호가(KRW)" / "Price (USDT)". Defaults to Korean for backward compatibility. */
+  priceColumnLabel?: string
+  /** Order book amount column header, e.g. "수량(BTC)" / "Amount (BTC)". Defaults to Korean for backward compatibility. */
+  amountColumnLabel?: string
   className?: string
 }
 
@@ -118,6 +122,8 @@ function TradingTerminalCard({
   candles = DEFAULT_CANDLES,
   asks: asksProp = DEFAULT_ASKS,
   bids: bidsProp = DEFAULT_BIDS,
+  priceColumnLabel = "호가(KRW)",
+  amountColumnLabel = "수량(BTC)",
   className,
   ...props
 }: TradingTerminalCardProps) {
@@ -225,8 +231,8 @@ function TradingTerminalCard({
 
         <div className="p-4 tabular-nums">
           <div className="mb-2 flex justify-between text-[10px] font-bold tracking-[.1em] text-[#5B6779]">
-            <span>호가(KRW)</span>
-            <span>수량(BTC)</span>
+            <span>{priceColumnLabel}</span>
+            <span>{amountColumnLabel}</span>
           </div>
 
           {asks.map((row, index) => (

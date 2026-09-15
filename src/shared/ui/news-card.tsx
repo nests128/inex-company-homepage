@@ -12,6 +12,8 @@ export interface NewsCardProps extends Omit<ComponentPropsWithoutRef<"a">, "href
   thumbnailUrl?: string | null
   /** Internal link, e.g. `/news/[slug]`. */
   href: string
+  /** Alt text prefix for the thumbnail image, e.g. "이미지" / "Image". Defaults to Korean for backward compatibility. */
+  imageAltPrefix?: string
 }
 
 /**
@@ -28,6 +30,7 @@ function NewsCard({
   category,
   thumbnailUrl,
   href,
+  imageAltPrefix = "이미지",
   className,
   ...props
 }: NewsCardProps) {
@@ -44,7 +47,7 @@ function NewsCard({
       <div className="relative overflow-hidden">
         <NewsImage
           src={thumbnailUrl ?? null}
-          alt={`이미지: ${title}`}
+          alt={`${imageAltPrefix}: ${title}`}
           className="aspect-[16/11] w-full scale-100 transition-transform duration-300 ease-out group-hover:scale-110"
         />
         {category ? (

@@ -26,7 +26,8 @@ import {
   Terminal,
 } from "@/shared/ui";
 import {
-  cryptoTradingFeatures,
+  cryptoTradingCapabilitiesContentByLocale,
+  cryptoTradingFeaturesByLocale,
   cryptoTradingOrderbookApiRequest,
   cryptoTradingOrderbookApiResponse,
   cryptoTradingOrderbookAsks,
@@ -34,12 +35,14 @@ import {
   cryptoTradingSdkSnippet,
   type CryptoTradingFeatureIconKey,
 } from "@/entities/company";
+import type { Locale } from "@/shared/lib/i18n";
 
 // chart2.png: 실제 트레이딩뷰 스타일 캡처(심볼/가격/고가·저가 배지 포함) —
 // 사용자 명시적 요청(2026-09-14)으로 CSS 봉차트 대신 이미지를 그대로 채운다.
-const CRYPTO_TRADING_CHART_IMAGE = {
-  src: "/images/solutions/crypto-trading-chart2.png",
-  alt: "BTC/KRW 실시간 캔들 차트 화면",
+const CRYPTO_TRADING_CHART_IMAGE_SRC = "/images/solutions/crypto-trading-chart2.png";
+const CRYPTO_TRADING_CHART_IMAGE_ALT: Record<Locale, string> = {
+  ko: "BTC/USDT 실시간 캔들 차트 화면",
+  en: "Real-time BTC/USDT candlestick chart screen",
 };
 
 function FeatureIcon({ iconKey }: { iconKey: CryptoTradingFeatureIconKey }) {
@@ -154,7 +157,7 @@ function TerminalLines({
 }
 
 /** Renders the right-hand visual (orderbook+terminal / SDK terminal / chart image) for one feature id. */
-function CapabilityVisual({ id }: { id: string }) {
+function CapabilityVisual({ id, locale }: { id: string; locale: Locale }) {
   if (id === "orderbook") {
     return (
       // 좌: 오더북(직사각형 카드), 우: 거래·오더북 API 예시 코드를 보여주는
@@ -202,8 +205,8 @@ function CapabilityVisual({ id }: { id: string }) {
   return (
     <div className="relative h-full w-full overflow-hidden rounded-xl border border-white/8 bg-[#0B101C]">
       <Image
-        src={CRYPTO_TRADING_CHART_IMAGE.src}
-        alt={CRYPTO_TRADING_CHART_IMAGE.alt}
+        src={CRYPTO_TRADING_CHART_IMAGE_SRC}
+        alt={CRYPTO_TRADING_CHART_IMAGE_ALT[locale]}
         fill
         sizes="(min-width: 1024px) 40vw, 90vw"
         className="object-cover"
@@ -212,7 +215,10 @@ function CapabilityVisual({ id }: { id: string }) {
   );
 }
 
-export function CapabilitiesSection() {
+export function CapabilitiesSection({ locale }: { locale: Locale }) {
+  const capabilitiesContent = cryptoTradingCapabilitiesContentByLocale[locale];
+  const cryptoTradingFeatures = cryptoTradingFeaturesByLocale[locale];
+
   const defaultId =
     cryptoTradingFeatures.find((item) => item.active)?.id ?? cryptoTradingFeatures[0].id;
   const [selectedId, setSelectedId] = useState(defaultId);
@@ -225,10 +231,10 @@ export function CapabilitiesSection() {
         <Reveal as="div">
           <div className="mb-3 flex items-center gap-2 text-[13px] font-medium text-foreground/80 lg:mb-4">
             <span aria-hidden="true" className="size-2.5 rounded-[3px] bg-sky-500" />
-            CAPABILITIES
+            {capabilitiesContent.eyebrow}
           </div>
           <h2 className="text-2xl leading-[1.2] tracking-[-.015em] lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
-            차트부터 주문 API까지, 하나의 인프라로
+            {capabilitiesContent.title}
           </h2>
           <div className="mt-8 flex flex-col gap-1 lg:mt-12">
             {cryptoTradingFeatures.map((item) => (
@@ -262,7 +268,7 @@ export function CapabilitiesSection() {
             )}
           >
             <Reveal key={selectedId} as="div" inView={false} className="flex w-full items-stretch">
-              <CapabilityVisual id={selected.id} />
+              <CapabilityVisual id={selected.id} locale={locale} />
             </Reveal>
           </GradientBackdrop>
         </Reveal>

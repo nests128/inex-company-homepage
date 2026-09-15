@@ -9,7 +9,8 @@ import {
   NewsPagination,
 } from "@/shared/ui"
 import type { NewsPost } from "@/shared/lib/confluence"
-import { newsListContent } from "@/entities/company"
+import { newsListContentByLocale } from "@/entities/company"
+import { publicPath, type Locale } from "@/shared/lib/i18n"
 
 const PAGE_SIZE = 9
 
@@ -18,6 +19,7 @@ export interface NewsListClientProps {
   categories: string[]
   /** Current page number, sourced from the `?page=` URL search param (server page prop). */
   page: number
+  locale: Locale
 }
 
 /**
@@ -36,7 +38,8 @@ export interface NewsListClientProps {
  * filtered result's `totalPages` below, rather than adding router-based URL
  * sync for a corner case the task explicitly deprioritizes.
  */
-export function NewsListClient({ posts, categories, page }: NewsListClientProps) {
+export function NewsListClient({ posts, categories, page, locale }: NewsListClientProps) {
+  const newsListContent = newsListContentByLocale[locale]
   const [activeCategory, setActiveCategory] = useState(newsListContent.allCategoryLabel)
 
   const filtered = useMemo(() => {
@@ -60,6 +63,7 @@ export function NewsListClient({ posts, categories, page }: NewsListClientProps)
           categories={categories}
           active={activeCategory}
           onSelect={setActiveCategory}
+          groupLabel={newsListContent.categoryFilterLabel}
         />
       ) : null}
 
@@ -69,7 +73,8 @@ export function NewsListClient({ posts, categories, page }: NewsListClientProps)
           excerpt={featured.excerpt}
           category={featured.category}
           thumbnailUrl={featured.thumbnailUrl}
-          href={`/news/${featured.slug}`}
+          href={publicPath(locale, `/news/${featured.slug}`)}
+          imageAltPrefix={newsListContent.imageAltPrefix}
         />
       ) : (
         <p className="text-center text-[14.5px] text-muted-foreground">
@@ -90,7 +95,8 @@ export function NewsListClient({ posts, categories, page }: NewsListClientProps)
                 excerpt={post.excerpt}
                 category={post.category}
                 thumbnailUrl={post.thumbnailUrl}
-                href={`/news/${post.slug}`}
+                href={publicPath(locale, `/news/${post.slug}`)}
+                imageAltPrefix={newsListContent.imageAltPrefix}
               />
             ))}
           </div>
@@ -100,7 +106,8 @@ export function NewsListClient({ posts, categories, page }: NewsListClientProps)
       <NewsPagination
         currentPage={currentPage}
         totalPages={totalPages}
-        hrefForPage={(target) => `/news?page=${target}`}
+        hrefForPage={(target) => `${publicPath(locale, "/news")}?page=${target}`}
+        labels={newsListContent.paginationLabels}
       />
     </div>
   )

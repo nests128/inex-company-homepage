@@ -7,6 +7,12 @@ export interface NewsPaginationProps extends Omit<ComponentPropsWithoutRef<"nav"
   totalPages: number
   /** Builds the URL for a given page number, e.g. `(page) => \`/news?page=${page}\`` */
   hrefForPage: (page: number) => string
+  /** Accessible labels. Default to Korean for backward compatibility. */
+  labels?: {
+    nav?: string
+    prevPage?: string
+    nextPage?: string
+  }
 }
 
 const pillBase =
@@ -21,10 +27,15 @@ function NewsPagination({
   currentPage,
   totalPages,
   hrefForPage,
+  labels,
   className,
   ...props
 }: NewsPaginationProps) {
   if (totalPages <= 1) return null
+
+  const navLabel = labels?.nav ?? "뉴스 페이지 네비게이션"
+  const prevLabel = labels?.prevPage ?? "이전 페이지"
+  const nextLabel = labels?.nextPage ?? "다음 페이지"
 
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
   const hasPrev = currentPage > 1
@@ -33,14 +44,14 @@ function NewsPagination({
   return (
     <nav
       data-slot="news-pagination"
-      aria-label="뉴스 페이지 네비게이션"
+      aria-label={navLabel}
       className={cn("flex items-center justify-center gap-1.5", className)}
       {...props}
     >
       {hasPrev ? (
         <Link
           href={hrefForPage(currentPage - 1)}
-          aria-label="이전 페이지"
+          aria-label={prevLabel}
           className={cn(pillBase, "border-border bg-background text-foreground hover:bg-muted")}
         >
           ‹
@@ -78,7 +89,7 @@ function NewsPagination({
       {hasNext ? (
         <Link
           href={hrefForPage(currentPage + 1)}
-          aria-label="다음 페이지"
+          aria-label={nextLabel}
           className={cn(pillBase, "border-border bg-background text-foreground hover:bg-muted")}
         >
           ›

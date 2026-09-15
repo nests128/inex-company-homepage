@@ -5,7 +5,7 @@
 // ("우측에 레일 두자") 바로 되돌림("다시 밑으로 내려줘") — 헤딩 아래
 // 전체 폭 레일이 최종. `FlowRail`은 `shared/ui`로 승격됨(2026-09-14).
 import { FlowRail, Reveal } from "@/shared/ui";
-import { stablecoinPaymentsFlow, stablecoinPaymentsHowItWorksContent } from "@/entities/company";
+import { getStablecoinPaymentsContent } from "@/entities/company/server";
 
 /** Small square marker + eyebrow label — same inline pattern as `ProvenSection`. */
 function SectionEyebrow({ label }: { label: string }) {
@@ -17,21 +17,23 @@ function SectionEyebrow({ label }: { label: string }) {
   );
 }
 
-export function HowItWorksSection() {
+export async function HowItWorksSection() {
+  const content = await getStablecoinPaymentsContent();
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex">
         <Reveal as="div">
-          <SectionEyebrow label={stablecoinPaymentsHowItWorksContent.eyebrow} />
+          <SectionEyebrow label={content.howItWorksContent.eyebrow} />
           <h2 className="text-2xl leading-[1.2] tracking-[-.015em] whitespace-pre-line lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
-            {stablecoinPaymentsHowItWorksContent.title}
+            {content.howItWorksContent.title}
           </h2>
         </Reveal>
 
         <Reveal as="div" delay={0.1} className="mt-10 lg:mt-14">
           <FlowRail
-            ariaLabel={stablecoinPaymentsFlow.ariaLabel}
-            nodes={stablecoinPaymentsFlow.nodes}
+            ariaLabel={content.flow.ariaLabel}
+            nodes={content.flow.nodes}
             rowSize={5}
           />
         </Reveal>

@@ -6,9 +6,11 @@
 import { ArrowUpRight } from "lucide-react";
 
 import { Button, CaseStudyBanner, InexLogoMark, Reveal } from "@/shared/ui";
-import { cryptoTradingCtaContent } from "@/entities/company";
+import { getCryptoTradingContent } from "@/entities/company/server";
 
-export function CryptoTradingCtaSection() {
+export async function CryptoTradingCtaSection() {
+  const { cta: cryptoTradingCtaContent } = await getCryptoTradingContent();
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex">

@@ -11,9 +11,12 @@ import {
   IntegrationsMarqueeCard,
   Reveal,
 } from "@/shared/ui"
-import { stablecoinChainIcons, integrationsContent } from "@/entities/company"
+import { stablecoinChainIcons } from "@/entities/company"
+import { getIntegrationsContent } from "@/entities/company/server"
 
-export function IntegrationsShowcase() {
+export async function IntegrationsShowcase() {
+  const integrationsContent = await getIntegrationsContent()
+
   return (
     <section className="py-14 lg:py-24">
       <div className="container-inex grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-20">

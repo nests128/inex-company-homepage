@@ -1,6 +1,15 @@
 // 솔루션 > 크립토 트레이딩 상세 페이지 콘텐츠.
 // Ref: ref/exchange/Solutions.dc.html L40-121 ("크립토 트레이딩" 탭) — 카피 톤/구조의
 // 출처. 원본은 오지스/OZYS 예시 문구라 사명·수치를 INEX 기준으로 다듬었다.
+//
+// i18n(사용자 요청, 2026-09-15): 텍스트 카피는
+// `xxxContentByLocale`/`xxxByLocale`로 감싼다. 차트/오더북 데모 수치(가격,
+// 캔들 좌표)는 로케일 무관 공용 데이터이므로 그대로 두되, 기존 심볼 표기가
+// "BTC/KRW"였던 부분은 원화 관련 표현을 넣지 않는다는 이 프로젝트 규칙(INEX가
+// 원화 관련 라이선스를 아직 보유하지 않음, hero-content.ts 등 참고)에 맞춰
+// "BTC/USDT"로 통일한다 — 사용자가 다른 값으로 명시하지 않는 한 임의로
+// 원화 표기를 유지하지 않는다.
+import type { Locale } from "@/shared/lib/i18n";
 
 export interface CryptoTradingHeroContent {
   eyebrow: string;
@@ -29,48 +38,80 @@ export const cryptoTradingAppLinks = {
     "https://play.google.com/store/apps/details?id=com.exchange.inex_flutter_app&hl=ko",
 };
 
-export const cryptoTradingHeroContent: CryptoTradingHeroContent = {
-  eyebrow: "SOLUTION · 크립토 트레이딩",
-  title: "실제 운영중인 거래소 엔진을 그대로 연결하세요",
-  description:
-    "INEX가 직접 운영하며 검증한 거래 엔진과 유동성을 임베디드 차트, SDK, 거래·오더북 API로 제공합니다. 별도 거래소 구축 없이 트레이딩 기능을 서비스에 그대로 탑재할 수 있습니다.",
-  // TODO(real-data): 임시로 ref/exchange/image.png(다크 테마 거래소 UI)를 사용 중.
-  // 사용자가 실제 최신 스크린샷으로 교체할 예정.
-  imageSrc: "/images/solutions/crypto-trading-hero.png",
-  imageAlt: "INEX 거래소 크립토 트레이딩 화면 스크린샷",
-  primaryCta: {
-    label: "파트너십 문의",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",
-    external: true,
+export const cryptoTradingHeroContentByLocale: Record<Locale, CryptoTradingHeroContent> = {
+  ko: {
+    eyebrow: "SOLUTION · 크립토 트레이딩",
+    title: "실제 운영중인 거래소 엔진을 그대로 연결하세요",
+    description:
+      "INEX가 직접 운영하며 검증한 거래 엔진과 유동성을 임베디드 차트, SDK, 거래·오더북 API로 제공합니다. 별도 거래소 구축 없이 트레이딩 기능을 서비스에 그대로 탑재할 수 있습니다.",
+    // TODO(real-data): 임시로 ref/exchange/image.png(다크 테마 거래소 UI)를 사용 중.
+    // 사용자가 실제 최신 스크린샷으로 교체할 예정.
+    imageSrc: "/images/solutions/crypto-trading-hero.png",
+    imageAlt: "INEX 거래소 크립토 트레이딩 화면 스크린샷",
+    primaryCta: {
+      label: "파트너십 문의",
+      href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",
+      external: true,
+    },
+    appLinks: cryptoTradingAppLinks,
   },
-  appLinks: cryptoTradingAppLinks,
+  en: {
+    eyebrow: "SOLUTION · CRYPTO TRADING",
+    title: "Connect to a live, production exchange engine",
+    description:
+      "INEX provides the trading engine and liquidity it runs and verifies in its own exchange — via embeddable charts, an SDK, and trade/order book APIs. Add trading to your product without building an exchange.",
+    imageSrc: "/images/solutions/crypto-trading-hero.png",
+    imageAlt: "Screenshot of the INEX exchange crypto trading screen",
+    primaryCta: {
+      label: "Partnership Inquiry",
+      href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",
+      external: true,
+    },
+    appLinks: cryptoTradingAppLinks,
+  },
 };
 
 // "실제 운영중인 서비스" 소개 섹션 — INEX가 상용 서비스로 검증된 인프라임을
 // 강조하는 텍스트 + 신뢰 배지/통계 조합.
-export const cryptoTradingProvenContent = {
-  eyebrow: "PROVEN INFRASTRUCTURE",
-  title: "실서비스 트래픽으로 검증된 인프라입니다",
-  description:
-    "INEX는 자체 거래소를 직접 운영하며 매칭 엔진, 유동성, 리스크 관리 체계를 실서비스 트래픽 위에서 검증해 왔습니다. 그 인프라를 그대로 API·SDK로 제공하기 때문에, 파트너사는 별도의 검증 기간 없이 바로 도입할 수 있습니다.",
-};
+export const cryptoTradingProvenContentByLocale = {
+  ko: {
+    eyebrow: "PROVEN INFRASTRUCTURE",
+    title: "실서비스 트래픽으로 검증된 인프라입니다",
+    description:
+      "INEX는 자체 거래소를 직접 운영하며 매칭 엔진, 유동성, 리스크 관리 체계를 실서비스 트래픽 위에서 검증해 왔습니다. 그 인프라를 그대로 API·SDK로 제공하기 때문에, 파트너사는 별도의 검증 기간 없이 바로 도입할 수 있습니다.",
+  },
+  en: {
+    eyebrow: "PROVEN INFRASTRUCTURE",
+    title: "Infrastructure proven on real production traffic",
+    description:
+      "INEX runs its own exchange and has verified its matching engine, liquidity, and risk management on real production traffic. Because that infrastructure is delivered as-is via API/SDK, partners can adopt it immediately without a separate validation period.",
+  },
+} satisfies Record<Locale, { eyebrow: string; title: string; description: string }>;
 
 export interface CryptoTradingStat {
   value: string;
   caption: string;
 }
 
-export const cryptoTradingStats: CryptoTradingStat[] = [
-  // TODO(real-data): 플레이스홀더 수치. 실제 무중단 운영 실적 확정 후 교체 필요.
-  { value: "24/7", caption: "무중단 매칭 엔진 운영" },
-  // TODO(real-data): 플레이스홀더 수치. 실제 API 가동률 확정 후 교체 필요.
-  { value: "99.9%", caption: "API 가동률" },
-  // TODO(real-data): 플레이스홀더 수치. 실제 오더북 응답속도 스펙 확정 후 교체 필요.
-  { value: "<50ms", caption: "오더북 평균 응답 속도" },
-  // 실데이터: VASP 신고 수리(2024.10 · FIU), ISMS 본인증(2025.04 · KISA) —
-  // feature-showcase-content.ts의 licence 항목과 동일 근거, 플레이스홀더 아님.
-  { value: "VASP·ISMS", caption: "규제 라이선스 완비" },
-];
+export const cryptoTradingStatsByLocale: Record<Locale, CryptoTradingStat[]> = {
+  ko: [
+    // TODO(real-data): 플레이스홀더 수치. 실제 무중단 운영 실적 확정 후 교체 필요.
+    { value: "24/7", caption: "무중단 매칭 엔진 운영" },
+    // TODO(real-data): 플레이스홀더 수치. 실제 API 가동률 확정 후 교체 필요.
+    { value: "99.9%", caption: "API 가동률" },
+    // TODO(real-data): 플레이스홀더 수치. 실제 오더북 응답속도 스펙 확정 후 교체 필요.
+    { value: "<50ms", caption: "오더북 평균 응답 속도" },
+    // 실데이터: VASP 신고 수리(2024.10 · FIU), ISMS 본인증(2025.04 · KISA) —
+    // feature-showcase-content.ts의 licence 항목과 동일 근거, 플레이스홀더 아님.
+    { value: "VASP·ISMS", caption: "규제 라이선스 완비" },
+  ],
+  en: [
+    { value: "24/7", caption: "Always-on matching engine" },
+    { value: "99.9%", caption: "API uptime" },
+    { value: "<50ms", caption: "Avg. order book response time" },
+    { value: "VASP·ISMS", caption: "Full regulatory licensing" },
+  ],
+};
 
 /**
  * "임베디드 차트 / SDK / 거래·오더북 API" 3분할 인터랙티브 섹션의 좌측 리스트
@@ -87,44 +128,76 @@ export interface CryptoTradingFeatureItem {
   active?: boolean;
 }
 
-export const cryptoTradingFeatures: CryptoTradingFeatureItem[] = [
-  {
-    id: "chart",
-    iconKey: "chart",
-    title: "임베디드 차트",
-    description:
-      "캔들·라인·지표를 지원하는 실시간 시세 차트를 iframe 또는 SDK로 서비스에 즉시 삽입합니다.",
-    active: true,
-  },
-  {
-    id: "sdk",
-    iconKey: "sdk",
-    title: "SDK 제공",
-    description:
-      "웹·앱에 바로 붙일 수 있는 SDK로 주문, 잔고 조회, 체결 알림까지 몇 줄의 코드로 연동합니다.",
-  },
-  {
-    id: "orderbook",
-    iconKey: "orderbook",
-    title: "거래 · 오더북 API",
-    // TODO(real-data): "밀리초 단위 지연"은 ref/exchange/Solutions.dc.html의
-    // 참고 문구를 그대로 가져온 것으로, 실제 서비스 지연 시간 스펙 확정 후 검증 필요.
-    description:
-      "WebSocket 기반 실시간 호가·체결 데이터와 주문 API를 밀리초 단위 지연으로 제공합니다.",
-  },
-];
+export const cryptoTradingCapabilitiesContentByLocale = {
+  ko: { eyebrow: "CAPABILITIES", title: "차트부터 주문 API까지, 하나의 인프라로" },
+  en: { eyebrow: "CAPABILITIES", title: "From charts to order APIs, on one infrastructure" },
+} satisfies Record<Locale, { eyebrow: string; title: string }>;
+
+export const cryptoTradingFeaturesByLocale: Record<Locale, CryptoTradingFeatureItem[]> = {
+  ko: [
+    {
+      id: "chart",
+      iconKey: "chart",
+      title: "임베디드 차트",
+      description:
+        "캔들·라인·지표를 지원하는 실시간 시세 차트를 iframe 또는 SDK로 서비스에 즉시 삽입합니다.",
+      active: true,
+    },
+    {
+      id: "sdk",
+      iconKey: "sdk",
+      title: "SDK 제공",
+      description:
+        "웹·앱에 바로 붙일 수 있는 SDK로 주문, 잔고 조회, 체결 알림까지 몇 줄의 코드로 연동합니다.",
+    },
+    {
+      id: "orderbook",
+      iconKey: "orderbook",
+      title: "거래 · 오더북 API",
+      // TODO(real-data): "밀리초 단위 지연"은 ref/exchange/Solutions.dc.html의
+      // 참고 문구를 그대로 가져온 것으로, 실제 서비스 지연 시간 스펙 확정 후 검증 필요.
+      description:
+        "WebSocket 기반 실시간 호가·체결 데이터와 주문 API를 밀리초 단위 지연으로 제공합니다.",
+    },
+  ],
+  en: [
+    {
+      id: "chart",
+      iconKey: "chart",
+      title: "Embedded charts",
+      description:
+        "Instantly embed real-time price charts with candle, line, and indicator support into your product via iframe or SDK.",
+      active: true,
+    },
+    {
+      id: "sdk",
+      iconKey: "sdk",
+      title: "SDK included",
+      description:
+        "A drop-in SDK for web and app lets you wire up orders, balance lookups, and fill notifications in a few lines of code.",
+    },
+    {
+      id: "orderbook",
+      iconKey: "orderbook",
+      title: "Trade · order book API",
+      description:
+        "Real-time order book and fill data over WebSocket, plus an order API, with millisecond-level latency.",
+    },
+  ],
+};
 
 // TODO(real-data): SDK 초기화 예시 코드. 실제 SDK 공개 API/문법 확정 후 교체 필요.
+// 코드 예시는 로케일 무관 — 심볼은 원화 표기를 피해 USDT로 통일.
 export const cryptoTradingSdkSnippet = [
   "import { InexSDK } from '@inex/sdk'",
   "",
   "const inex = new InexSDK({ apiKey })",
   "",
   "const orderbook = await inex.market",
-  "  .orderbook('BTC/KRW')",
+  "  .orderbook('BTC/USDT')",
   "",
   "await inex.trade.placeOrder({",
-  "  symbol: 'BTC/KRW',",
+  "  symbol: 'BTC/USDT',",
   "  side: 'buy',",
   "  amount: '0.01',",
   "})",
@@ -139,28 +212,28 @@ export const cryptoTradingOrderbookApiRequest = [
   "  --header 'API-Key: sk-7fB9kL2WqT3eX8vR1zMaG6Jq0Pp' \\",
   "  --data '",
   "  {",
-  '    "symbol": "BTCKRW",',
+  '    "symbol": "BTCUSDT",',
   '    "depth": 5',
   "  }",
 ];
 
 export const cryptoTradingOrderbookApiResponse = [
   "{",
-  '  "symbol": "BTCKRW",',
+  '  "symbol": "BTCUSDT",',
   '  "asks": [',
-  '    { "price": "142970000", "qty": "0.052" },',
-  '    { "price": "142950000", "qty": "0.128" }',
+  '    { "price": "97070.00", "qty": "0.052" },',
+  '    { "price": "97050.00", "qty": "0.128" }',
   "  ],",
   '  "bids": [',
-  '    { "price": "142840000", "qty": "0.331" },',
-  '    { "price": "142820000", "qty": "0.508" }',
+  '    { "price": "96940.00", "qty": "0.331" },',
+  '    { "price": "96920.00", "qty": "0.508" }',
   "  ]",
   "}",
 ];
 
 // TODO(real-data): 실제 시세가 아닌 데모용 값 — 아래 차트/오더북 콘텐츠 전반.
-export const cryptoTradingChartSymbol = "BTC/KRW";
-export const cryptoTradingChartPrice = "142,850,000";
+export const cryptoTradingChartSymbol = "BTC/USDT";
+export const cryptoTradingChartPrice = "97,850";
 
 // TODO(real-data): placeholder candle shapes only — no real price series.
 // 28개로 촘촘하게(기존 6개), ref/exchange/chart.png(사용자 레퍼런스)처럼
@@ -200,97 +273,28 @@ export const cryptoTradingChartCandles = [
 // TODO(real-data): placeholder order book rows — no live data.
 // 미리보기가 꽉 차 보이도록 8행씩으로 늘림(기존 3행). depth/changePercent는
 // 사용자 제공 INEX 거래소 호가창 스크린샷(매도=파랑 depth bar+등락률,
-// 매수=빨강)을 반영해 추가 — 사용자 명시적 요청(2026-09-14).
+// 매수=빨강)을 반영해 추가 — 사용자 명시적 요청(2026-09-14). 가격은 원화
+// 표기를 피해 USDT 기준으로 통일.
 export const cryptoTradingOrderbookAsks = [
-  {
-    price: "142,970,000",
-    amount: "0.052",
-    depth: 0.13,
-    changePercent: "+3.02%",
-  },
-  {
-    price: "142,950,000",
-    amount: "0.128",
-    depth: 0.31,
-    changePercent: "+2.72%",
-  },
-  {
-    price: "142,930,000",
-    amount: "0.241",
-    depth: 0.58,
-    changePercent: "+2.42%",
-  },
-  {
-    price: "142,910,000",
-    amount: "0.184",
-    depth: 0.45,
-    changePercent: "+2.11%",
-  },
-  { price: "142,890,000", amount: "0.412", depth: 1, changePercent: "+1.81%" },
-  {
-    price: "142,870,000",
-    amount: "0.097",
-    depth: 0.24,
-    changePercent: "+1.50%",
-  },
-  {
-    price: "142,860,000",
-    amount: "0.303",
-    depth: 0.74,
-    changePercent: "+1.27%",
-  },
-  {
-    price: "142,850,000",
-    amount: "0.076",
-    depth: 0.18,
-    changePercent: "+0.90%",
-  },
+  { price: "97,070.00", amount: "0.052", depth: 0.13, changePercent: "+3.02%" },
+  { price: "97,050.00", amount: "0.128", depth: 0.31, changePercent: "+2.72%" },
+  { price: "97,030.00", amount: "0.241", depth: 0.58, changePercent: "+2.42%" },
+  { price: "97,010.00", amount: "0.184", depth: 0.45, changePercent: "+2.11%" },
+  { price: "96,990.00", amount: "0.412", depth: 1, changePercent: "+1.81%" },
+  { price: "96,970.00", amount: "0.097", depth: 0.24, changePercent: "+1.50%" },
+  { price: "96,960.00", amount: "0.303", depth: 0.74, changePercent: "+1.27%" },
+  { price: "96,950.00", amount: "0.076", depth: 0.18, changePercent: "+0.90%" },
 ];
 
 export const cryptoTradingOrderbookBids = [
-  {
-    price: "142,840,000",
-    amount: "0.331",
-    depth: 0.65,
-    changePercent: "-0.51%",
-  },
-  { price: "142,820,000", amount: "0.508", depth: 1, changePercent: "-0.61%" },
-  {
-    price: "142,800,000",
-    amount: "0.129",
-    depth: 0.25,
-    changePercent: "-0.70%",
-  },
-  {
-    price: "142,790,000",
-    amount: "0.256",
-    depth: 0.5,
-    changePercent: "-0.77%",
-  },
-  {
-    price: "142,770,000",
-    amount: "0.088",
-    depth: 0.17,
-    changePercent: "-0.91%",
-  },
-  {
-    price: "142,750,000",
-    amount: "0.367",
-    depth: 0.72,
-    changePercent: "-1.05%",
-  },
-  {
-    price: "142,730,000",
-    amount: "0.145",
-    depth: 0.29,
-    changePercent: "-1.19%",
-  },
-  {
-    price: "142,710,000",
-    amount: "0.219",
-    depth: 0.43,
-    changePercent: "-1.33%",
-  },
+  { price: "96,940.00", amount: "0.331", depth: 0.65, changePercent: "-0.51%" },
+  { price: "96,920.00", amount: "0.508", depth: 1, changePercent: "-0.61%" },
+  { price: "96,900.00", amount: "0.129", depth: 0.25, changePercent: "-0.70%" },
+  { price: "96,890.00", amount: "0.256", depth: 0.5, changePercent: "-0.77%" },
+  { price: "96,870.00", amount: "0.088", depth: 0.17, changePercent: "-0.91%" },
+  { price: "96,850.00", amount: "0.367", depth: 0.72, changePercent: "-1.05%" },
+  { price: "96,830.00", amount: "0.145", depth: 0.29, changePercent: "-1.19%" },
+  { price: "96,810.00", amount: "0.219", depth: 0.43, changePercent: "-1.33%" },
 ];
 
 // "Key use cases" 6카드 기능 그리드 (흰 배경, 좌측정렬). Ref:
@@ -299,10 +303,10 @@ export const cryptoTradingOrderbookBids = [
 // 콘텐츠는 INEX 크립토 트레이딩 인프라 전체 역량 스펙트럼(차트/SDK/API는
 // CapabilitiesSection과 겹치지 않게 한 줄 요약만, 나머지는 유동성·리스크·
 // 커스터디 연계 등 그 섹션에 없는 항목)으로 구성.
-export const cryptoTradingFeatureGridContent = {
-  eyebrow: "KEY USE CASES",
-  title: "필요한 모든 것을,\n이미 갖춘 인프라로",
-};
+export const cryptoTradingFeatureGridContentByLocale = {
+  ko: { eyebrow: "KEY USE CASES", title: "필요한 모든 것을,\n이미 갖춘 인프라로" },
+  en: { eyebrow: "KEY USE CASES", title: "Everything you need,\nalready built in" },
+} satisfies Record<Locale, { eyebrow: string; title: string }>;
 
 export type CryptoTradingFeatureGridIconKey =
   | "chart"
@@ -318,103 +322,179 @@ export interface CryptoTradingFeatureGridItem {
   description: string;
 }
 
-export const cryptoTradingFeatureGridItems: CryptoTradingFeatureGridItem[] = [
-  {
-    iconKey: "chart",
-    title: "임베디드 차트",
-    description:
-      "실시간 캔들·지표 차트를 iframe/SDK로 서비스 화면에 그대로 삽입.",
-  },
-  {
-    iconKey: "sdk",
-    title: "SDK 제공",
-    description: "웹·앱 어디서든 주문·잔고·체결 알림을 몇 줄의 코드로 연동.",
-  },
-  {
-    iconKey: "orderbook",
-    title: "거래 · 오더북 API",
-    description: "WebSocket 기반 실시간 호가·체결 데이터와 주문 API 제공.",
-  },
-  {
-    iconKey: "liquidity",
-    title: "통합 유동성",
-    description:
+export const cryptoTradingFeatureGridItemsByLocale: Record<Locale, CryptoTradingFeatureGridItem[]> = {
+  ko: [
+    {
+      iconKey: "chart",
+      title: "임베디드 차트",
+      description: "실시간 캔들·지표 차트를 iframe/SDK로 서비스 화면에 그대로 삽입.",
+    },
+    {
+      iconKey: "sdk",
+      title: "SDK 제공",
+      description: "웹·앱 어디서든 주문·잔고·체결 알림을 몇 줄의 코드로 연동.",
+    },
+    {
+      iconKey: "orderbook",
+      title: "거래 · 오더북 API",
+      description: "WebSocket 기반 실시간 호가·체결 데이터와 주문 API 제공.",
+    },
+    {
+      iconKey: "liquidity",
+      title: "통합 유동성",
       // TODO(real-data): 연동 거래소·마켓메이커 실제 목록/규모 확정 후 교체 필요.
-      "자체 매칭 엔진과 외부 유동성을 함께 묶어 안정적인 체결 환경을 제공.",
-  },
-  {
-    iconKey: "custody",
-    title: "커스터디 연계",
-    description:
-      "핫·콜드 지갑 분리 보관 체계와 연동해 입출금 전 구간을 함께 운영.",
-  },
-  {
-    iconKey: "uptime",
-    title: "24/7 운영 대응",
-    description:
-      "실서비스 트래픽을 상시 모니터링하는 운영팀이 장애 대응까지 지원.",
-  },
-];
+      description: "자체 매칭 엔진과 외부 유동성을 함께 묶어 안정적인 체결 환경을 제공.",
+    },
+    {
+      iconKey: "custody",
+      title: "커스터디 연계",
+      description: "핫·콜드 지갑 분리 보관 체계와 연동해 입출금 전 구간을 함께 운영.",
+    },
+    {
+      iconKey: "uptime",
+      title: "24/7 운영 대응",
+      description: "실서비스 트래픽을 상시 모니터링하는 운영팀이 장애 대응까지 지원.",
+    },
+  ],
+  en: [
+    {
+      iconKey: "chart",
+      title: "Embedded charts",
+      description: "Drop real-time candle/indicator charts directly into your product via iframe or SDK.",
+    },
+    {
+      iconKey: "sdk",
+      title: "SDK included",
+      description: "Wire up orders, balances, and fill notifications in a few lines of code, on web or app.",
+    },
+    {
+      iconKey: "orderbook",
+      title: "Trade · order book API",
+      description: "Real-time order book and fill data over WebSocket, plus an order API.",
+    },
+    {
+      iconKey: "liquidity",
+      title: "Unified liquidity",
+      description: "Combines an in-house matching engine with external liquidity for stable execution.",
+    },
+    {
+      iconKey: "custody",
+      title: "Custody integration",
+      description: "Runs the entire deposit/withdrawal flow alongside hot/cold segregated wallet storage.",
+    },
+    {
+      iconKey: "uptime",
+      title: "24/7 operations",
+      description: "An operations team continuously monitors production traffic and handles incident response.",
+    },
+  ],
+};
 
 // "How it works" 블록 — 연한 회색 박스 안에 좌측 4단 순서형 리스트 + 우측
 // 폰 목업. Ref: ref/exchange/section2.png "How it works" 섹션(사용자 스케치).
-export const cryptoTradingHowItWorksContent = {
-  eyebrow: "HOW IT WORKS",
-  title: "주문부터 체결까지,\n하나의 화면에서",
-};
+export const cryptoTradingHowItWorksContentByLocale = {
+  ko: { eyebrow: "HOW IT WORKS", title: "주문부터 체결까지,\n하나의 화면에서" },
+  en: { eyebrow: "HOW IT WORKS", title: "From order to fill,\nin a single screen" },
+} satisfies Record<Locale, { eyebrow: string; title: string }>;
 
 export interface CryptoTradingHowItWorksStep {
   title: string;
   description: string;
 }
 
-export const cryptoTradingHowItWorksSteps: CryptoTradingHowItWorksStep[] = [
-  {
-    title: "실시간 시세 확인",
-    description:
-      "임베디드 차트와 시세 화면으로 캔들·지표를 실시간으로 확인합니다.",
-  },
-  {
-    title: "호가 · 오더북 조회",
-    description:
-      "매수·매도 호가창을 실시간으로 조회하고 체결 강도를 파악합니다.",
-  },
-  {
-    title: "주문 및 체결",
-    description:
-      "지정가·시장가 주문을 API로 전달하면 매칭 엔진이 즉시 체결합니다.",
-  },
-  {
-    title: "잔고 · 내역 관리",
-    description:
-      "체결 내역과 잔고를 API로 조회해 파트너 서비스 화면에 반영합니다.",
-  },
-];
+export const cryptoTradingHowItWorksStepsByLocale: Record<Locale, CryptoTradingHowItWorksStep[]> = {
+  ko: [
+    {
+      title: "실시간 시세 확인",
+      description: "임베디드 차트와 시세 화면으로 캔들·지표를 실시간으로 확인합니다.",
+    },
+    {
+      title: "호가 · 오더북 조회",
+      description: "매수·매도 호가창을 실시간으로 조회하고 체결 강도를 파악합니다.",
+    },
+    {
+      title: "주문 및 체결",
+      description: "지정가·시장가 주문을 API로 전달하면 매칭 엔진이 즉시 체결합니다.",
+    },
+    {
+      title: "잔고 · 내역 관리",
+      description: "체결 내역과 잔고를 API로 조회해 파트너 서비스 화면에 반영합니다.",
+    },
+  ],
+  en: [
+    {
+      title: "Real-time price monitoring",
+      description: "View candles and indicators live via embedded charts and price screens.",
+    },
+    {
+      title: "Order book lookup",
+      description: "Query bid/ask order books in real time and gauge execution strength.",
+    },
+    {
+      title: "Order placement & fills",
+      description: "Submit limit or market orders via API and the matching engine fills them instantly.",
+    },
+    {
+      title: "Balance & history",
+      description: "Query fills and balances via API and reflect them in your product's screens.",
+    },
+  ],
+};
 
 // 실제 INEX 모바일 앱 스크린샷 3종 조합 목업. 배경 투명(PNG) — 연한 회색
 // 박스 위에 자연스럽게 얹는다. company-homepage 프로젝트의
 // public/images/solutions/trading_2.png를 그대로 가져옴(실사용 앱 화면,
 // 플레이스홀더 아님).
-export const cryptoTradingHowItWorksImage = {
-  src: "/images/solutions/trading-app-mockup.png",
-  alt: "INEX 모바일 앱 주문·호가·차트 화면",
-};
+export const cryptoTradingHowItWorksImageByLocale = {
+  ko: { src: "/images/solutions/trading-app-mockup.png", alt: "INEX 모바일 앱 주문·호가·차트 화면" },
+  en: {
+    src: "/images/solutions/trading-app-mockup.png",
+    alt: "INEX mobile app order, order book, and chart screens",
+  },
+} satisfies Record<Locale, { src: string; alt: string }>;
 
 // 마무리 CTA (다크). Ref: INEX Home Wireframe.dc.html ~L290-302 ("INEX와 함께
 // 시작하십시오" 다크 CTA)와 동일한 톤을 이 페이지 전용 문구로 재구성.
-export const cryptoTradingCtaContent = {
-  eyebrow: "GET STARTED",
-  title: "크립토 트레이딩 인프라,\n지금 바로 연동하세요",
-  description:
-    "도입 검토 단계에 맞춰 필요한 자료와 논의를 제공합니다. 기술 검토와 규제 요건 정리를 함께 진행합니다.",
-  primaryCta: {
-    label: "파트너십 문의",
-    href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",
-    external: true,
+export const cryptoTradingCtaContentByLocale = {
+  ko: {
+    eyebrow: "GET STARTED",
+    title: "크립토 트레이딩 인프라,\n지금 바로 연동하세요",
+    description:
+      "도입 검토 단계에 맞춰 필요한 자료와 논의를 제공합니다. 기술 검토와 규제 요건 정리를 함께 진행합니다.",
+    primaryCta: {
+      label: "파트너십 문의",
+      href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",
+      external: true,
+    },
+    secondaryCta: {
+      label: "API 문서 보기",
+      href: "https://docs.inex.im/docs/datacenter-overview",
+      external: true,
+    },
   },
-  secondaryCta: {
-    label: "API 문서 보기",
-    href: "https://docs.inex.im/docs/datacenter-overview",
-    external: true,
+  en: {
+    eyebrow: "GET STARTED",
+    title: "Integrate the crypto trading\ninfrastructure today",
+    description:
+      "We provide the materials and discussion you need at every stage of evaluation, working alongside you on technical review and regulatory requirements.",
+    primaryCta: {
+      label: "Partnership Inquiry",
+      href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",
+      external: true,
+    },
+    secondaryCta: {
+      label: "View API Docs",
+      href: "https://docs.inex.im/docs/datacenter-overview",
+      external: true,
+    },
   },
-};
+} satisfies Record<
+  Locale,
+  {
+    eyebrow: string;
+    title: string;
+    description: string;
+    primaryCta: { label: string; href: string; external: boolean };
+    secondaryCta: { label: string; href: string; external: boolean };
+  }
+>;
