@@ -1,6 +1,11 @@
 import type { Metadata } from "next"
 
 import { defaultLocale, locales, publicPath, type Locale } from "./i18n"
+import {
+  footerLegalByLocale,
+  footerContactsByLocale,
+  footerSocialLinksByLocale,
+} from "@/entities/company/model/footer-content"
 
 export const SITE_URL = "https://inex.im"
 export const SITE_NAME = "INEX"
@@ -91,5 +96,61 @@ export function buildPageMetadata({
       description,
       images: [image],
     },
+  }
+}
+
+/**
+ * `Organization`/`WebSite` JSON-LD, 검색엔진·AI 답변 엔진(AEO)이 회사
+ * 정보를 구조화된 형태로 인용할 수 있도록 루트 레이아웃에 심는다. 두
+ * 로케일(`/`, `/en`)이 같은 실체를 가리키므로 `@id`를 로케일-불변(항상
+ * `SITE_URL` 기준)으로 고정 — 그래야 한/영 페이지가 서로 다른 organization을
+ * 두 번 선언한 것으로 보이지 않는다.
+ *
+ * `footer-content.ts`에 실려 있는 사실 정보(법인명/주소/연락처/SNS)만
+ * 그대로 옮긴다 — VASP 등록번호처럼 schema.org에 대응하는 필드가 없는
+ * 값이나, foundingDate/직원수 같이 이 프로젝트가 갖고 있지 않은 값은
+ * 추측해서 채우지 않는다(구조화 데이터는 기계가 읽는 사실 주장이므로).
+ */
+export function buildOrganizationJsonLd(locale: Locale) {
+  const legal = footerLegalByLocale[locale]
+  const contacts = footerContactsByLocale[locale]
+  const social = footerSocialLinksByLocale[locale]
+  const mainLine = contacts.find((c) => c.href?.startsWith("tel:"))
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+    name: SITE_NAME,
+    legalName: legal.companyName,
+    url: SITE_URL,
+    logo: `${SITE_URL}/icon.png`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: legal.address,
+      addressCountry: "KR",
+    },
+    ...(mainLine
+      ? {
+          contactPoint: {
+            "@type": "ContactPoint",
+            telephone: mainLine.value,
+            contactType: "customer service",
+          },
+        }
+      : {}),
+    sameAs: social.map((s) => s.href),
+  }
+}
+
+export function buildWebSiteJsonLd(locale: Locale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    name: SITE_NAME,
+    url: SITE_URL,
+    inLanguage: OPEN_GRAPH_LOCALE[locale],
+    publisher: { "@id": `${SITE_URL}/#organization` },
   }
 }
