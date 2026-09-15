@@ -59,7 +59,7 @@ export const cryptoTradingHeroContentByLocale: Record<Locale, CryptoTradingHeroC
     eyebrow: "SOLUTION · CRYPTO TRADING",
     title: "Connect to a live, production exchange engine",
     description:
-      "INEX provides the trading engine and liquidity it runs and verifies in its own exchange — via embeddable charts, an SDK, and trade/order book APIs. Add trading to your product without building an exchange.",
+      "INEX provides the trading engine and liquidity it runs and verifies in its own exchange, via embeddable charts, an SDK, and trade/order book APIs. Add trading to your product without building an exchange.",
     imageSrc: "/images/solutions/crypto-trading-hero.png",
     imageAlt: "Screenshot of the INEX exchange crypto trading screen",
     primaryCta: {

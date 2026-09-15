@@ -283,7 +283,7 @@ export const custodyContentByLocale: Record<Locale, CustodyContent> = {
       eyebrow: "GET STARTED",
       title: "Let's discuss your custody\ninfrastructure today",
       description:
-        "We provide the materials and discussion you need, tailored to your asset scale and approval policy requirements — including technical review and regulatory alignment.",
+        "We provide the materials and discussion you need, tailored to your asset scale and approval policy requirements, including technical review and regulatory alignment.",
       primaryCta: { label: "Partnership Inquiry", href: PARTNERSHIP_FORM_URL, external: true },
       secondaryCta: {
         label: "View API Docs",

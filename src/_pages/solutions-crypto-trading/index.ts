@@ -8,7 +8,7 @@ export { CryptoTradingPage as default } from "./ui/crypto-trading-page";
 const TITLE = { ko: "크립토 트레이딩 엔진 API", en: "Crypto Trading Engine API" };
 const DESCRIPTION = {
   ko: "INEX가 직접 운영·검증한 거래 엔진과 유동성을 임베디드 차트, SDK, 거래·오더북 API로 제공합니다. 별도 거래소 구축 없이 트레이딩 기능을 서비스에 그대로 탑재할 수 있습니다.",
-  en: "Embed the trading engine and liquidity INEX runs and verifies in its own exchange — via embeddable charts, an SDK, and trade/order book APIs. Add trading to your product without building an exchange.",
+  en: "Embed the trading engine and liquidity INEX runs and verifies in its own exchange, via embeddable charts, an SDK, and trade/order book APIs. Add trading to your product without building an exchange.",
 };
 
 // 루트 레이아웃의 `title.template`("%s | INEX")이 <title> 태그는 감싸주지만

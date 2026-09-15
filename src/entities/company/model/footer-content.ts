@@ -10,7 +10,7 @@ export const footerBrandByLocale: Record<Locale, { name: string; description: st
   en: {
     name: "INEX",
     description:
-      "Infrastructure connecting fiat and digital assets.\nTrading, payments, and remittance — all on a single license.",
+      "Infrastructure connecting fiat and digital assets.\nTrading, payments, and remittance, all on a single license.",
   },
 }
 

@@ -684,7 +684,7 @@ export const stablecoinPaymentsDemoStepsByLocale: Record<Locale, StablecoinPayme
       phaseLabel: "Settlement",
       screenTitle: "Transaction detail · receipt",
       screenDescription:
-        "The customer can view detailed information and a receipt from the transaction history — order number, TXID, payment method, and more.",
+        "The customer can view detailed information and a receipt from the transaction history, including order number, TXID, payment method, and more.",
       screen: {
         kind: "receipt-detail",
         merchant: "INEX Store",

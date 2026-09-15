@@ -27,7 +27,7 @@ export const accountHighlightContentByLocale: Record<Locale, AccountHighlightCon
   en: {
     heading: "In step with the coming digital asset market,\nwe're preparing the full on/off-ramp flow on a single rail",
     description:
-      "From customer/merchant payment collection to on-chain transfer, off-ramp payout, and settlement — we're progressively building infrastructure that connects the entire flow into a single account structure, in step with market and regulatory direction.",
+      "From customer/merchant payment collection to on-chain transfer, off-ramp payout, and settlement, we're progressively building infrastructure that connects the entire flow into a single account structure, in step with market and regulatory direction.",
   },
 }
 

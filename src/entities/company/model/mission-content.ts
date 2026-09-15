@@ -36,7 +36,7 @@ export const missionContentByLocale: Record<Locale, MissionContent> = {
   },
   en: {
     eyebrow: "Vision",
-    title: "Beyond an exchange —\nsetting the standard for digital asset infrastructure",
+    title: "Beyond an exchange,\nsetting the standard for digital asset infrastructure",
     paragraphs: [
       "INEX is not just an exchange. We're a CaaS company connecting global and domestic markets, setting the standard for digital asset financial infrastructure.\n(CaaS = Compliance / Crypto as a Service)",
       "For faster, cheaper, and more transparent finance, we build the infrastructure that lets financial institutions and platforms expand their business into digital assets.",

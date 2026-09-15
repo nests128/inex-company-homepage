@@ -106,7 +106,7 @@ export const operationsSplitContentByLocale: Record<Locale, OperationsSplitConte
     eyebrow: "Solutions",
     title: "From trading to payments and custody\non a single infrastructure",
     description:
-      "Route through internal liquidity, partner banks, and external market makers on a policy basis to avoid single points of dependency — MPC multi-approval and hot/cold segregation are the default.",
+      "Route through internal liquidity, partner banks, and external market makers on a policy basis to avoid single points of dependency, with MPC multi-approval and hot/cold segregation as the default.",
     cta: { label: "Explore how it runs →", href: "#" },
     sidePhotos: [
       { src: "/images/operations/pay1.webp", alt: "Stablecoin payments image 1" },
@@ -118,7 +118,7 @@ export const operationsSplitContentByLocale: Record<Locale, OperationsSplitConte
         iconKey: "trading",
         title: "Crypto Trading",
         description:
-          "A trading infrastructure with liquidity, custody, and compliance built in — delivered as a REST API.",
+          "A trading infrastructure with liquidity, custody, and compliance built in, delivered as a REST API.",
         active: true,
         visual: "trading-card",
         mediaAlt: "Image: trading screen",

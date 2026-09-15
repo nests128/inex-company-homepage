@@ -30,7 +30,7 @@ export const heroContentByLocale: Record<Locale, HeroContent> = {
   en: {
     title: "Preparing the new standard for\ndigital assets and stablecoins",
     subcopy:
-      "In step with the coming demand in digital asset payments, we're building infrastructure that connects the entire flow — on/off-ramp, collection, payout, top-up, remittance, and settlement — on a single rail.",
+      "In step with the coming demand in digital asset payments, we're building infrastructure that connects the entire flow, from on/off-ramp to collection, payout, top-up, remittance, and settlement, on a single rail.",
     primaryCta: {
       label: "Partnership Inquiry",
       href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",

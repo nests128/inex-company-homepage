@@ -38,7 +38,7 @@ export const featureShowcaseItemsByLocale: Record<Locale, FeatureShowcaseItem[]>
     {
       id: "trading",
       iconShape: "square",
-      title: "Trading — KRCX",
+      title: "Trading (KRCX)",
       description:
         "유동성·커스터디·컴플라이언스가 함께 붙어 있는 거래 인프라를 API로 제공합니다.",
     },
@@ -61,7 +61,7 @@ export const featureShowcaseItemsByLocale: Record<Locale, FeatureShowcaseItem[]>
     {
       id: "trading",
       iconShape: "square",
-      title: "Trading — KRCX",
+      title: "Trading (KRCX)",
       description:
         "A trading infrastructure with liquidity, custody, and compliance built in, delivered as an API.",
     },
@@ -121,7 +121,7 @@ export const featureShowcaseHighlightsByLocale: Record<Locale, FeatureShowcaseHi
       id: "license",
       title: "VASP & ISMS Certified",
       description:
-        "VASP registration accepted (Oct 2024 · FIU) and full ISMS certification (Apr 2025 · KISA) completed — we operate on infrastructure that meets regulatory requirements.",
+        "With VASP registration accepted (Oct 2024, FIU) and full ISMS certification (Apr 2025, KISA), we operate on infrastructure that meets regulatory requirements.",
     },
     {
       id: "travel-rule",
