@@ -50,4 +50,14 @@ export const teamMembers: TeamMemberContent[] = [
     imageSrc: `${TEAM_PHOTO_BASE}/ciso_2.png`,
     imageAlt: "이성호 CISO 프로필 사진",
   },
+  {
+    name: "김태현",
+    role: "CBO",
+    bio: "금융·디지털자산 산업에서 축적한 사업 경험과 전략적 인사이트를 바탕으로,\nINEX의 사업 확장과 전략적 파트너십을 이끌며 지속 가능한 디지털자산 비즈니스 생태계를 구축합니다.",
+    // 다른 팀원은 상위 프로젝트의 실제 CDN 사진(TEAM_PHOTO_BASE)을 쓰지만,
+    // CBO 사진은 CDN에 아직 없는 로컬 제공 이미지(ref/team/cbo.png)라
+    // public/images/team/에 정적 자산으로 넣어 참조한다.
+    imageSrc: "/images/team/cbo.png",
+    imageAlt: "김태현 CBO 프로필 사진",
+  },
 ]
