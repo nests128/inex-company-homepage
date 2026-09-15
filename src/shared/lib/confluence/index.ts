@@ -100,13 +100,46 @@ function convertStorageHtmlToDisplayHtml(rawHtml: string, pageId: string): strin
   );
 }
 
+// Confluence storage format의 본문에는 스마트 따옴표/줄임표 등이 named
+// entity(`&rdquo;`, `&hellip;`...)로 들어있는 경우가 많다. 예전엔 `&nbsp;`
+// 등 몇 개만 치환해서, 나머지가 발췌문에 문자 그대로("&rdquo;") 노출되는
+// 버그가 있었다(사용자 리포트, 2026-09-15: "따옴표를 먼저 물었다... 이런식
+// 으로 태그명이 나와"). 숫자 참조(`&#39;`, `&#8217;` 등)까지 포함해 범용
+// 디코더로 교체.
+const HTML_ENTITIES: Record<string, string> = {
+  nbsp: " ",
+  amp: "&",
+  lt: "<",
+  gt: ">",
+  quot: '"',
+  apos: "'",
+  ldquo: "“",
+  rdquo: "”",
+  lsquo: "‘",
+  rsquo: "’",
+  hellip: "…",
+  mdash: "—",
+  ndash: "–",
+};
+
+function decodeHtmlEntities(text: string): string {
+  return text.replace(/&(#\d+|#x[0-9a-fA-F]+|[a-zA-Z]+);/g, (match, entity: string) => {
+    if (entity[0] === "#") {
+      const codePoint = entity[1] === "x" || entity[1] === "X"
+        ? parseInt(entity.slice(2), 16)
+        : parseInt(entity.slice(1), 10);
+      return Number.isNaN(codePoint) ? match : String.fromCodePoint(codePoint);
+    }
+    return HTML_ENTITIES[entity] ?? match;
+  });
+}
+
 function extractPlainText(rawHtml: string): string {
-  return rawHtml
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
+  // 태그 제거 -> 엔티티 디코드 -> 공백 정리 순서가 중요하다: `&nbsp;`를
+  // 먼저 " "로 디코드한 뒤에 `\s+` 정리를 해야 연속 nbsp가 하나로 뭉쳐진다
+  // (순서를 바꾸면 디코드가 공백 정리 뒤에 일어나 여러 개의 &nbsp;가 그대로
+  // 남는다).
+  return decodeHtmlEntities(rawHtml.replace(/<[^>]+>/g, " "))
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -188,7 +221,7 @@ export async function fetchNewsPosts(): Promise<NewsPost[]> {
       return {
         id: post.id,
         slug: post.id,
-        title: post.title,
+        title: decodeHtmlEntities(post.title),
         excerpt: generateExcerpt(plain, 140),
         thumbnailUrl: extractFirstImage(rawHtml, post.id),
         category: labels[0] ?? null,
