@@ -8,6 +8,7 @@ import {
   Button,
   InexLogoMark,
   LanguageSwitcher,
+  MobileLanguageSwitcher,
   NavBar as NavBarPrimitive,
   type NavItem,
 } from "@/shared/ui"
@@ -94,6 +95,7 @@ export async function NavBar() {
         items={navItems}
         mobileMenuLabel={nav.mobileMenuLabel}
         languageSwitcher={<LanguageSwitcher current={locale} />}
+        mobileLanguageSwitcher={<MobileLanguageSwitcher current={locale} />}
         cta={
           // 모바일 시트는 이 cta를 `flex flex-col gap-3` 컨테이너 안에서
           // 렌더링하므로(shared/ui/nav-bar.tsx), 여기서 다시 `flex-row`를

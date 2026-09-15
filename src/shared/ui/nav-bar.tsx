@@ -71,8 +71,15 @@ export interface NavBarProps
   logo: ReactNode
   /** Top-level nav items, rendered left-to-right (plain links and/or mega-menu groups). */
   items: NavItem[]
-  /** Optional language switcher slot (e.g. a "한국어 / EN" link pair). Content is caller's concern. */
+  /** Optional language switcher slot for desktop (e.g. a Globe-icon popover trigger). Content is caller's concern. */
   languageSwitcher?: ReactNode
+  /**
+   * Optional language switcher slot for the mobile sheet footer. Separate
+   * from `languageSwitcher` because a `Popover`'s content portals outside the
+   * sheet's DOM subtree, breaking its focus trap and z-index stacking there —
+   * the mobile variant should render plain, non-portaled markup instead.
+   */
+  mobileLanguageSwitcher?: ReactNode
   /** CTA button slot rendered at the end of the bar (desktop) and in the mobile sheet footer. */
   cta?: ReactNode
   /** Accessible label for the mobile menu trigger. Defaults to "메뉴 열기". */
@@ -122,6 +129,7 @@ function NavBar({
   logo,
   items,
   languageSwitcher,
+  mobileLanguageSwitcher,
   cta,
   mobileMenuLabel = "메뉴 열기",
   className,
@@ -241,9 +249,9 @@ function NavBar({
           </NavigationMenuList>
         </NavigationMenu>
 
-        {languageSwitcher ? <div className="ml-2">{languageSwitcher}</div> : null}
-
         {cta}
+
+        {languageSwitcher ? <div className="-ml-[22px]">{languageSwitcher}</div> : null}
       </div>
 
       {/* Mobile trigger */}
@@ -323,7 +331,7 @@ function NavBar({
           </nav>
 
           <div className="flex flex-col gap-3 border-t border-border p-4">
-            {languageSwitcher}
+            {mobileLanguageSwitcher}
             {cta}
           </div>
         </SheetContent>

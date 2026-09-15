@@ -26,7 +26,3 @@ export function publicPath(locale: Locale, route: string): string {
   return `/en${normalized}`;
 }
 
-/** 다른 로케일로 전환할 때 쓸 경로. 현재 페이지의 로케일-무관 `route`가 필요하다. */
-export function otherLocale(locale: Locale): Locale {
-  return locale === "ko" ? "en" : "ko";
-}
