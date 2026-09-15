@@ -280,25 +280,20 @@ function NavBar({
               group.type === "mega-group" ? (
                 <Accordion key={`mega-${groupIndex}`} className="gap-0">
                   {group.items.map((item) => (
-                    <AccordionItem key={item.label} value={item.label}>
+                    <AccordionItem key={item.label} value={item.label} className="border-b border-border">
                       <AccordionTrigger className="px-3 text-base font-semibold">
                         {item.label}
                       </AccordionTrigger>
-                      <AccordionContent className="px-3">
+                      <AccordionContent className="px-3 [&_a]:no-underline">
                         <ul className="flex flex-col gap-3">
                           {item.items.map((sub) => (
                             <li key={sub.label}>
                               <a
                                 href={sub.href}
                                 onClick={() => setMobileOpen(false)}
-                                className="flex flex-col gap-0.5 rounded-lg py-1.5 outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                                className="block rounded-lg py-1.5 text-sm font-semibold text-foreground no-underline outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                               >
-                                <span className="text-sm font-semibold text-foreground">
-                                  {sub.label}
-                                </span>
-                                <span className="text-xs text-muted-foreground">
-                                  {sub.description}
-                                </span>
+                                {sub.label}
                               </a>
                             </li>
                           ))}
