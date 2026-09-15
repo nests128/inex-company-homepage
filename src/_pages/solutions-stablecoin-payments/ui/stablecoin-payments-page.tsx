@@ -1,7 +1,6 @@
 import { NavBar } from "@/widgets/nav-bar";
 import { Footer } from "@/widgets/footer";
 import { SolutionHero } from "@/widgets/solution-hero";
-import { FaqSection } from "@/shared/ui";
 import { getStablecoinPaymentsContent, getCurrentLocale } from "@/entities/company/server";
 
 import { FeatureGridSection } from "./feature-grid-section";
@@ -39,7 +38,6 @@ export async function StablecoinPaymentsPage() {
         <CapabilitiesSection />
         <HowItWorksSection />
         <DemoSection locale={locale} />
-        <FaqSection eyebrow={content.faqHeader.eyebrow} title={content.faqHeader.title} items={content.faq} />
         <StablecoinPaymentsCtaSection />
       </main>
       <Footer />

@@ -118,7 +118,6 @@ export { FeatureListItem, type FeatureListItemProps } from "./feature-list-item"
 export { PaymentCard, type PaymentCardProps } from "./payment-card"
 export { Reveal, type RevealProps, type RevealDirection } from "./reveal"
 export { HeroReveal, type HeroRevealProps } from "./hero-reveal"
-export { FaqSection, type FaqSectionProps, type FaqSectionItem } from "./faq-section"
 export { AccountCard, type AccountCardProps, type AccountCardSegment } from "./account-card"
 export {
   IntegrationLogoCard,
