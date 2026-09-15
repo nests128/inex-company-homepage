@@ -3,8 +3,10 @@
 // 카드 박스(`h-[240px] lg:h-[280px]`, overflow-hidden)보다 콘솔 폭을 살짝
 // 넓게 잡아(`w-[110%]` 등) 레퍼런스처럼 제품 화면이 카드 밖으로 자연스럽게
 // 걸치도록 한다 — 딱 맞춘 미니어처보다 실제 제품 캡처처럼 보이는 효과.
-import { ActivityIcon, AlertTriangleIcon, ArrowDownLeftIcon, ArrowUpRightIcon, KeyIcon, LockIcon } from "lucide-react";
+import { ActivityIcon, KeyIcon, LockIcon } from "lucide-react";
 import { cn } from "cn";
+
+import { MonitorAnimatedList, type MonitorEvent } from "./monitor-animated-list";
 
 interface KeyShare {
   label: string;
@@ -17,19 +19,21 @@ const KEY_SHARES: KeyShare[] = [
   { label: "Share C", combined: false },
 ];
 
-interface MonitorEvent {
-  label: string;
-  time: string;
-  type: "in" | "out" | "alert";
-}
-
+// magicui AnimatedList(https://magicui.design/docs/components/animated-list)
+// 패턴 적용(사용자 요청, 2026-09-15) — 항목이 순차 등장하며 순환하므로
+// "방금 전/3분 전" 같은 상대 시간은 재등장 시 의미가 어긋난다. 대신
+// 재순환해도 항상 유효한 상태 라벨을 쓴다.
 const MONITOR_EVENTS: MonitorEvent[] = [
-  { label: "입금 확인", time: "방금 전", type: "in" },
-  { label: "출금 서명 완료", time: "3분 전", type: "out" },
-  { label: "한도 초과 시도 차단", time: "12분 전", type: "alert" },
+  { id: "e1", label: "입금 확인", status: "온체인 컨펌 완료", type: "in" },
+  { id: "e2", label: "출금 서명 완료", status: "2 of 3 승인", type: "out" },
+  { id: "e3", label: "한도 초과 시도 차단", status: "정책 엔진 자동 차단", type: "alert" },
+  { id: "e4", label: "입금 확인", status: "온체인 컨펌 완료", type: "in" },
+  { id: "e5", label: "출금 서명 완료", status: "2 of 3 승인", type: "out" },
 ];
 
 // 카드 1: 모니터링 — 입출금·서명·이상 징후를 실시간으로 추적하는 활동 로그.
+// 이벤트 순환 애니메이션은 클라이언트 상태가 필요해 `monitor-animated-list.tsx`로
+// 분리했고, 이 컴포넌트 자체는 서버 컴포넌트로 유지한다.
 export function PolicyConsole() {
   return (
     <div className="w-[112%] max-w-none bg-background p-4 shadow-[0_4px_16px_rgba(0,0,0,.10)] lg:p-5">
@@ -44,40 +48,7 @@ export function PolicyConsole() {
         </span>
       </div>
 
-      <ul className="mt-3.5 flex flex-col gap-2 lg:mt-4 lg:gap-2.5">
-        {MONITOR_EVENTS.map((event) => (
-          <li
-            key={event.label}
-            className="flex items-center gap-2.5 rounded-lg bg-muted px-3 py-2"
-          >
-            <span
-              aria-hidden="true"
-              className={cn(
-                "flex size-6 shrink-0 items-center justify-center rounded-full",
-                event.type === "alert"
-                  ? "bg-amber-100 text-amber-600"
-                  : "bg-sky-100 text-sky-600",
-              )}
-            >
-              {event.type === "in" ? (
-                <ArrowDownLeftIcon className="size-3.5" />
-              ) : event.type === "out" ? (
-                <ArrowUpRightIcon className="size-3.5" />
-              ) : (
-                <AlertTriangleIcon className="size-3.5" />
-              )}
-            </span>
-            <div className="min-w-0">
-              <p className="truncate text-[11.5px] font-bold text-foreground lg:text-[12px]">
-                {event.label}
-              </p>
-              <p className="truncate text-[10px] text-muted-foreground lg:text-[11px]">
-                {event.time}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <MonitorAnimatedList events={MONITOR_EVENTS} />
     </div>
   );
 }
