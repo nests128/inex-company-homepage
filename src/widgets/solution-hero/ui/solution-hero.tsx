@@ -67,6 +67,13 @@ export interface SolutionHeroProps {
    * `visual` isn't provided.
    */
   visualClassName?: string;
+  /**
+   * Overrides the description paragraph's default `max-w-xl` — for a
+   * description whose text is long enough to wrap onto a third line at that
+   * width even though it's meant to read as two (e.g. a compliance-focused
+   * second sentence). Ignored when omitted.
+   */
+  descriptionClassName?: string;
 }
 
 export function SolutionHero({
@@ -81,6 +88,7 @@ export function SolutionHero({
   appLinks,
   className,
   visualClassName,
+  descriptionClassName,
 }: SolutionHeroProps) {
   return (
     <section className={cn("py-14 lg:py-24", className)}>
@@ -96,7 +104,12 @@ export function SolutionHero({
           <h1 className="text-[28px] leading-[1.15] font-bold tracking-[-.02em] text-foreground lg:text-[48px] lg:leading-[1.1] lg:tracking-[-.03em]">
             {title}
           </h1>
-          <p className="mt-4 max-w-xl text-[14.5px] leading-[1.65] whitespace-pre-line text-muted-foreground lg:mt-6 lg:text-lg lg:leading-[1.6]">
+          <p
+            className={cn(
+              "mt-4 max-w-xl text-[14.5px] leading-[1.65] whitespace-pre-line text-muted-foreground lg:mt-6 lg:text-lg lg:leading-[1.6]",
+              descriptionClassName
+            )}
+          >
             {description}
           </p>
           {primaryCta || exchangeLink ? (

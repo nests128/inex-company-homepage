@@ -23,6 +23,10 @@ export function StablecoinPaymentsPage() {
           // 비해 과하게 커 보여 이 페이지만 줄임(크립토 트레이딩 페이지는
           // 스크린샷 히어로라 기본값 그대로 유지).
           className="py-12 lg:py-16"
+          // 두 문장 description(레일 연결 + VASP 컴플라이언스)이 기본
+          // max-w-xl에서 둘째 문장이 두 줄로 넘쳐 총 3줄이 되는 문제 수정
+          // (사용자 요청, 2026-09-15: "가로영역을 좀 늘려볼래?").
+          descriptionClassName="max-w-2xl"
         />
         {/* 섹션 순서는 ref/pay/temp3.png+Temp4.png(bridge.xyz 스크린샷)와
             동일: Key use cases -> Tools to build -> How it works -> Demo. */}

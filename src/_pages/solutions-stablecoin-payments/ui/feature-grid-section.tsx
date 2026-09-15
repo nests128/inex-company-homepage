@@ -65,7 +65,7 @@ export function FeatureGridSection() {
                 </span>
                 <h3 className="text-[15.5px] font-bold">{item.title}</h3>
               </div>
-              <p className="mt-4 text-[13.5px] leading-[1.6] text-muted-foreground">
+              <p className="mt-4 text-[14.5px] leading-[1.6] text-muted-foreground">
                 {item.description}
               </p>
             </div>

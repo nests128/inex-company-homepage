@@ -44,7 +44,7 @@ export function CapabilitiesSection() {
                 )}
               >
                 <h3 className="text-[15.5px] font-bold text-foreground">{item.title}</h3>
-                <p className="mt-2 text-[14.5px] leading-[1.6] text-muted-foreground">
+                <p className="mt-2 text-[15.5px] leading-[1.6] text-muted-foreground">
                   {item.description}
                 </p>
               </div>
