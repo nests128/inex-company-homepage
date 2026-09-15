@@ -46,6 +46,12 @@ import {
   stablecoinPaymentsDemoStepsByLocale,
   stablecoinPaymentsCtaContentByLocale,
 } from "./model/stablecoin-payments-content";
+import {
+  cryptoTradingFaqByLocale,
+  custodyFaqByLocale,
+  stablecoinPaymentsFaqByLocale,
+  faqSectionHeaderByLocale,
+} from "./model/faq-content";
 
 /** Also exported for pages that need the raw locale value itself (e.g. to pass as a prop into a client component). */
 export async function getCurrentLocale() {
@@ -91,7 +97,12 @@ export async function getHistoryContent() {
 }
 
 export async function getCustodyContent() {
-  return custodyContentByLocale[await getCurrentLocale()];
+  const current = await getCurrentLocale();
+  return {
+    ...custodyContentByLocale[current],
+    faq: custodyFaqByLocale[current],
+    faqHeader: faqSectionHeaderByLocale[current],
+  };
 }
 
 export async function getCryptoTradingContent() {
@@ -108,6 +119,8 @@ export async function getCryptoTradingContent() {
     howItWorksSteps: cryptoTradingHowItWorksStepsByLocale[current],
     howItWorksImage: cryptoTradingHowItWorksImageByLocale[current],
     cta: cryptoTradingCtaContentByLocale[current],
+    faq: cryptoTradingFaqByLocale[current],
+    faqHeader: faqSectionHeaderByLocale[current],
   };
 }
 
@@ -124,5 +137,7 @@ export async function getStablecoinPaymentsContent() {
     demoContent: stablecoinPaymentsDemoContentByLocale[current],
     demoSteps: stablecoinPaymentsDemoStepsByLocale[current],
     cta: stablecoinPaymentsCtaContentByLocale[current],
+    faq: stablecoinPaymentsFaqByLocale[current],
+    faqHeader: faqSectionHeaderByLocale[current],
   };
 }

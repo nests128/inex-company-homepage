@@ -1,6 +1,7 @@
 import { NavBar } from "@/widgets/nav-bar";
 import { Footer } from "@/widgets/footer";
 import { SolutionHero } from "@/widgets/solution-hero";
+import { FaqSection } from "@/shared/ui";
 import { getCustodyContent } from "@/entities/company/server";
 
 import { CustodyVaultHeroVisual } from "./custody-vault-hero-visual";
@@ -25,6 +26,11 @@ export async function CustodyPage() {
         <FeatureGridSection />
         <ProvenSection />
         <CapabilitiesSection />
+        <FaqSection
+          eyebrow={custodyContent.faqHeader.eyebrow}
+          title={custodyContent.faqHeader.title}
+          items={custodyContent.faq}
+        />
         <CustodyCtaSection />
       </main>
       <Footer />

@@ -1,6 +1,7 @@
 import { NavBar } from "@/widgets/nav-bar";
 import { Footer } from "@/widgets/footer";
 import { SolutionHero } from "@/widgets/solution-hero";
+import { FaqSection } from "@/shared/ui";
 import { getNavContent, getCryptoTradingContent, getCurrentLocale } from "@/entities/company/server";
 
 import { FeatureGridSection } from "./feature-grid-section";
@@ -30,6 +31,7 @@ export async function CryptoTradingPage() {
         <FeatureGridSection />
         <ProvenSection />
         <CapabilitiesSection locale={locale} />
+        <FaqSection eyebrow={content.faqHeader.eyebrow} title={content.faqHeader.title} items={content.faq} />
         <CryptoTradingCtaSection />
       </main>
       <Footer />
