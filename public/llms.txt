@@ -1,0 +1,21 @@
+# INEX
+
+> INEX는 거래·결제·송금 전 구간을 하나의 라이선스 위에서 운영하는 디지털자산 인프라 기업입니다. 자체 거래소를 직접 운영하며 검증한 매칭 엔진, 커스터디, 스테이블코인 결제 레일을 API/SDK 형태로 파트너사에 제공합니다.
+
+법인명은 (주)인피니티익스체인지코리아(Infinity Exchange Korea Co., Ltd.)이며, 대한민국 서울에 소재합니다. FIU 가상자산사업자(VASP) 신고 수리와 KISA ISMS 인증을 완료했습니다.
+
+## Solutions
+
+- [Crypto Trading Engine API](https://inex.im/solutions/crypto-trading): 실운영 거래소의 매칭 엔진과 유동성을 임베디드 차트, SDK, 거래·오더북 API로 제공. 별도 거래소 구축 없이 트레이딩 기능을 서비스에 탑재 가능.
+- [Custody](https://inex.im/solutions/custody): 핫/콜드월렛 분리 보관, 정책 엔진과 다중 승인(멀티시그/MPC) 기반 자산 보관 인프라. 입출금 전 구간 실시간 모니터링.
+- [Stablecoin Payments](https://inex.im/solutions/stablecoin-payments): 차지백 없는 수납·지급과 T+0 정산을 하나의 레일로 연결. VASP 규제를 준수하는 컴플라이언스 위에서 KYC·KYT·AML 처리.
+
+## Company
+
+- [About](https://inex.im/company): 회사 소개, 연혁, 팀, 라이선스 현황.
+- [News](https://inex.im/news): INEX 소식 및 업데이트.
+
+## Optional
+
+- [INEX Exchange](https://www.inexcoin.com): INEX가 직접 운영하는 실사용 가상자산 거래소.
+- English pages are available by prefixing any path with `/en` (e.g. `https://inex.im/en/solutions/crypto-trading`).
