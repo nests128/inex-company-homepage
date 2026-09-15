@@ -45,10 +45,13 @@ export interface CaseStudyBannerProps extends Omit<ComponentPropsWithoutRef<"div
  * description + outline CTA on the left, a decorative pale panel with the
  * caller's `visual` centered on top on the right.
  *
- * The blue-to-mint diagonal gradient reproduces the reference's actual tone
- * rather than the project's usual neutral-grayscale default (`GradientBackdrop`,
- * `QuoteHero`) — the same exception `QuoteHero` already makes for its
- * blue-lavender wash.
+ * The diagonal gradient departs from the project's usual neutral-grayscale
+ * default (`GradientBackdrop`, `QuoteHero`) — the same exception `QuoteHero`
+ * already makes for its blue-lavender wash. Originally a blue-to-mint tone
+ * (`ref/image4.png`); recolored to a sky-blue-to-lavender "aurora" wash per
+ * explicit request (2026-09-15: "배경색을 오로라처럼 푸른빛으로", then
+ * "연함 -> 푸른색/보랏빛 느낌") so every solution page's closing CTA banner
+ * reads as one blue/violet family instead of shifting into green/mint.
  *
  * Not full-bleed itself — per `docs/design-tokens.md`'s "풀블리드 배경 + 컨테이너
  * 콘텐츠" convention, page-agent owns the outer `<section>` and decides
@@ -70,7 +73,7 @@ function CaseStudyBanner({
       data-slot="case-study-banner"
       className={cn(
         "relative overflow-hidden rounded-3xl p-8 sm:p-10 lg:p-14",
-        "bg-[linear-gradient(115deg,#bfe6fb_0%,#bdeee0_55%,#c9f2df_100%)]",
+        "bg-[linear-gradient(115deg,#dcf0fd_0%,#c3ddfa_45%,#c7cdf5_75%,#d3caf2_100%)]",
         className
       )}
       {...props}
