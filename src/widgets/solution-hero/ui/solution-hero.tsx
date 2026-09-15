@@ -96,7 +96,7 @@ export function SolutionHero({
           <h1 className="text-[28px] leading-[1.15] font-bold tracking-[-.02em] text-foreground lg:text-[48px] lg:leading-[1.1] lg:tracking-[-.03em]">
             {title}
           </h1>
-          <p className="mt-4 max-w-xl text-[14.5px] leading-[1.65] text-muted-foreground lg:mt-6 lg:text-lg lg:leading-[1.6]">
+          <p className="mt-4 max-w-xl text-[14.5px] leading-[1.65] whitespace-pre-line text-muted-foreground lg:mt-6 lg:text-lg lg:leading-[1.6]">
             {description}
           </p>
           {primaryCta || exchangeLink ? (

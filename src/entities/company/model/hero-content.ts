@@ -3,7 +3,7 @@
 export const heroContent = {
   title: "디지털자산 · 스테이블코인의\n새로운 표준을 함께 준비합니다",
   subcopy:
-    "온/오프램프, 수납·지급·충전, 송금·정산까지 결제의 전 구간을 하나의 인프라로 제공합니다.",
+    "다가오는 디지털자산 결제 시장의 수요에 맞춰, 온/오프램프부터 수납·지급·충전, 송금·정산까지 결제의 전 구간을 하나의 인프라로 준비하고 있습니다.",
   primaryCta: {
     label: "파트너십 문의",
     href: "https://docs.google.com/forms/d/e/1FAIpQLSfIgc2tgDCkN5Rui7u3QizsBaaAz2OU_3vvteIpYumtyi5leQ/viewform?usp=sf_link",

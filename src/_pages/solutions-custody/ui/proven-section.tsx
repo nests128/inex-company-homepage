@@ -21,7 +21,7 @@ export function ProvenSection() {
             <span aria-hidden="true" className="size-2.5 rounded-[3px] bg-sky-500" />
             {custodyProvenContent.eyebrow}
           </div>
-          <h2 className="text-2xl leading-[1.2] tracking-[-.015em] lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
+          <h2 className="text-2xl leading-[1.2] tracking-[-.015em] whitespace-pre-line lg:text-[36px] lg:leading-[1.2] lg:tracking-[-.02em]">
             {custodyProvenContent.title}
           </h2>
           <p className="mt-4 max-w-2xl text-[14.5px] leading-[1.6] text-muted-foreground lg:text-[16.5px] lg:leading-[1.7]">

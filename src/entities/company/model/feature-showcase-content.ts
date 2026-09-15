@@ -72,6 +72,6 @@ export const featureShowcaseHighlights: FeatureShowcaseHighlight[] = [
     id: "on-off-ramp",
     title: "온·오프램프",
     description:
-      "온/오프램프, 수납·지급·충전, 송금·정산까지 결제의 전 구간을 하나의 인프라로 연결합니다.",
+      "온/오프램프, 수납·지급·충전, 송금·정산까지: 다가오는 디지털자산 결제/송금 시장의 수요에 맞춰, 전 구간을 관련 규제를 준수하며 하나의 인프라로 준비하고 있습니다.",
   },
 ]

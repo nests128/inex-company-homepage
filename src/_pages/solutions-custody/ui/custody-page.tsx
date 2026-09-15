@@ -15,7 +15,6 @@ export function CustodyPage() {
       <NavBar />
       <main>
         <SolutionHero
-          eyebrow={custodyHeroContent.eyebrow}
           title={custodyHeroContent.title}
           description={custodyHeroContent.description}
           visual={<CustodyVaultHeroVisual className="h-full" />}
