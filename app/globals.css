@@ -161,8 +161,25 @@
   animation: dashflow 1.6s linear infinite;
 }
 
+/* 커스터디 "다중 서명" 콘솔(capability-consoles.tsx)의 키 셰어 결합선 —
+   촘촘한 점선(strokeDasharray "2 2", 패턴 합 4px)에 맞춰 dashoffset을
+   -8(패턴 합의 두 배, 한 바퀴 루프)로 이동시킨다. `dashflow`(패턴 합 11px
+   기준 -22)를 그대로 쓰면 배수가 안 맞아 애니메이션이 매끄럽게 반복되지
+   않아 전용 키프레임을 둔다. 속도는 사용자 요청으로 두 차례 조정
+   (dashflow의 1.6s보다 느리게 → 2.4s는 너무 느림 → 1.9s, 2026-09-15). */
+@keyframes key-share-dash {
+  to {
+    stroke-dashoffset: -8;
+  }
+}
+
+.animate-key-share-dash {
+  animation: key-share-dash 1.9s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .dashflow {
+  .dashflow,
+  .animate-key-share-dash {
     animation: none;
   }
 }

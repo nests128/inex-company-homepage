@@ -31,7 +31,7 @@ export const navSolutionItems: Array<{
   },
   {
     label: "스테이블코인 결제",
-    description: "차지백 없는 수납·지급, T+0 원화 정산",
+    description: "차지백 없는 수납·지급, T+0 정산",
     href: "/solutions/stablecoin-payments",
     iconKey: "payments",
   },

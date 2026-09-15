@@ -108,8 +108,8 @@ export function ApprovalConsole() {
               x2={110}
               y2={73}
               strokeWidth={2}
-              className={combined ? "stroke-sky-400" : "stroke-border"}
-              strokeDasharray={combined ? undefined : "3 4"}
+              className={combined ? "stroke-sky-400 animate-key-share-dash" : "stroke-border"}
+              strokeDasharray={combined ? "2 2" : "3 4"}
             />
           );
         })}
