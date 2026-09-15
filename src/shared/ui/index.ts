@@ -24,6 +24,7 @@ export {
   type NavMegaMenuGroup,
   type NavMegaMenuItem,
 } from "./nav-bar"
+export { LanguageSwitcher } from "./language-switcher"
 export {
   NavigationMenu,
   NavigationMenuContent,

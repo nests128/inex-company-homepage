@@ -1,5 +1,5 @@
 // Owner: page-agent. Ref: ref/INEX SaaS wireframe/INEX Home Wireframe.dc.html (hero section below nav, ~L90-134 desktop / ~L330-351 mobile).
-import { heroContent } from "@/entities/company";
+import { getHeroContent } from "@/entities/company/server";
 import {
   AuroraBackground,
   Button,
@@ -8,7 +8,9 @@ import {
   TrustIndicator,
 } from "@/shared/ui";
 
-export function Hero() {
+export async function Hero() {
+  const heroContent = await getHeroContent();
+
   return (
     // Full-bleed Aurora background (replaces the earlier 2-col copy/visual
     // grid) — copy + CTAs sit centered on top of it. The video previously
@@ -65,7 +67,7 @@ export function Hero() {
                 </TextAnimate>
               ))}
             </h1>
-            <p className="mx-auto mt-3.5 max-w-[520px] text-[14.5px] leading-[1.65] text-slate-600 lg:mt-6 lg:max-w-none lg:text-lg lg:leading-[1.6] lg:whitespace-nowrap">
+            <p className="mx-auto mt-3.5 max-w-[520px] text-[14.5px] leading-[1.65] whitespace-pre-line text-slate-600 lg:mt-6 lg:max-w-2xl lg:text-lg lg:leading-[1.6]">
               {heroContent.subcopy}
             </p>
             {/* `inline-flex` badge — centered via the flex-col parent's

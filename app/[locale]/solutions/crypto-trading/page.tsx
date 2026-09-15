@@ -1,1 +1,1 @@
-export { default, metadata } from "@/_pages/solutions-crypto-trading";
+export { default, generateMetadata } from "@/_pages/solutions-crypto-trading";

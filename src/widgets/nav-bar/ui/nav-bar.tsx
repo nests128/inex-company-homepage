@@ -2,23 +2,18 @@
 import type { ReactNode } from "react"
 import { ArrowUpRight, LineChartIcon, ShieldIcon, WalletIcon } from "lucide-react"
 import Link from "next/link"
+import { locale as getLocale } from "next/root-params"
 
 import {
   Button,
   InexLogoMark,
+  LanguageSwitcher,
   NavBar as NavBarPrimitive,
   type NavItem,
 } from "@/shared/ui"
-import {
-  navCompanyLink,
-  navCta,
-  navExchangeLink,
-  navLogoLabel,
-  navNewsLink,
-  navSolutionItems,
-  navTrailingLinks,
-  type SolutionIconKey,
-} from "@/entities/company"
+import { navLogoLabel, type SolutionIconKey } from "@/entities/company"
+import { getNavContent } from "@/entities/company/server"
+import { publicPath, isLocale, defaultLocale } from "@/shared/lib/i18n"
 
 /**
  * Maps the mega-menu data's `iconKey` to the small glyph rendered in the
@@ -39,44 +34,48 @@ function SolutionIcon({ iconKey }: { iconKey: SolutionIconKey }) {
   }
 }
 
-// "솔루션" mega-menu re-enabled (2026-09-14) — 크립토 트레이딩/스테이블코인
-// 결제 상세 페이지가 생겨 두 항목이 실제 라우트를 가리킨다. 커스터디는
-// 아직 `#` 플레이스홀더 (`entities/company/model/nav-content.ts` TODO 참고).
-// 위치는 "회사소개" 바로 옆(사용자 명시적 요청, 2026-09-14) — 원래 "INEX 소식"
-// 뒤였던 것을 앞으로 옮김.
-const navItems: NavItem[] = [
-  { type: "link", label: navCompanyLink.label, href: navCompanyLink.href },
-  {
-    type: "mega",
-    label: "솔루션",
-    items: navSolutionItems.map((item) => ({
-      label: item.label,
-      description: item.description,
-      href: item.href,
-      icon: <SolutionIcon iconKey={item.iconKey} />,
-    })),
-    // 드롭다운 하단 "어떤 레일이 맞는지 모르시나요? 파트너십 문의 →" 푸터
-    // 제거(사용자 명시적 요청, 2026-09-14) — navSolutionFooter 데이터/타입은
-    // 그대로 두고 여기서만 전달하지 않는다.
-  },
-  { type: "link", label: navNewsLink.label, href: navNewsLink.href },
-  ...navTrailingLinks.map(
-    (item): NavItem => ({
-      type: "link",
-      label: item.label,
-      href: item.href,
-      external: item.external,
-    })
-  ),
-]
+export async function NavBar() {
+  const rawLocale = await getLocale()
+  const locale = isLocale(rawLocale) ? rawLocale : defaultLocale
+  const nav = await getNavContent()
 
-const logo: ReactNode = (
-  <Link href="/" aria-label="INEX 홈으로 이동" className="flex w-fit items-center">
-    <InexLogoMark label={navLogoLabel} className="h-6 w-auto text-foreground lg:h-7" />
-  </Link>
-)
+  // "솔루션" mega-menu re-enabled (2026-09-14) — 크립토 트레이딩/스테이블코인
+  // 결제 상세 페이지가 생겨 두 항목이 실제 라우트를 가리킨다. 커스터디는
+  // 아직 `#` 플레이스홀더 (`entities/company/model/nav-content.ts` TODO 참고).
+  // 위치는 "회사소개" 바로 옆(사용자 명시적 요청, 2026-09-14) — 원래 "INEX 소식"
+  // 뒤였던 것을 앞으로 옮김.
+  const navItems: NavItem[] = [
+    { type: "link", label: nav.companyLink.label, href: publicPath(locale, nav.companyLink.href) },
+    {
+      type: "mega",
+      label: nav.solutionLabel,
+      items: nav.solutionItems.map((item) => ({
+        label: item.label,
+        description: item.description,
+        href: publicPath(locale, item.href),
+        icon: <SolutionIcon iconKey={item.iconKey} />,
+      })),
+      // 드롭다운 하단 "어떤 레일이 맞는지 모르시나요? 파트너십 문의 →" 푸터
+      // 제거(사용자 명시적 요청, 2026-09-14) — navSolutionFooter 데이터/타입은
+      // 그대로 두고 여기서만 전달하지 않는다.
+    },
+    { type: "link", label: nav.newsLink.label, href: publicPath(locale, nav.newsLink.href) },
+    ...nav.trailingLinks.map(
+      (item): NavItem => ({
+        type: "link",
+        label: item.label,
+        href: item.href,
+        external: item.external,
+      })
+    ),
+  ]
 
-export function NavBar() {
+  const logo: ReactNode = (
+    <Link href={publicPath(locale, "/")} aria-label={nav.homeAriaLabel} className="flex w-fit items-center">
+      <InexLogoMark label={navLogoLabel} className="h-6 w-auto text-foreground lg:h-7" />
+    </Link>
+  )
+
   return (
     // Full-bleed background/border wrapper (design-tokens.md "풀블리드 배경 +
     // 컨테이너 콘텐츠"): the border-bottom must span the viewport, so it lives
@@ -93,9 +92,8 @@ export function NavBar() {
       <NavBarPrimitive
         logo={logo}
         items={navItems}
-        // "KO" language switcher hidden per explicit request (2026-09-10) —
-        // i18n isn't built yet ("추후개발"). `NavBarPrimitive` already
-        // renders nothing when `languageLabel` is omitted.
+        mobileMenuLabel={nav.mobileMenuLabel}
+        languageSwitcher={<LanguageSwitcher current={locale} />}
         cta={
           // 모바일 시트는 이 cta를 `flex flex-col gap-3` 컨테이너 안에서
           // 렌더링하므로(shared/ui/nav-bar.tsx), 여기서 다시 `flex-row`를
@@ -115,13 +113,13 @@ export function NavBar() {
               className="h-[34px] w-full justify-center px-4 lg:w-auto"
               render={
                 <a
-                  href={navExchangeLink.href}
-                  target={navExchangeLink.external ? "_blank" : undefined}
-                  rel={navExchangeLink.external ? "noopener noreferrer" : undefined}
+                  href={nav.exchangeLink.href}
+                  target={nav.exchangeLink.external ? "_blank" : undefined}
+                  rel={nav.exchangeLink.external ? "noopener noreferrer" : undefined}
                 />
               }
             >
-              {navExchangeLink.label}
+              {nav.exchangeLink.label}
               <ArrowUpRight className="size-3.5" aria-hidden="true" />
             </Button>
             <Button
@@ -130,13 +128,13 @@ export function NavBar() {
               className="h-9 w-full justify-center lg:w-auto"
               render={
                 <a
-                  href={navCta.href}
-                  target={navCta.external ? "_blank" : undefined}
-                  rel={navCta.external ? "noopener noreferrer" : undefined}
+                  href={nav.cta.href}
+                  target={nav.cta.external ? "_blank" : undefined}
+                  rel={nav.cta.external ? "noopener noreferrer" : undefined}
                 />
               }
             >
-              {navCta.label}
+              {nav.cta.label}
             </Button>
           </div>
         }

@@ -14,12 +14,11 @@ import { LineChartIcon, BanknoteIcon, ShieldIcon } from "lucide-react"
 
 import { BalanceBarChartCard, FeatureListItem, GradientBackdrop, PlaceholderMedia, Reveal, StablecoinOrderCard, TradingTerminalCard } from "@/shared/ui"
 import {
-  operationsSplitContent,
-  operationsSplitFeatures,
-  tradingTerminalHeader,
+  operationsSplitContentByLocale,
   type OperationsFeatureIconKey,
 } from "@/entities/company"
 import { custodyStatusCard, stablecoinOrderContent } from "@/entities/settlement"
+import type { Locale } from "@/shared/lib/i18n"
 
 /**
  * Maps `operationsSplitFeatures`' `iconKey` to the small glyph rendered
@@ -38,7 +37,11 @@ function FeatureIcon({ iconKey }: { iconKey: OperationsFeatureIconKey }) {
   }
 }
 
-export function OperationsSplit() {
+export function OperationsSplit({ locale }: { locale: Locale }) {
+  const operationsSplitContent = operationsSplitContentByLocale[locale]
+  const operationsSplitFeatures = operationsSplitContent.features
+  const tradingTerminalHeader = operationsSplitContent.tradingTerminalHeader
+
   // Defaults to the item flagged `active` in the data (falls back to the
   // first item), preserving the previous static "Invoicing highlighted"
   // behaviour before this became interactive.

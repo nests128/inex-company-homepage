@@ -71,8 +71,8 @@ export interface NavBarProps
   logo: ReactNode
   /** Top-level nav items, rendered left-to-right (plain links and/or mega-menu groups). */
   items: NavItem[]
-  /** Optional language display, e.g. "KO". Purely a label — no functional switcher. */
-  languageLabel?: string
+  /** Optional language switcher slot (e.g. a "한국어 / EN" link pair). Content is caller's concern. */
+  languageSwitcher?: ReactNode
   /** CTA button slot rendered at the end of the bar (desktop) and in the mobile sheet footer. */
   cta?: ReactNode
   /** Accessible label for the mobile menu trigger. Defaults to "메뉴 열기". */
@@ -121,7 +121,7 @@ function groupConsecutiveItems(items: NavItem[]): ConsecutiveGroup[] {
 function NavBar({
   logo,
   items,
-  languageLabel,
+  languageSwitcher,
   cta,
   mobileMenuLabel = "메뉴 열기",
   className,
@@ -241,11 +241,7 @@ function NavBar({
           </NavigationMenuList>
         </NavigationMenu>
 
-        {languageLabel ? (
-          <span className="ml-2 text-sm text-muted-foreground">
-            {languageLabel}
-          </span>
-        ) : null}
+        {languageSwitcher ? <div className="ml-2">{languageSwitcher}</div> : null}
 
         {cta}
       </div>
@@ -327,11 +323,7 @@ function NavBar({
           </nav>
 
           <div className="flex flex-col gap-3 border-t border-border p-4">
-            {languageLabel ? (
-              <span className="text-sm text-muted-foreground">
-                {languageLabel}
-              </span>
-            ) : null}
+            {languageSwitcher}
             {cta}
           </div>
         </SheetContent>

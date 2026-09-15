@@ -1,17 +1,15 @@
 export {
   navLogoLabel,
-  navCompanyLink,
-  navNewsLink,
-  navSolutionItems,
-  navSolutionFooter,
-  navTrailingLinks,
-  navLanguageLabel,
-  navExchangeLink,
-  navCta,
+  navContentByLocale,
+  type NavContent,
   type SolutionIconKey,
 } from "./model/nav-content"
 
-export { heroContent, heroVisualPlaceholders } from "./model/hero-content"
+export {
+  heroContentByLocale,
+  heroVisualPlaceholders,
+  type HeroContent,
+} from "./model/hero-content"
 
 export {
   featureShowcaseContent,
@@ -23,9 +21,7 @@ export {
 } from "./model/feature-showcase-content"
 
 export {
-  operationsSplitContent,
-  operationsSplitFeatures,
-  tradingTerminalHeader,
+  operationsSplitContentByLocale,
   type OperationsFeatureIconKey,
   type OperationsFeatureListItem,
 } from "./model/operations-split-content"

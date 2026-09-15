@@ -1,1 +1,1 @@
-export { default, metadata } from "@/_pages/solutions-custody";
+export { default, generateMetadata } from "@/_pages/solutions-custody";

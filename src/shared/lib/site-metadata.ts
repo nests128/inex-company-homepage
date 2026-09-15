@@ -1,7 +1,14 @@
 import type { Metadata } from "next"
 
+import { defaultLocale, locales, publicPath, type Locale } from "./i18n"
+
 export const SITE_URL = "https://inex.im"
 export const SITE_NAME = "INEX"
+
+export const SITE_DESCRIPTION: Record<Locale, string> = {
+  ko: "거래 · 결제 · 송금 전 구간을 하나의 라이선스 위에서 운영하는 디지털자산 인프라.",
+  en: "Digital asset infrastructure operating trading, payments, and remittance end-to-end under a single license.",
+}
 
 // 실제 운영 중인 cdn.inexcoin.com의 브랜드 OG 카드 자산(1200x630) — 자매
 // 프로젝트(company-homepage)가 이미 공유 카드 기본값으로 쓰고 있음. 카피가
@@ -11,8 +18,14 @@ export const SITE_NAME = "INEX"
 export const DEFAULT_OG_IMAGE_URL =
   "https://cdn.inexcoin.com/service/common/metadata/meta_inex_02.png"
 
+const OPEN_GRAPH_LOCALE: Record<Locale, string> = {
+  ko: "ko_KR",
+  en: "en_US",
+}
+
 interface BuildPageMetadataInput {
-  /** Route path, e.g. "/company", "/news/230424577". Root is "/". */
+  locale: Locale
+  /** Locale-agnostic route path, e.g. "/company", "/news/230424577". Root is "/". Do NOT include a locale prefix — `publicPath` derives the real public URL for each locale. */
   path: string
   /** Page-specific title (no "INEX" suffix — the root layout's `title.template` adds that for the `<title>` tag only, not for OG/Twitter, which is why this function re-sets them explicitly). */
   title: string
@@ -32,12 +45,13 @@ interface BuildPageMetadataInput {
  * turning a wrong-title bug into a no-thumbnail bug).
  */
 export function buildPageMetadata({
+  locale,
   path,
   title,
   description,
   imageUrl,
 }: BuildPageMetadataInput): Metadata {
-  const canonical = `${SITE_URL}${path === "/" ? "" : path}`
+  const canonical = `${SITE_URL}${publicPath(locale, path)}`
   const image = imageUrl ?? DEFAULT_OG_IMAGE_URL
 
   return {
@@ -45,6 +59,14 @@ export function buildPageMetadata({
     description,
     alternates: {
       canonical,
+      // 검색엔진에 두 언어가 서로의 번역본임을 알려줌 — 없으면 구글이 두
+      // 페이지를 중복 콘텐츠로 오인할 수 있다. `x-default`는 언어를 특정할
+      // 수 없는 요청(예: 브라우저 Accept-Language 매칭 실패)의 폴백.
+      languages: {
+        ko: `${SITE_URL}${publicPath("ko", path)}`,
+        en: `${SITE_URL}${publicPath("en", path)}`,
+        "x-default": `${SITE_URL}${publicPath(defaultLocale, path)}`,
+      },
     },
     openGraph: {
       type: "website",
@@ -52,7 +74,8 @@ export function buildPageMetadata({
       siteName: SITE_NAME,
       title,
       description,
-      locale: "ko_KR",
+      locale: OPEN_GRAPH_LOCALE[locale],
+      alternateLocale: locales.filter((l) => l !== locale).map((l) => OPEN_GRAPH_LOCALE[l]),
       images: [
         {
           url: image,
